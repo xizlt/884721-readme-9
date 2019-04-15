@@ -41,7 +41,27 @@ $card_posts = [
     ]
 ];
 
+function clips_text($text, $length = 20)
+{
+    $total = 0;
+    $num = strlen($word);
+    if (mb_strlen($text) > $length){
+        $count_words = explode(" ", $text);
+        foreach ($count_words as $word){
+            if ($num < $total){
+                $total += $num;
+            }
+        }
+    }
+
+
+}
+$text = "это интегрированная среда разработки на PHP с интеллектуальным редактором, которая глубоко понимает код, поддерживает PHP 7.0, 5.6, 5.5, 5.4 и 5.3 для современных и классических проектов, обеспечивает лучшее в индустрии автодополнение кода, рефакторинги, предотвращение ошибок налету и поддерживает смешивание языков. Сотни инспекций заботятся о верификации кода, анализируя проект целиком во время разработки. Поддержка PHPDoc, code (re)arranger, форматтера кода с конфигурацией стиля кода и другие возможности помогают разработчикам писать опрятный и легко-поддерживаемый код. Поддерживаются передовые технологии веб-разработки, включая HTML5, CSS, Sass, SCSS, Less, Stylus, Compass, CoffeeScript, TypeScript, ECMAScript Harmony, шаблоны Jade, Zen Coding, Emmet, и, конечно же, JavaScript. PhpStorm включает в себя всю функциональность WebStorm (HTML/CSS редактор, JavaScript редактор) и добавляет полнофункциональную поддержку PHP и баз данных / SQL.";
+$shot_content = clips_text($text);
+//var_dump($shot_content);
+
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
