@@ -117,6 +117,12 @@
         <section class="post-details">
           <h2 class="visually-hidden">Публикация</h2>
           <div class="post-details__wrapper post-photo">
+            <a class="post-details__close button button--close" href="#" title="Удалить">
+              <span class="visually-hidden">Удалить</span>
+              <svg class="button__close-icon" width="18" height="18">
+                <use xlink:href="#icon-close"></use>
+              </svg>
+            </a>
             <div class="post-details__main-block post post--details">
               <div class="post-details__image-wrapper post-photo__image-wrapper">
                 <img src="img/rock-default.jpg" alt="Фото от пользователя" width="760" height="507">
@@ -139,13 +145,6 @@
                     </svg>
                     <span>25</span>
                     <span class="visually-hidden">количество комментариев</span>
-                  </a>
-                  <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
-                    <svg class="post__indicator-icon" width="19" height="17">
-                      <use xlink:href="#icon-repost"></use>
-                    </svg>
-                    <span>5</span>
-                    <span class="visually-hidden">количество репостов</span>
                   </a>
                 </div>
                 <span class="post__view">500 просмотров</span>
@@ -282,7 +281,7 @@
               </li>
             </ul>
             <div class="footer__copyright">
-              <a class="footer__copyright-link" href="https://htmlacademy.ru">
+              <a class="footer__copyright-link" href="#">
                 <span>Разработано HTML Academy</span>
                 <svg class="footer__copyright-logo" width="27" height="34">
                   <use xlink:href="#icon-htmlacademy"></use>
@@ -293,7 +292,5 @@
         </div>
       </div>
     </footer>
-
-    <script src="js/main.js"></script>
   </body>
 </html>

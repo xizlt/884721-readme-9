@@ -25,11 +25,11 @@
         </div>
         <div class="header__nav-wrapper">
           <nav class="header__nav">
-            <ul class="header__user-nav page__user-nav">
-              <li class="page__user-item">
-                <span class="header__register-slogan">
-                  Еще нет аккаунта?
-                </span>
+            <p class="header__register-slogan">
+              Еще нет аккаунта?
+            </p>
+            <ul class="header__user-nav">
+              <li>
                 <a class="header__user-button header__register-button button button--transparent" href="registration.html">Регистрация</a>
               </li>
             </ul>
@@ -61,25 +61,22 @@
           <h2 class="visually-hidden">Авторизация</h2>
           <form class="authorization__form form" action="#" method="post">
             <div class="authorization__input-wrapper form__input-wrapper">
-              <div class="form__input-section">
-                <input class="authorization__input authorization__input--login form__input" type="text" name="email" placeholder="email">
-                <svg class="form__input-icon" width="19" height="18">
-                  <use xlink:href="#icon-input-user"></use>
-                </svg>
-                <label class="visually-hidden">Email</label>
-              </div>
-              <span class="form__error-label form__error-label--login">Неверный email</span>
+              <input class="authorization__input authorization__input--login form__input" type="text" name="login" placeholder="Логин">
+              <svg class="form__input-icon" width="19" height="18">
+                <use xlink:href="#icon-input-user"></use>
+              </svg>
+              <label class="visually-hidden">Логин</label>
+              <span class="form__error-label form__error-label--login">Неверный логин</span>
             </div>
             <div class="authorization__input-wrapper form__input-wrapper">
-              <div class="form__input-section">
-                <input class="authorization__input authorization__input--password form__input" type="password" name="password" placeholder="Пароль">
-                <svg class="form__input-icon" width="16" height="20">
-                  <use xlink:href="#icon-input-password"></use>
-                </svg>
-                <label class="visually-hidden">Пароль</label>
-              </div>
+              <input class="authorization__input authorization__input--password form__input" type="password" name="password" placeholder="Пароль">
+              <svg class="form__input-icon" width="16" height="20">
+                <use xlink:href="#icon-input-password"></use>
+              </svg>
+              <label class="visually-hidden">Пароль</label>
               <span class="form__error-label">Пароли не совпадают</span>
             </div>
+            <a class="authorization__recovery" href="#">Восстановить пароль</a>
             <button class="authorization__submit button button--main" type="submit">Войти</button>
           </form>
         </section>
@@ -129,7 +126,7 @@
               </li>
             </ul>
             <div class="footer__copyright">
-              <a class="footer__copyright-link" href="https://htmlacademy.ru">
+              <a class="footer__copyright-link" href="#">
                 <span>Разработано HTML Academy</span>
                 <svg class="footer__copyright-logo" width="27" height="34">
                   <use xlink:href="#icon-htmlacademy"></use>
@@ -140,7 +137,5 @@
         </div>
       </div>
     </footer>
-
-    <script src="js/main.js"></script>
   </body>
 </html>
