@@ -43,26 +43,21 @@ $card_posts = [
 
 function clips_text($text, $length = 300)
 {
-    $length_text = mb_strlen($text);
+    $length_content = strlen($text);
     $total = 0;
-    if ($length_text > $length) {
-        $count_words = explode(" ", $text);
-        foreach ($count_words as $word) {
+    if ($length_content > $length) {
+        $array_words = explode(" ", $text);
+        foreach ($array_words as $word) {
             $num = strlen($word);
-            $total += $num / 2;
+            $total += $num;
             if ($total < $length) {
-                $text_contentent[] = $word;
+                $show_contentent[] = $word;
             }
         }
-        return '<p>' . implode(' ', $text_contentent) . ' ...' . '<p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+        return '<p>' . implode(' ', $show_contentent) . ' ...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
     }
-    return '<p>' . $text . '<p>';
+    return '<p>' . $text . '</p>';
 }
-
-//$text = "это интегрированная среда разработки на PHP с интеллектуальным редактором, которая глубоко понимает код, поддерживает PHP 7.0, 5.6, 5.5, 5.4 и 5.3 для современных и классических проектов, обеспечивает лучшее в индустрии автодополнение кода, рефакторинги, предотвращение ошибок налету и поддерживает смешивание языков. Сотни инспекций заботятся о верификации кода, анализируя проект целиком во время разработки. Поддержка PHPDoc, code (re)arranger, форматтера кода с конфигурацией стиля кода и другие возможности помогают разработчикам писать опрятный и легко-поддерживаемый код. Поддерживаются передовые технологии веб-разработки, включая HTML5, CSS, Sass, SCSS, Less, Stylus, Compass, CoffeeScript, TypeScript, ECMAScript Harmony, шаблоны Jade, Zen Coding, Emmet, и, конечно же, JavaScript. PhpStorm включает в себя всю функциональность WebStorm (HTML/CSS редактор, JavaScript редактор) и добавляет полнофункциональную поддержку PHP и баз данных / SQL.";
-//$shot_content = clips_text($text);
-//var_dump($shot_content);
-
 ?>
 
 <!DOCTYPE html>
@@ -284,7 +279,7 @@ function clips_text($text, $length = 300)
                     <!--содержимое для поста-цитаты-->
                     <blockquote>
                         <p>
-                            <?= $card_post['content']; ?>
+                            <?= clips_text($card_post['content']); ?>
                         </p>
                         <cite>Неизвестный Автор</cite>
                     </blockquote>
