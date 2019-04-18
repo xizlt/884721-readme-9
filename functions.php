@@ -61,3 +61,10 @@ function clean($value)
 
     return $value;
 }
+
+function publication_date($time)
+{
+    $dt_end = strtotime($time);
+    $dt_now = time();
+    $dt_diff = $dt_now - $dt_end;
+}
