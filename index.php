@@ -1,11 +1,13 @@
 <?php
+date_default_timezone_set("Europe/Moscow");
+
 $is_auth = rand(0, 1);
 
 $user_name = 'Иван'; // укажите здесь ваше имя
 
-
 require_once "functions.php";
 require_once "data.php";
+
 
 
 $page_content = include_template('index.php', ['card_posts' => $card_posts]);
