@@ -172,7 +172,11 @@ function generate_random_date($index) {
     return $dt;
 }
 
-
+/**
+ * Возвращает дату в формате дд.мм.гггг чч:мм
+ * @param string $time
+ * @return false|string
+ */
 function date_for_title(string $time)
 {
     $time = date('d.m.Y H:i');

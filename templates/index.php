@@ -85,7 +85,7 @@
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($card_posts as $card_post): ?>
+            <?php foreach ($card_posts as $key => $card_post): ?>
                 <article class="popular__post post <?= clean($card_post['type']); ?>">
                     <header class="post__header">
                         <h2><?= clean($card_post['headline']); ?></h2>
@@ -137,7 +137,7 @@
                                     <!--укажите путь к файлу аватара-->
                                     <img class="post__author-avatar" src="img/<?= clean($card_post['avatar']); ?>" alt="Аватар пользователя">
                                 </div>
-                                    <?= $generate_index_array = generate_random_date($i); ?>
+                                    <?php $generate_index_array = generate_random_date($key); ?>
                                 <div class="post__info">
                                     <b class="post__author-name"><?= clean($card_post['user_name']); ?></b>
                                     <time class="post__time" datetime="<?= $generate_index_array; ?>" title="<?= date_for_title($generate_index_array) ?>"><?= publication_date($generate_index_array); ?></time>
