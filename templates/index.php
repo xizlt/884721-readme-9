@@ -137,7 +137,7 @@
                                     <!--укажите путь к файлу аватара-->
                                     <img class="post__author-avatar" src="img/<?= clean($card_post['avatar']); ?>" alt="Аватар пользователя">
                                 </div>
-                                    <?php $generate_index_array = generate_random_date($key); ?>
+                                    <?php $generate_index_array = generate_random_date(clean($key)); ?>
                                 <div class="post__info">
                                     <b class="post__author-name"><?= clean($card_post['user_name']); ?></b>
                                     <time class="post__time" datetime="<?= $generate_index_array; ?>" title="<?= date_for_title($generate_index_array) ?>"><?= publication_date($generate_index_array); ?></time>
