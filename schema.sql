@@ -84,8 +84,15 @@ CREATE INDEX recipient_index ON messages (recipient);
 
 CREATE TABLE hash_tags
 (
-    id          INT AUTO_INCREMENT PRIMARY KEY,
-    hash_tag_id INT NULL
+    id       INT AUTO_INCREMENT PRIMARY KEY,
+    hash_tag INT NULL
+);
+
+
+CREATE TABLE hash2post
+(
+    post_id INT NULL,
+    hash_id INT NULL
 );
 
 
