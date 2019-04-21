@@ -85,7 +85,7 @@ CREATE INDEX recipient_index ON messages (recipient);
 CREATE TABLE hash_tags
 (
     id       INT AUTO_INCREMENT PRIMARY KEY,
-    hash_tag INT NULL
+    hash_tag VARCHAR(255) NULL
 );
 
 
