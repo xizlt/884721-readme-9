@@ -45,6 +45,7 @@ CREATE TABLE comments (
     post_id INT NOT NULL
 );
 
+CREATE INDEX message_comment_index ON comments(message);
 CREATE INDEX user_id_index ON comments(user_id);
 CREATE INDEX post_id_index ON comments(post_id);
 
@@ -55,11 +56,9 @@ CREATE TABLE likes (
     post_id INT NULL
 );
 
-CREATE INDEX user_id_index ON likes(user_id);
-CREATE INDEX messages_id_index ON likes(post_id);
-
 
 CREATE TABLE subscription (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     user_id_on INT NOT NULL,
     user_id_who INT NOT NULL
 );
@@ -78,9 +77,9 @@ CREATE INDEX recipient_index ON messages(recipient);
 
 
 CREATE TABLE hash_tags (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     hash_tag_id INT NULL
 );
-
 
 
 CREATE TABLE content (
