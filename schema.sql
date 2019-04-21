@@ -21,7 +21,7 @@ CREATE TABLE posts
     id           INT AUTO_INCREMENT PRIMARY KEY,
     create_date  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     title        VARCHAR(250)  NOT NULL,
-    message      VARCHAR(1000) NOT NULL,
+    message      VARCHAR(1000) NULL,
     quote_writer VARCHAR(250)  NULL,
     image        VARCHAR(1000) NULL,
     video        VARCHAR(1000) NULL,
@@ -42,7 +42,7 @@ CREATE INDEX messages_index ON posts (message);
 CREATE TABLE comments
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
-    create_date TIMESTAMP DEFAULT CURRENT_TIME,
+    create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     message     VARCHAR(1000) NOT NULL,
     user_id     INT           NOT NULL,
     post_id     INT           NOT NULL
@@ -73,7 +73,7 @@ CREATE TABLE messages
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     message     VARCHAR(1000) NOT NULL,
-    create_date TIMESTAMP DEFAULT CURRENT_TIME,
+    create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     sender      INT           NOT NULL,
     recipient   INT           NOT NULL
 );
