@@ -51,27 +51,34 @@ SELECT p.id,
        p.image,
        p.video,
        p.link,
-       p.type_content,
        u.NAME,
        c.TYPE,
-       -- count(l.user_id) as like_post
+       count(l.user_id) AS like_post
 FROM posts p
-         LEFT JOIN likes l
-                   ON l.post_id = p.id
-         JOIN users u
-              ON l.user_id = u.id
-         LEFT JOIN content c
-                   ON c.id = p.type_content;
--- ORDER BY like_post, id ASC;
+         JOIN likes l ON p.id = l.post_id
+         JOIN users u ON u.id = p.user_id
+         JOIN content c ON c.id = p.type_content
+WHERE l.post_id = p.id
+GROUP BY p.id
+ORDER BY like_post DESC;
 
 
 -- получил список постов для конкретного пользователя;
-SELECT *
+SELECT p.id,
+       p.create_date,
+       p.title,
+       p.message,
+       p.quote_writer,
+       p.image,
+       p.video,
+       p.link,
+       u.name,
+       u.email
 FROM users u
-           JOIN likes l
-                ON l.user_id = u.id
-           JOIN post p
-                ON l.post_id = p.id;
+         JOIN posts p
+              ON p.user_id = u.id
+WHERE u.id = 4;
+
 
 -- получил список комментариев для одного поста, в комментариях должен быть логин пользователя;
 SELECT p.id,
@@ -83,17 +90,20 @@ SELECT p.id,
        p.video,
        p.link,
        cm.message,
-       u.email
+       u.email,
+       u.name
 FROM posts p
          JOIN comments cm
               ON cm.post_id = p.id
          JOIN users u
-              ON u.id = p.user_id
+              ON u.id = cm.user_id
 WHERE p.id = 25;
+
 
 -- добавил лайк к посту;
 INSERT INTO likes
     SET post_id = 23, user_id = 2;
+
 
 -- подписался на пользователя.
 INSERT INTO subscription
