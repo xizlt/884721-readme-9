@@ -1,4 +1,10 @@
 <?php
+const MINUTE = 60;
+const HOUR = 3600;
+const DAY = 86400;
+const WEEK = 604800;
+const MONTH = 2419200;
+const FIVE_WEEKS = 3024000;
 
 /**
  * Возвращает текст в короткой форме по лимиту символов
@@ -8,18 +14,22 @@
  */
 function clips_text($text, $length = 300)
 {
-    $length_content = strlen($text);
+    $length_content = mb_strlen($text);
     $total = 0;
+
     if ($length_content > $length) {
-        $array_words = explode(" ", $text);
-        foreach ($array_words as $word) {
-            $num = strlen($word);
+        $result_words = [];
+        $words = explode(" ", $text);
+        foreach ($words as $word) {
+            $num = mb_strlen($word);
             $total += $num;
-            if ($total < $length) {
-                $show_contentent[] = $word;
+            if ($total >= $length) {
+                break;
             }
+            $result_words[] = $word;
+
         }
-        return '<p>' . implode(' ', $show_contentent) . ' ...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+        return '<p>' . implode(' ', $result_words) . ' ...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
     }
     return '<p>' . $text . '</p>';
 }
@@ -54,9 +64,9 @@ function include_template($name, array $data = []) {
  */
 function clean($value)
 {
-    //$value = trim($value);
-    //$value = stripslashes($value);
-   // $value = strip_tags($value);
+    $value = trim($value);
+    $value = stripslashes($value);
+    $value = strip_tags($value);
     $value = htmlspecialchars($value);
 
     return $value;
@@ -67,34 +77,34 @@ function clean($value)
  * @param $time
  * @return string
  */
-function publication_date($time)
+function publication_date(string $time): string
 {
     $dt_pub = strtotime($time);
     $dt_now = time();
     $dt_diff = $dt_now - $dt_pub;
 
-    if ($dt_diff < 3600) {
-        $dt_create = floor($dt_diff / 60);
+    if ($dt_diff < HOUR) {
+        $dt_create = floor($dt_diff / MINUTE);
         $result = $dt_create . get_noun_plural_form($dt_create, ' минута', ' минуты', ' минут') . ' назад';
         return $result;
 
-    } elseif ($dt_diff > 3600 and $dt_diff < 86400) {
-        $dt_create = floor($dt_diff / 3600);
+    } elseif ($dt_diff >= HOUR and $dt_diff < DAY) {
+        $dt_create = floor($dt_diff / HOUR);
         $result = $dt_create . get_noun_plural_form($dt_create, ' час', ' часа', ' часов') . ' назад';
         return $result;
 
-    } elseif ($dt_diff > 86400 and $dt_diff < 604800) {
-        $dt_create = floor($dt_diff / 86400);
+    } elseif ($dt_diff >= DAY and $dt_diff < WEEK) {
+        $dt_create = floor($dt_diff / DAY);
         $result = $dt_create . get_noun_plural_form($dt_create, ' день', ' дня', ' дней') . ' назад';
         return $result;
 
-    } elseif ($dt_diff > 604800 and $dt_diff < 3024000) {
-        $dt_create = floor($dt_diff / 604800);
+    } elseif ($dt_diff >= WEEK and $dt_diff < FIVE_WEEKS) {
+        $dt_create = floor($dt_diff / WEEK);
         $result = $dt_create . get_noun_plural_form($dt_create, ' неделя', ' недели', ' недель') . ' назад';
         return $result;
 
-    } elseif ($dt_diff > 3024000) {
-        $dt_create = floor($dt_diff / 3024000);
+    } elseif ($dt_diff >= FIVE_WEEKS) {
+        $dt_create = floor($dt_diff / MONTH);
         $result = $dt_create . get_noun_plural_form($dt_create, ' месяц', ' месяца', ' месяцев') . ' назад';
         return $result;
     }
@@ -179,6 +189,7 @@ function generate_random_date($index) {
  */
 function date_for_title(string $time)
 {
-    $time = date('d.m.Y H:i');
+    $timestamp = strtotime($time);
+    $time = date('d.m.Y H:i', $timestamp);
     return $time;
 }

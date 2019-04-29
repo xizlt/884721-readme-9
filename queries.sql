@@ -1,5 +1,5 @@
 -- внес типы постов
-INSERT INTO content (type)
+INSERT INTO content_type (name)
       VALUE ('post-quote'),
       ('post-text'),
       ('post-photo'),
@@ -16,7 +16,7 @@ INSERT INTO users (email, name, password, avatar, about)
 
 -- Внес комментарии
 INSERT INTO comments (user_id, post_id, message)
-      VALUE (1, 5, 'Однако, уважаемый Максим Ильяхов, снимаю шляпу. Читать эти письма, не допуская внутреннего кипения (я гуманист, но увы, вышел из себя'),
+      VALUE (1, 3, 'Однако, уважаемый Максим Ильяхов, снимаю шляпу. Читать эти письма, не допуская внутреннего кипения (я гуманист, но увы, вышел из себя'),
       (1, 4, 'Можно немало посмеяться над приведенными образцами.Но вспоминается советское время,когда классу задавали сочинение на тему:«Как хорошо жить в советской стране!»'),
       (2, 3, 'Алекс, к сожалению, большинство кандидатов не смогли даже списать письмо с образца по ссылке.'),
       (3, 2, 'Для чайника по СУБД как я, отличный урок﻿'),
@@ -25,7 +25,7 @@ INSERT INTO comments (user_id, post_id, message)
 
 
 -- Внес посты
-INSERT INTO posts (title, message, user_id, type_content, image, link)
+INSERT INTO posts (title, message, user_id, content_type_id, image, link)
       VALUE ('Цитата', 'Мы в жизни любим только раз, а после ищем лишь похожих', 1, 1, NULL, NULL),
       ('Игра престолов', 'Не могу дождаться начала финального сезона своего любимого сериала!', 2, 2, NULL, NULL),
       ('Наконец, обработал фотки!', NULL, 3, 3, 'img/rock-medium.jpg', NULL),
@@ -35,29 +35,29 @@ INSERT INTO posts (title, message, user_id, type_content, image, link)
 
 -- Заполнил таблицу likes
 INSERT INTO likes (user_id, post_id)
-      VALUE (1, 21),
-      (2, 22),
-      (3, 23),
-      (4, 24),
-      (2, 25);
+      VALUE (1, 5),
+      (2, 4),
+      (3, 3),
+      (4, 2),
+      (2, 5);
 
 
 -- получил список постов с сортировкой по популярности и вместе с именами авторов и типом контента;
 SELECT p.id,
-       p.create_date,
+       p.create_time,
        p.title,
        p.message,
        p.quote_writer,
        p.image,
        p.video,
        p.link,
-       u.NAME,
-       c.TYPE,
-       count(l.user_id) AS like_post
+       u.name,
+       c.name AS type,
+       COUNT(l.user_id) AS like_post
 FROM posts p
          JOIN likes l ON p.id = l.post_id
          JOIN users u ON u.id = p.user_id
-         JOIN content c ON c.id = p.type_content
+         JOIN content_type c ON c.id = p.content_type_id
 WHERE l.post_id = p.id
 GROUP BY p.id
 ORDER BY like_post DESC;
@@ -65,7 +65,7 @@ ORDER BY like_post DESC;
 
 -- получил список постов для конкретного пользователя;
 SELECT p.id,
-       p.create_date,
+       p.create_time,
        p.title,
        p.message,
        p.quote_writer,
@@ -82,7 +82,7 @@ WHERE u.id = 4;
 
 -- получил список комментариев для одного поста, в комментариях должен быть логин пользователя;
 SELECT p.id,
-       p.create_date,
+       p.create_time,
        p.title,
        p.message,
        p.quote_writer,
@@ -97,15 +97,15 @@ FROM posts p
               ON cm.post_id = p.id
          JOIN users u
               ON u.id = cm.user_id
-WHERE p.id = 25;
+WHERE p.id = 2;
 
 
 -- добавил лайк к посту;
 INSERT INTO likes
-    SET post_id = 23, user_id = 2;
+    SET post_id = 3, user_id = 2;
 
 
 -- подписался на пользователя.
-INSERT INTO subscription
-    SET user_id_on = 3, user_id_who = 4;
+INSERT INTO subscriptions
+    SET subscriber_id = 3, user_id = 4;
 
