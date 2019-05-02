@@ -74,8 +74,8 @@ SELECT p.id,
        p.link,
        u.name,
        u.email
-FROM users u
-         JOIN posts p
+FROM posts p
+         JOIN users u
               ON p.user_id = u.id
 WHERE u.id = 4;
 
@@ -92,8 +92,8 @@ SELECT p.id,
        cm.message,
        u.email,
        u.name
-FROM posts p
-         JOIN comments cm
+FROM comments cm
+         JOIN posts p
               ON cm.post_id = p.id
          JOIN users u
               ON u.id = cm.user_id
