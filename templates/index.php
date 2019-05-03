@@ -42,7 +42,8 @@
                         </a>
                     </li>
 
-
+                    <?php foreach ($types AS $type): ?>
+                    <?php if ($type['name'] === 'post-photo'): ?>
                     <li class="popular__filters-item filters__item">
                         <a class="filters__button filters__button--photo button" href="#">
                             <span class="visually-hidden">Фото</span>
@@ -51,6 +52,8 @@
                             </svg>
                         </a>
                     </li>
+
+                    <?php elseif ($type['name'] === 'post-video'): ?>
                     <li class="popular__filters-item filters__item">
                         <a class="filters__button filters__button--video button" href="#">
                             <span class="visually-hidden">Видео</span>
@@ -59,6 +62,8 @@
                             </svg>
                         </a>
                     </li>
+
+                    <?php elseif ($type['name'] === 'post-text'): ?>
                     <li class="popular__filters-item filters__item">
                         <a class="filters__button filters__button--text button" href="#">
                             <span class="visually-hidden">Текст</span>
@@ -67,6 +72,8 @@
                             </svg>
                         </a>
                     </li>
+
+                    <?php elseif ($type['name'] === 'post-quote'): ?>
                     <li class="popular__filters-item filters__item">
                         <a class="filters__button filters__button--quote button" href="#">
                             <span class="visually-hidden">Цитата</span>
@@ -75,6 +82,8 @@
                             </svg>
                         </a>
                     </li>
+
+                    <?php elseif ($type['name'] === 'post-link'): ?>
                     <li class="popular__filters-item filters__item">
                         <a class="filters__button filters__button--link button" href="#">
                             <span class="visually-hidden">Ссылка</span>
@@ -83,11 +92,13 @@
                             </svg>
                         </a>
                     </li>
-
+                    <?php endif; ?>
+                    <?php endforeach; ?>
 
                 </ul>
             </div>
         </div>
+
         <div class="popular__posts">
             <?php foreach ($posts AS $post): ?>
                 <article class="popular__post post <?= clean($post['type']); ?>">
@@ -95,14 +106,13 @@
                         <h2><?= clean($post['title']); ?></h2>
                     </header>
                     <div class="post__main">
-
                         <?php if (clean($post['type'])==='post-quote'): ?>
                             <!--содержимое для поста-цитаты-->
                             <blockquote>
                                 <p>
                                     <?= clips_text(clean($post['message'])); ?>
                                 </p>
-                                <cite><?php if (!$post['quote_writer']): ?>Неизвестный Автор<?php endif; ?></cite>
+                                <cite><?= (!$post['quote_writer'])? 'Неизвестный Автор' : $post['quote_writer']; ?></cite>
                             </blockquote>
 
                         <?php elseif (clean($post['type'])==='post-link'): ?>
@@ -157,7 +167,7 @@
                                     <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                         <use xlink:href="#icon-heart-active"></use>
                                     </svg>
-                                    <span>0</span>
+                                    <span><?= $post['like_post']; ?></span>
                                     <span class="visually-hidden">количество лайков</span>
                                 </a>
                                 <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">

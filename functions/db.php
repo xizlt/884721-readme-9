@@ -39,7 +39,7 @@ function get_type($connection)
 /**
  * Возвращает популярные посты на главной странице
  * @param $connection
- * @return array|int|null
+ * @return array|int|null|string
  */
 function get_posts($connection)
 {
@@ -59,10 +59,10 @@ FROM posts p
          JOIN likes l ON p.id = l.post_id
          JOIN users u ON u.id = p.user_id
          JOIN content_type c ON c.id = p.content_type_id
-WHERE l.post_id = p.id
 GROUP BY p.id
 ORDER BY like_post DESC
-LIMIT 6';
+LIMIT 6
+';
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
     } else {
