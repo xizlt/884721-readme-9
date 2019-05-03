@@ -16,6 +16,13 @@ CREATE TABLE users
 );
 
 
+CREATE TABLE content_type
+(
+    id   INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL
+);
+
+
 CREATE TABLE posts
 (
     id              INT AUTO_INCREMENT PRIMARY KEY,
@@ -136,10 +143,3 @@ ALTER TABLE hash2post
 ALTER TABLE hash2post
     ADD FOREIGN KEY (hash_id)
         REFERENCES hash_tags (id) ON DELETE CASCADE ON UPDATE CASCADE;
-
-
-CREATE TABLE content_type
-(
-    id   INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) UNIQUE NOT NULL
-);
