@@ -1,9 +1,10 @@
 -- внес типы постов
 INSERT INTO content_type (name)
-      VALUE ('post-quote'),
-      ('post-text'),
-      ('post-photo'),
-      ('post-link');
+    VALUE ('post-quote'),
+    ('post-text'),
+    ('post-photo'),
+    ('post-video'),
+    ('post-link');
 
 
 -- Внес пользователей

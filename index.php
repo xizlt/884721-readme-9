@@ -9,12 +9,19 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Иван'; // укажите здесь ваше имя
 
-require_once "functions.php";
-require_once "data.php";
+require_once "functions/main.php";
+require_once "functions/db.php";
 
+$config = require "config.php";
+$connection = connectDb($config['db']);
 
+$types = get_type($connection);
+$posts = get_posts($connection);
 
-$page_content = include_template('index.php', ['card_posts' => $card_posts]);
+$page_content = include_template('index.php', [
+    'types' => $types,
+    'posts' => $posts
+]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Популярное',

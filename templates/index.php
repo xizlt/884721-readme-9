@@ -41,6 +41,8 @@
                             <span>Все</span>
                         </a>
                     </li>
+
+
                     <li class="popular__filters-item filters__item">
                         <a class="filters__button filters__button--photo button" href="#">
                             <span class="visually-hidden">Фото</span>
@@ -81,52 +83,53 @@
                             </svg>
                         </a>
                     </li>
+
+
                 </ul>
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($card_posts as $key => $card_post): ?>
-                <article class="popular__post post <?= clean($card_post['type']); ?>">
+            <?php foreach ($posts as $post): ?>
+                <article class="popular__post post <?= clean($post['type']); ?>">
                     <header class="post__header">
-                        <h2><?= clean($card_post['headline']); ?></h2>
+                        <h2><?= clean($post['title']); ?></h2>
                     </header>
                     <div class="post__main">
 
-                        <?php if (clean($card_post['type'])==='post-quote'): ?>
-
+                        <?php if (clean($post['type'])==='post-quote'): ?>
                             <!--содержимое для поста-цитаты-->
                             <blockquote>
                                 <p>
-                                    <?= clips_text(clean($card_post['content'])); ?>
+                                    <?= clips_text(clean($post['message'])); ?>
                                 </p>
-                                <cite>Неизвестный Автор</cite>
+                                <cite><?php if (!$post['quote_writer']): ?>Неизвестный Автор<?php endif; ?></cite>
                             </blockquote>
 
-                        <?php elseif (clean($card_post['type'])==='post-link'): ?>
+                        <?php elseif (clean($post['type'])==='post-link'): ?>
                             <!--содержимое для поста-ссылки-->
                             <div class="post-link__wrapper">
-                                <a class="post-link__external" href="http://<?= clean($card_post['content']); ?>" title="Перейти по ссылке">
+                                <a class="post-link__external" href="http://<?= clean($post['link']); ?>" title="Перейти по ссылке">
                                     <div class="post-link__info-wrapper">
                                         <div class="post-link__icon-wrapper">
                                             <img src="img/logo-vita.jpg" alt="Иконка">
                                         </div>
                                         <div class="post-link__info">
-                                            <h3><?= clean($card_post['headline']); ?></h3>
+                                            <h3><?= clean($post['title']); ?></h3>
                                         </div>
                                     </div>
-                                    <span><?= clean($card_post['content']); ?></span>
+                                    <span><?= clean($post['link']); ?></span>
                                 </a>
                             </div>
 
-                        <?php elseif (clean($card_post['type'])==='post-photo'): ?>
+                        <?php elseif (clean($post['type'])==='post-photo'): ?>
                             <!--содержимое для поста-фото-->
                             <div class="post-photo__image-wrapper">
-                                <img src="img/<?= clean($card_post['content']); ?>" alt="Фото от пользователя" width="360" height="240">
+                                <img src="<?= clean($post['image']); ?>" alt="Фото от пользователя" width="360" height="240">
                             </div>
 
-                        <?php elseif (clean($card_post['type'])==='post-text'): ?>
+                        <?php elseif (clean($post['type'])==='post-text'): ?>
                             <!--содержимое для поста-текста-->
-                            <p><?= clips_text(clean($card_post['content'])); ?></p>
+                            <p><?= clips_text(clean($post['message'])); ?></p>
                         <?php endif; ?>
 
                     </div>
@@ -135,11 +138,11 @@
                             <a class="post__author-link" href="#" title="Автор">
                                 <div class="post__avatar-wrapper">
                                     <!--укажите путь к файлу аватара-->
-                                    <img class="post__author-avatar" src="img/<?= clean($card_post['avatar']); ?>" alt="Аватар пользователя">
+                                    <img class="post__author-avatar" src="<?= clean($post['avatar']); ?>" alt="Аватар пользователя">
                                 </div>
-                                    <?php $generate_index_array = generate_random_date(clean($key)); ?>
+                                    <?php $generate_index_array = clean($post['create_time']); ?>
                                 <div class="post__info">
-                                    <b class="post__author-name"><?= clean($card_post['user_name']); ?></b>
+                                    <b class="post__author-name"><?= clean($post['user_name']); ?></b>
                                     <time class="post__time" datetime="<?= $generate_index_array; ?>" title="<?= date_for_title($generate_index_array) ?>"><?= publication_date($generate_index_array); ?></time>
                                 </div>
 
