@@ -89,7 +89,7 @@
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($posts as $post): ?>
+            <?php foreach ($posts AS $post): ?>
                 <article class="popular__post post <?= clean($post['type']); ?>">
                     <header class="post__header">
                         <h2><?= clean($post['title']); ?></h2>
