@@ -9,13 +9,13 @@ $is_auth = rand(0, 1);
 
 $user_name = 'Иван'; // укажите здесь ваше имя
 
-require_once "functions/main.php";
-require_once "functions/db.php";
+require_once 'functions/main.php';
+require_once 'functions/db.php';
 
-$config = require "config.php";
+$config = require 'config.php';
 $connection = connectDb($config['db']);
 
-$types = get_type($connection);
+$types = get_types($connection);
 $posts = get_posts($connection);
 
 $page_content = include_template('index.php', [

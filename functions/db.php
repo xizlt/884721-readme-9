@@ -7,14 +7,14 @@
 function connectDb($config)
 {
     $connection = mysqli_connect($config['host'], $config['user'], $config['password'], $config['database']);
-    mysqli_set_charset($connection, "utf8");
-    // соответствие типам
-    $link = mysqli_init();
-    mysqli_options($link, MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1);
 
     if ($connection === false) {
         $connection = die("Ошибка подключения: " . mysqli_connect_error()); // проверка на ошибку соединения
     }
+
+    mysqli_set_charset($connection, "utf8");
+    mysqli_options($connection, MYSQLI_OPT_INT_AND_FLOAT_NATIVE, 1);
+
     return $connection;
 }
 
@@ -23,14 +23,14 @@ function connectDb($config)
  * @param $connection
  * @return array|int|null
  */
-function get_type($connection)
+function get_types($connection)
 {
     $sql = 'SELECT * FROM content_type';
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
     } else {
         $error = mysqli_error($connection);
-        $result = print('Ошибка MySQL ' . $error);
+        $result = die('Ошибка MySQL ' . $error);
     }
     return $result;
 }
@@ -67,7 +67,7 @@ LIMIT 6
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
     } else {
         $error = mysqli_error($connection);
-        $result = print('Ошибка MySQL ' . $error);
+        $result = die('Ошибка MySQL ' . $error);
     }
     return $result;
 }
