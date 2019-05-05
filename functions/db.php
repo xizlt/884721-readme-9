@@ -9,7 +9,7 @@ function connectDb($config)
     $connection = mysqli_connect($config['host'], $config['user'], $config['password'], $config['database']);
 
     if ($connection === false) {
-        $connection = die("Ошибка подключения: " . mysqli_connect_error()); // проверка на ошибку соединения
+        die("Ошибка подключения: " . mysqli_connect_error()); // проверка на ошибку соединения
     }
 
     mysqli_set_charset($connection, "utf8");
@@ -30,7 +30,7 @@ function get_types($connection)
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
     } else {
         $error = mysqli_error($connection);
-        $result = die('Ошибка MySQL ' . $error);
+        die('Ошибка MySQL ' . $error);
     }
     return $result;
 }
@@ -67,7 +67,7 @@ LIMIT 6
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
     } else {
         $error = mysqli_error($connection);
-        $result = die('Ошибка MySQL ' . $error);
+        die('Ошибка MySQL ' . $error);
     }
     return $result;
 }

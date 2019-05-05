@@ -42,7 +42,7 @@
                         </a>
                     </li>
 
-                    <?php foreach ($types AS $type): ?>
+                    <?php foreach ($types as $type): ?>
                     <?php if ($type['name'] === 'post-photo'): ?>
                     <li class="popular__filters-item filters__item">
                         <a class="filters__button filters__button--photo button" href="#">
@@ -100,7 +100,7 @@
         </div>
 
         <div class="popular__posts">
-            <?php foreach ($posts AS $post): ?>
+            <?php foreach ($posts as $post): ?>
                 <article class="popular__post post <?= clean($post['type']); ?>">
                     <header class="post__header">
                         <h2><?= clean($post['title']); ?></h2>
