@@ -17,9 +17,18 @@ $connection = connectDb($config['db']);
 $types = get_types($connection);
 $posts = get_posts($connection);
 
+$post_id = $_GET['id'] ?? '';
+$control = get_post_by_id($connection, $post_id);
+
+if (!$post_id or !$control) {
+    header("HTTP/1.0 404 Not Found");
+    exit();
+}
+
 $page_content = include_template('post.php', [
     'types' => $types,
     'posts' => $posts
+
 ]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,

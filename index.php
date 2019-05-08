@@ -16,11 +16,24 @@ $config = require 'config.php';
 $connection = connectDb($config['db']);
 
 $types = get_types($connection);
-$posts = get_posts($connection);
+$type_block = $_GET['type_id'] ?? '';
+$types_correct = get_types_by_id($connection, $type_block);
+
+if ($type_block) {
+    $posts = get_posts_type($connection, $type_block);
+    if (!$types_correct) {
+        header("HTTP/1.0 404 Not Found");
+        exit();
+    }
+} else {
+    $posts = get_posts($connection);
+}
 
 $page_content = include_template('index.php', [
     'types' => $types,
-    'posts' => $posts
+    'posts' => $posts,
+    'types_correct' => $types_correct,
+    'type_block' => $type_block
 ]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,

@@ -51,6 +51,7 @@ function get_posts($connection)
        p.image,
        p.video,
        p.link,
+       p.content_type_id,
        u.name AS user_name,
        c.name AS type,
        u.avatar,
@@ -70,4 +71,67 @@ LIMIT 6
         die('Ошибка MySQL ' . $error);
     }
     return $result;
+}
+
+/**
+ * Возвращает посты по категориям
+ * @param $connection
+ * @param $type_block
+ * @return array|null
+ */
+function get_posts_type($connection, $type_block)
+{
+    $sql = "SELECT p.id,
+       p.create_time,
+       p.title,
+       p.message,
+       p.quote_writer,
+       p.image,
+       p.video,
+       p.link,
+       u.name AS user_name,
+       c.name AS type,
+       u.avatar,
+       COUNT(l.user_id) AS like_post
+FROM posts p
+         JOIN likes l ON p.id = l.post_id
+         JOIN users u ON u.id = p.user_id
+         JOIN content_type c ON c.id = p.content_type_id
+WHERE c.id = '$type_block'
+GROUP BY p.id
+ORDER BY like_post DESC
+LIMIT 9
+";
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+/**
+ * Проверяет существования такой категории
+ * @param $connection
+ * @param $type_block
+ * @return array|null
+ */
+function get_types_by_id($connection, $type_block){
+        $sql = "SELECT * FROM content_type c
+WHERE c.id = '$type_block'
+";
+        $res = mysqli_query($connection, $sql);
+        $user = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
+        return $user;
+}
+
+
+function get_post_by_id($connection, $type_block){
+    $sql = "SELECT id FROM posts p
+WHERE p.id = '$type_block'
+";
+    $res = mysqli_query($connection, $sql);
+    $user = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
+    return $user;
 }
