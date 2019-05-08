@@ -122,16 +122,93 @@ function get_types_by_id($connection, $type_block){
 WHERE c.id = '$type_block'
 ";
         $res = mysqli_query($connection, $sql);
-        $user = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
-        return $user;
+        $type = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
+        return $type;
 }
 
-
+/**
+ * Проверяет существование поста
+ * @param $connection
+ * @param $type_block
+ * @return array|null
+ */
 function get_post_by_id($connection, $type_block){
-    $sql = "SELECT id FROM posts p
+    $sql = "SELECT * FROM posts p
 WHERE p.id = '$type_block'
 ";
     $res = mysqli_query($connection, $sql);
-    $user = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
-    return $user;
+    $post = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
+    return $post;
+}
+
+
+/**
+ * Возвращает информацию по посту
+ * @param $connection
+ * @param $post_id
+ * @return array|null
+ */
+function get_post_info($connection, $post_id)
+{
+    $sql = "SELECT p.id,
+       p.create_time,
+       p.title,
+       p.message,
+       p.quote_writer,
+       p.image,
+       p.video,
+       p.link,
+       u.name AS user_name,
+       c.name AS type,
+       u.avatar,
+       p.user_id AS user,
+       u.create_time as user_reg,
+       COUNT(l.user_id) AS like_post
+FROM posts p
+         JOIN likes l ON p.id = l.post_id
+         JOIN users u ON u.id = p.user_id
+         JOIN content_type c ON c.id = p.content_type_id
+WHERE p.id = '$post_id'
+GROUP BY p.id
+ORDER BY like_post DESC
+LIMIT 9
+";
+    $res = mysqli_query($connection, $sql);
+    $post = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
+    return $post;
+}
+
+function get_comment($connection, $post_id)
+{
+    $sql = "SELECT
+        COUNT(cm.id) AS comments_post
+FROM comments cm
+WHERE cm.post_id = $post_id
+GROUP BY cm.post_id
+";
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+
+function get_count_subscriptions($connection, $user)
+{
+    $sql = "SELECT
+        COUNT(s.subscriber_id) AS count_user
+FROM subscriptions s
+WHERE s.user_id = $user
+GROUP BY s.user_id
+";
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
 }

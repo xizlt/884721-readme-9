@@ -14,22 +14,25 @@ require_once 'functions/db.php';
 $config = require 'config.php';
 $connection = connectDb($config['db']);
 
-$types = get_types($connection);
-$posts = get_posts($connection);
-
 $post_id = $_GET['id'] ?? '';
-$control = get_post_by_id($connection, $post_id);
+$post = get_post_info($connection, $post_id);
 
-if (!$post_id or !$control) {
+if (!$post_id or !$post) {
     header("HTTP/1.0 404 Not Found");
     exit();
 }
 
-$page_content = include_template('post.php', [
-    'types' => $types,
-    'posts' => $posts
+$block_post = include_template(template_by_type($post['type']), ['post' => $post]);
+$comments = get_comment($connection, $post_id);
+$subscriptions = get_count_subscriptions($connection, $post['user']);
 
+$page_content = include_template('post.php', [
+    'post' => $post,
+    'block_post' => $block_post,
+    'comments' => $comments,
+    'subscriptions' => $subscriptions
 ]);
+
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Публикация',

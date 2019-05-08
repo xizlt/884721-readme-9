@@ -1,19 +1,18 @@
 <main class="page__main page__main--publication">
     <div class="container">
-        <?php foreach ($posts as $post): ?>
         <h1 class="page__title page__title--publication"><?= $post['title']; ?></h1>
         <section class="post-details">
             <h2 class="visually-hidden">Публикация</h2>
             <div class="post-details__wrapper post-photo">
                 <div class="post-details__main-block post post--details">
 
-
+                    <?= $block_post; ?>
 
                     <div class="post__indicators">
-                        <div class="post__buttontor ">
-                            <a class="post__indica#iconpost__indicator--likes button" href="#" title="Лайк">
-                            <svg class="post__indicator-icon" width="20" height="17">
-                                <use xlink:href="s-heart"></use>
+                        <div class="post__buttons">
+                            <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                                <svg class="post__indicator-icon" width="20" height="17">
+                                    <use xlink:href="#icon-heart"></use>
                                 </svg>
                                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                     <use xlink:href="#icon-heart-active"></use>
@@ -25,7 +24,7 @@
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-comment"></use>
                                 </svg>
-                                <span>45</span>
+                                <span><?= $comments['comments_post']; ?></span>
                                 <span class="visually-hidden">количество комментариев</span>
                             </a>
                             <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
@@ -97,19 +96,21 @@
                     <div class="post-details__user-info user__info">
                         <div class="post-details__avatar user__avatar">
                             <a class="post-details__avatar-link user__avatar-link" href="#">
-                                <img class="post-details__picture user__picture" src="img/userpic-elvira.jpg" alt="Аватар пользователя">
+                                <img class="post-details__picture user__picture" src="<?= $post['avatar']; ?>" alt="Аватар пользователя">
                             </a>
                         </div>
                         <div class="post-details__name-wrapper user__name-wrapper">
                             <a class="post-details__name user__name" href="#">
-                                <span>Эльвира Хайпулинова</span>
+                                <span><?= $post['user_name']; ?></span>
                             </a>
-                            <time class="post-details__time user__time" datetime="2014-03-20">5 лет на сайте</time>
+                            <time class="post-details__time user__time" datetime="2014-03-20"><?= user_date_registration($post['user_reg']); ?></time>
                         </div>
                     </div>
                     <div class="post-details__rating user__rating">
                         <p class="post-details__rating-item user__rating-item user__rating-item--subscribers">
-                            <span class="post-details__rating-amount user__rating-amount">1856</span>
+
+                            <span class="post-details__rating-amount user__rating-amount"><?= ($subscriptions['count_user']) ?? '0'; ?></span>
+
                             <span class="post-details__rating-text user__rating-text">подписчиков</span>
                         </p>
                         <p class="post-details__rating-item user__rating-item user__rating-item--publications">
@@ -124,6 +125,5 @@
                 </div>
             </div>
         </section>
-        <?php endforeach; ?>
     </div>
 </main>
