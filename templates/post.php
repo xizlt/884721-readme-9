@@ -24,7 +24,7 @@
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-comment"></use>
                                 </svg>
-                                <span><?= ($comments_count['count_comments'])?? '0'; ?></span>
+                                <span><?= $comments_count; ?></span>
                                 <span class="visually-hidden">количество комментариев</span>
                             </a>
                             <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
@@ -69,10 +69,12 @@
                                 </li>
 <?php endforeach; ?>
                             </ul>
+                            <?php if ($comments_count > 2): ?>
                             <a class="comments__more-link" href="#">
                                 <span>Показать все комментарии</span>
                                 <sup class="comments__amount">45</sup>
                             </a>
+                            <?php endif;?>
                         </div>
                     </div>
                 </div>
@@ -93,7 +95,7 @@
                     <div class="post-details__rating user__rating">
                         <p class="post-details__rating-item user__rating-item user__rating-item--subscribers">
 
-                            <span class="post-details__rating-amount user__rating-amount"><?= ($subscriptions['count_user']) ?? '0'; ?></span>
+                            <span class="post-details__rating-amount user__rating-amount"><?= $subscriptions; ?></span>
 
                             <span class="post-details__rating-text user__rating-text">подписчиков</span>
                         </p>

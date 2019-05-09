@@ -39,11 +39,12 @@ function get_types($connection)
 /**
  * Возвращает популярные посты на главной странице
  * @param $connection
- * @return array|int|null|string
+ * @param $sort_field
+ * @return array|null
  */
-function get_posts($connection)
+function get_posts($connection, $sort_field)
 {
-    $sql = 'SELECT p.id,
+    $sql = "SELECT p.id,
        p.create_time,
        p.title,
        p.message,
@@ -61,9 +62,9 @@ FROM posts p
          JOIN users u ON u.id = p.user_id
          JOIN content_type c ON c.id = p.content_type_id
 GROUP BY p.id
-ORDER BY like_post DESC
+ORDER BY $sort_field DESC
 LIMIT 6
-';
+";
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
     } else {
@@ -77,9 +78,10 @@ LIMIT 6
  * Возвращает посты по категориям
  * @param $connection
  * @param $type_block
+ * @param $sort_field
  * @return array|null
  */
-function get_posts_type($connection,int $type_block)
+function get_posts_type($connection, $type_block, $sort_field)
 {
     $sql = "SELECT p.id,
        p.create_time,
@@ -99,7 +101,7 @@ FROM posts p
          JOIN content_type c ON c.id = p.content_type_id
 WHERE c.id = '$type_block'
 GROUP BY p.id
-ORDER BY like_post DESC
+ORDER BY $sort_field DESC 
 LIMIT 9
 ";
     if ($query = mysqli_query($connection, $sql)) {
@@ -117,7 +119,7 @@ LIMIT 9
  * @param $type_block
  * @return array|null
  */
-function get_types_by_id($connection,int $type_block)
+function get_types_by_id($connection, $type_block)
 {
     $sql = "SELECT * FROM content_type c
 WHERE c.id = '$type_block'
@@ -137,10 +139,10 @@ WHERE c.id = '$type_block'
  * @param $type_block
  * @return array|null
  */
-function get_post_by_id($connection,int $type_block)
+function get_post_by_id($connection, $type_block)
 {
     $sql = "SELECT * FROM posts p
-WHERE p.id = '$type_block'
+WHERE p.id = $type_block
 ";
     if ($query = mysqli_query($connection, $sql)) {
         $result = $query ? mysqli_fetch_array($query, MYSQLI_ASSOC) : null;
@@ -158,7 +160,7 @@ WHERE p.id = '$type_block'
  * @param $post_id
  * @return array|null
  */
-function get_post_info($connection,int $post_id)
+function get_post_info($connection, $post_id)
 {
     $sql = "SELECT p.id,
        p.create_time,
@@ -180,7 +182,7 @@ FROM posts p
          JOIN likes l ON p.id = l.post_id
          JOIN users u ON u.id = p.user_id
          JOIN content_type c ON c.id = p.content_type_id
-WHERE p.id = '$post_id'
+WHERE p.id = $post_id
 GROUP BY p.id
 ORDER BY like_post DESC
 ";
@@ -199,16 +201,15 @@ ORDER BY like_post DESC
  * @param $post_id
  * @return array|null
  */
-function get_count_comments($connection,int $post_id)
+function get_count_comments($connection, $post_id)
 {
     $sql = "SELECT
-        COUNT(cm.id) AS count_comments
+        cm.id AS count_comments
 FROM comments cm
 WHERE cm.post_id = $post_id
-GROUP BY cm.post_id
 ";
     if ($query = mysqli_query($connection, $sql)) {
-        $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
+        $result = mysqli_num_rows($query);
     } else {
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);
@@ -225,13 +226,12 @@ GROUP BY cm.post_id
 function get_count_subscriptions($connection, int $user)
 {
     $sql = "SELECT
-        COUNT(s.subscriber_id) AS count_user
+        s.subscriber_id
 FROM subscriptions s
 WHERE s.user_id = $user
-GROUP BY s.user_id
 ";
     if ($query = mysqli_query($connection, $sql)) {
-        $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
+        $result = mysqli_num_rows($query);
     } else {
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);
@@ -245,7 +245,7 @@ GROUP BY s.user_id
  * @param $post_id
  * @return array|null
  */
-function get_comments($connection, int $post_id)
+function get_comments($connection, $post_id)
 {
     $sql = "SELECT *,
        cm.create_time AS time_comment
