@@ -17,21 +17,21 @@
                                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                     <use xlink:href="#icon-heart-active"></use>
                                 </svg>
-                                <span><?= $post['like_post']; ?></span>
+                                <span><?= ($post['like_post']) ?? '0'; ?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
                             <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-comment"></use>
                                 </svg>
-                                <span><?= $comments['comments_post']; ?></span>
+                                <span><?= ($comments_count['count_comments'])?? '0'; ?></span>
                                 <span class="visually-hidden">количество комментариев</span>
                             </a>
                             <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-repost"></use>
                                 </svg>
-                                <span>5</span>
+                                <span><?= ($post['repost']) ?? '0'; ?> </span>
                                 <span class="visually-hidden">количество репостов</span>
                             </a>
                         </div>
@@ -48,42 +48,26 @@
                         </form>
                         <div class="comments__list-wrapper">
                             <ul class="comments__list">
+                                <?php foreach ($comments as $comment): ?>
                                 <li class="comments__item user">
                                     <div class="comments__avatar">
                                         <a class="user__avatar-link" href="#">
-                                            <img class="comments__picture" src="img/userpic-larisa.jpg" alt="Аватар пользователя">
+                                            <img class="comments__picture" src="<?= $comment['avatar']; ?>" alt="Аватар пользователя">
                                         </a>
                                     </div>
                                     <div class="comments__info">
                                         <div class="comments__name-wrapper">
                                             <a class="comments__user-name" href="#">
-                                                <span>Лариса Роговая</span>
+                                                <span><?= $comment['name']; ?></span>
                                             </a>
-                                            <time class="comments__time" datetime="2019-03-20">1 ч назад</time>
+                                            <time class="comments__time" datetime="<?= date_for_user($comment['time_comment']); ?>"><?= publication_date($comment['time_comment']);?></time>
                                         </div>
                                         <p class="comments__text">
-                                            Красота!!!1!
+                                            <?= $comment['message']; ?>
                                         </p>
                                     </div>
                                 </li>
-                                <li class="comments__item user">
-                                    <div class="comments__avatar">
-                                        <a class="user__avatar-link" href="#">
-                                            <img class="comments__picture" src="img/userpic-larisa.jpg" alt="Аватар пользователя">
-                                        </a>
-                                    </div>
-                                    <div class="comments__info">
-                                        <div class="comments__name-wrapper">
-                                            <a class="comments__user-name" href="#">
-                                                <span>Лариса Роговая</span>
-                                            </a>
-                                            <time class="comments__time" datetime="2019-03-18">2 дня назад</time>
-                                        </div>
-                                        <p class="comments__text">
-                                            Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                                        </p>
-                                    </div>
-                                </li>
+<?php endforeach; ?>
                             </ul>
                             <a class="comments__more-link" href="#">
                                 <span>Показать все комментарии</span>
@@ -103,7 +87,7 @@
                             <a class="post-details__name user__name" href="#">
                                 <span><?= $post['user_name']; ?></span>
                             </a>
-                            <time class="post-details__time user__time" datetime="2014-03-20"><?= user_date_registration($post['user_reg']); ?></time>
+                            <time class="post-details__time user__time" datetime="<?= date_for_user($post['user_reg']); ?>"><?= user_date_registration($post['user_reg']); ?></time>
                         </div>
                     </div>
                     <div class="post-details__rating user__rating">
@@ -114,7 +98,7 @@
                             <span class="post-details__rating-text user__rating-text">подписчиков</span>
                         </p>
                         <p class="post-details__rating-item user__rating-item user__rating-item--publications">
-                            <span class="post-details__rating-amount user__rating-amount">556</span>
+                            <span class="post-details__rating-amount user__rating-amount"><?= $post['public'];?></span>
                             <span class="post-details__rating-text user__rating-text">публикаций</span>
                         </p>
                     </div>

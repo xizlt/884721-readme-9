@@ -195,6 +195,18 @@ function date_for_title(string $time)
 }
 
 /**
+ * Возвращает дату в формате дд.мм.гггг чч:мм
+ * @param string $time
+ * @return false|string
+ */
+function date_for_user(string $time)
+{
+    $timestamp = strtotime($time);
+    $time = date('Y-m-d', $timestamp);
+    return $time;
+}
+
+/**
  * Подключение шаблона по типу поста
  * @param $post
  * @return string|null

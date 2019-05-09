@@ -79,7 +79,7 @@ LIMIT 6
  * @param $type_block
  * @return array|null
  */
-function get_posts_type($connection, $type_block)
+function get_posts_type($connection,int $type_block)
 {
     $sql = "SELECT p.id,
        p.create_time,
@@ -117,13 +117,18 @@ LIMIT 9
  * @param $type_block
  * @return array|null
  */
-function get_types_by_id($connection, $type_block){
-        $sql = "SELECT * FROM content_type c
+function get_types_by_id($connection,int $type_block)
+{
+    $sql = "SELECT * FROM content_type c
 WHERE c.id = '$type_block'
 ";
-        $res = mysqli_query($connection, $sql);
-        $type = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
-        return $type;
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = $query ? mysqli_fetch_array($query, MYSQLI_ASSOC) : null;
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
 }
 
 /**
@@ -132,13 +137,18 @@ WHERE c.id = '$type_block'
  * @param $type_block
  * @return array|null
  */
-function get_post_by_id($connection, $type_block){
+function get_post_by_id($connection,int $type_block)
+{
     $sql = "SELECT * FROM posts p
 WHERE p.id = '$type_block'
 ";
-    $res = mysqli_query($connection, $sql);
-    $post = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
-    return $post;
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = $query ? mysqli_fetch_array($query, MYSQLI_ASSOC) : null;
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
 }
 
 
@@ -148,7 +158,7 @@ WHERE p.id = '$type_block'
  * @param $post_id
  * @return array|null
  */
-function get_post_info($connection, $post_id)
+function get_post_info($connection,int $post_id)
 {
     $sql = "SELECT p.id,
        p.create_time,
@@ -158,6 +168,8 @@ function get_post_info($connection, $post_id)
        p.image,
        p.video,
        p.link,
+       SUM(p.is_repost) AS repost,
+       COUNT(p.user_id) AS public,
        u.name AS user_name,
        c.name AS type,
        u.avatar,
@@ -171,17 +183,26 @@ FROM posts p
 WHERE p.id = '$post_id'
 GROUP BY p.id
 ORDER BY like_post DESC
-LIMIT 9
 ";
-    $res = mysqli_query($connection, $sql);
-    $post = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
-    return $post;
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = $query ? mysqli_fetch_array($query, MYSQLI_ASSOC) : null;
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
 }
 
-function get_comment($connection, $post_id)
+/**
+ * Возвращает кол-во постов
+ * @param $connection
+ * @param $post_id
+ * @return array|null
+ */
+function get_count_comments($connection,int $post_id)
 {
     $sql = "SELECT
-        COUNT(cm.id) AS comments_post
+        COUNT(cm.id) AS count_comments
 FROM comments cm
 WHERE cm.post_id = $post_id
 GROUP BY cm.post_id
@@ -195,8 +216,13 @@ GROUP BY cm.post_id
     return $result;
 }
 
-
-function get_count_subscriptions($connection, $user)
+/**
+ * Возвращает кол-во подписчиков автора поста
+ * @param $connection
+ * @param $user
+ * @return array|null
+ */
+function get_count_subscriptions($connection, int $user)
 {
     $sql = "SELECT
         COUNT(s.subscriber_id) AS count_user
@@ -206,6 +232,31 @@ GROUP BY s.user_id
 ";
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+/**
+ * Возвращает комментарии по id поста
+ * @param $connection
+ * @param $post_id
+ * @return array|null
+ */
+function get_comments($connection, int $post_id)
+{
+    $sql = "SELECT *,
+       cm.create_time AS time_comment
+FROM comments cm
+     JOIN users u
+ON u.id = cm.user_id
+WHERE cm.post_id = $post_id
+LIMIT 2
+";
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
     } else {
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);

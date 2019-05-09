@@ -23,14 +23,18 @@ if (!$post_id or !$post) {
 }
 
 $block_post = include_template(template_by_type($post['type']), ['post' => $post]);
-$comments = get_comment($connection, $post_id);
+$comments_count = get_count_comments($connection, $post_id);
 $subscriptions = get_count_subscriptions($connection, $post['user']);
+$comments = get_comments($connection, $post_id);
+
+
 
 $page_content = include_template('post.php', [
     'post' => $post,
     'block_post' => $block_post,
-    'comments' => $comments,
-    'subscriptions' => $subscriptions
+    'comments_count' => $comments_count,
+    'subscriptions' => $subscriptions,
+    'comments' => $comments
 ]);
 
 $layout_content = include_template('layout.php', [
