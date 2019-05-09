@@ -35,7 +35,7 @@
                                 <span class="visually-hidden">количество репостов</span>
                             </a>
                         </div>
-                        <span class="post__view">500 просмотров</span>
+                        <span class="post__view"><?= $post['view_count']; ?></span>
                     </div>
                     <div class="comments">
                         <form class="comments__form form" action="#" method="post">

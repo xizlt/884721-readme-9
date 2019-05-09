@@ -16,7 +16,7 @@ $config = require 'config.php';
 $connection = connectDb($config['db']);
 
 // сортировка по условию
-$sort_field = 'like_post';
+$sort_field = 'view_count';
 if (isset($_GET['tab']) && $_GET['tab'] === 'likes') {
     $sort_field = 'like_post';
 } elseif (isset($_GET['tab']) && $_GET['tab'] === 'date') {
