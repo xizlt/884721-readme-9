@@ -21,7 +21,7 @@ function connectDb($config)
 /**
  * Возвращает типы контента
  * @param $connection
- * @return array|int|null
+ * @return array|null
  */
 function get_types($connection)
 {

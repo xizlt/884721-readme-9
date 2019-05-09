@@ -290,7 +290,6 @@ function sort_field()
  * @param $connection
  * @param $type_block
  * @param $types_correct
- * @param $sort_field
  * @return array|null
  */
 function get_posts_by_filter($connection, $type_block, $types_correct)

@@ -127,6 +127,7 @@
                                             <h3><?= clean($post['title']); ?></h3>
                                         </div>
                                     </div>
+                                    <p> </p>
                                     <span><?= clean($post['link']); ?></span>
                                 </a>
                             </div>
