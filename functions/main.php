@@ -269,3 +269,41 @@ function user_date_registration(string $time): string
         return $result;
     }
 }
+
+/**
+ * Условие по сортировки
+ * @return string
+ */
+function sort_field()
+{
+    $sort_field = 'view_count';
+    if (isset($_GET['tab']) && $_GET['tab'] === 'likes') {
+        $sort_field = 'like_post';
+    } elseif (isset($_GET['tab']) && $_GET['tab'] === 'date') {
+        $sort_field = 'create_time';
+    }
+    return $sort_field;
+}
+
+/**
+ * Возвращает данные поста в зависемости от фильтров
+ * @param $connection
+ * @param $type_block
+ * @param $types_correct
+ * @param $sort_field
+ * @return array|null
+ */
+function get_posts_by_filter($connection, $type_block, $types_correct)
+{
+    $sort_field = sort_field();
+    if ($type_block) {
+        $posts = get_posts_type($connection, $type_block, $sort_field);
+        if (!$types_correct) {
+            header("HTTP/1.0 404 Not Found");
+            exit();
+        }
+    } else {
+        $posts = get_posts($connection, $sort_field);
+    }
+    return $posts;
+}

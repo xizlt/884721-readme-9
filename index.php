@@ -15,29 +15,11 @@ require_once 'functions/db.php';
 $config = require 'config.php';
 $connection = connectDb($config['db']);
 
-// сортировка по условию
-$sort_field = 'view_count';
-if (isset($_GET['tab']) && $_GET['tab'] === 'likes') {
-    $sort_field = 'like_post';
-} elseif (isset($_GET['tab']) && $_GET['tab'] === 'date') {
-    $sort_field = 'create_time';
-}
-//
 $types = get_types($connection);
 $type_block = $_GET['type_id'] ?? '';
 $types_correct = get_types_by_id($connection, $type_block);
 
-// вывод постов по типу
-if ($type_block) {
-    $posts = get_posts_type($connection, $type_block, $sort_field);
-    if (!$types_correct) {
-        header("HTTP/1.0 404 Not Found");
-        exit();
-    }
-} else {
-    $posts = get_posts($connection, $sort_field);
-}
-//
+$posts = get_posts_by_filter($connection,$type_block,$types_correct);
 
 $page_content = include_template('index.php', [
     'types' => $types,
