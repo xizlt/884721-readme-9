@@ -17,7 +17,7 @@ $connection = connectDb($config['db']);
 
 $types = get_types($connection);
 $type_block = $_GET['type_id'] ?? '';
-$types_correct = get_types_by_id($connection, $type_block);
+$types_correct = get_type_by_id($connection, $type_block);
 
 $posts = get_posts_by_filter($connection,$type_block,$types_correct);
 

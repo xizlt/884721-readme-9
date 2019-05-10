@@ -82,32 +82,29 @@ function publication_date(string $time): string
     $dt_pub = strtotime($time);
     $dt_now = time();
     $dt_diff = $dt_now - $dt_pub;
+    $result = null;
 
     if ($dt_diff < HOUR) {
         $dt_create = floor($dt_diff / MINUTE);
         $result = $dt_create . get_noun_plural_form($dt_create, ' минута', ' минуты', ' минут') . ' назад';
-        return $result;
 
     } elseif ($dt_diff >= HOUR and $dt_diff < DAY) {
         $dt_create = floor($dt_diff / HOUR);
         $result = $dt_create . get_noun_plural_form($dt_create, ' час', ' часа', ' часов') . ' назад';
-        return $result;
 
     } elseif ($dt_diff >= DAY and $dt_diff < WEEK) {
         $dt_create = floor($dt_diff / DAY);
         $result = $dt_create . get_noun_plural_form($dt_create, ' день', ' дня', ' дней') . ' назад';
-        return $result;
 
     } elseif ($dt_diff >= WEEK and $dt_diff < FIVE_WEEKS) {
         $dt_create = floor($dt_diff / WEEK);
         $result = $dt_create . get_noun_plural_form($dt_create, ' неделя', ' недели', ' недель') . ' назад';
-        return $result;
 
     } elseif ($dt_diff >= FIVE_WEEKS) {
         $dt_create = floor($dt_diff / MONTH);
         $result = $dt_create . get_noun_plural_form($dt_create, ' месяц', ' месяца', ' месяцев') . ' назад';
-        return $result;
     }
+    return $result;
 }
 
 /**
@@ -208,22 +205,28 @@ function date_for_user(string $time)
 
 /**
  * Подключение шаблона по типу поста
- * @param $post
- * @return string|null
+ * @param $type
+ * @return string
  */
-function template_by_type($post)
+function template_by_type($type)
 {
     $result = null;
-    if ($post === 'post-quote') {
-        $result = 'block_quote.php';
-    } elseif ($post === 'post-text') {
-        $result = 'block_text.php';
-    }elseif ($post === 'post-link') {
-        $result = 'block_link.php';
-    }elseif ($post === 'post-video') {
-        $result = 'block_video.php';
-    }elseif ($post === 'post-photo') {
-        $result = 'block_photo.php';
+    switch ($type) {
+        case 'post-quote':
+            $result = 'block_quote.php';
+            break;
+        case 'post-text':
+            $result = 'block_text.php';
+            break;
+        case 'post-link':
+            $result = 'block_link.php';
+            break;
+        case 'post-video':
+            $result = 'block_video.php';
+            break;
+        case 'post-photo':
+            $result = 'block_photo.php';
+            break;
     }
     return $result;
 }
@@ -238,36 +241,34 @@ function user_date_registration(string $time): string
     $dt_pub = strtotime($time);
     $dt_now = time();
     $dt_diff = $dt_now - $dt_pub;
+    $result = null;
 
     if ($dt_diff < HOUR) {
         $dt_create = floor($dt_diff / MINUTE);
         $result = $dt_create . get_noun_plural_form($dt_create, ' минута', ' минуты', ' минут') . ' на сайте';
-        return $result;
 
     } elseif ($dt_diff >= HOUR and $dt_diff < DAY) {
         $dt_create = floor($dt_diff / HOUR);
         $result = $dt_create . get_noun_plural_form($dt_create, ' час', ' часа', ' часов') . ' на сайте';
-        return $result;
 
     } elseif ($dt_diff >= DAY and $dt_diff < WEEK) {
         $dt_create = floor($dt_diff / DAY);
         $result = $dt_create . get_noun_plural_form($dt_create, ' день', ' дня', ' дней') . ' на сайте';
-        return $result;
 
     } elseif ($dt_diff >= WEEK and $dt_diff < FIVE_WEEKS) {
         $dt_create = floor($dt_diff / WEEK);
         $result = $dt_create . get_noun_plural_form($dt_create, ' неделя', ' недели', ' недель') . ' на сайте';
-        return $result;
 
     } elseif ($dt_diff >= FIVE_WEEKS and $dt_diff < YEARS) {
         $dt_create = floor($dt_diff / MONTH);
         $result = $dt_create . get_noun_plural_form($dt_create, ' месяц', ' месяца', ' месяцев') . ' на сайте';
-        return $result;
+
     } elseif ($dt_diff >= YEARS) {
         $dt_create = floor($dt_diff / YEARS);
         $result = $dt_create . get_noun_plural_form($dt_create, ' год', ' года', ' лет') . ' на сайте';
-        return $result;
+
     }
+    return $result;
 }
 
 /**
@@ -277,10 +278,15 @@ function user_date_registration(string $time): string
 function sort_field()
 {
     $sort_field = 'view_count';
-    if (isset($_GET['tab']) && $_GET['tab'] === 'likes') {
-        $sort_field = 'like_post';
-    } elseif (isset($_GET['tab']) && $_GET['tab'] === 'date') {
-        $sort_field = 'create_time';
+    if (isset($_GET['tab'])) {
+        switch ($_GET['tab']) {
+            case 'likes':
+                $sort_field = 'like_post';
+                break;
+            case 'date':
+                $sort_field = 'create_time';
+                break;
+        }
     }
     return $sort_field;
 }
