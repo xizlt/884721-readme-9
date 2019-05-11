@@ -46,6 +46,13 @@ function get_types($connection)
  */
 function get_posts($connection, $type = null, $sort = null, $user_id = null)
 {
+    if (!$type) {
+        $type = 'c.id';
+    }
+    if (!$sort) {
+        $sort = 'view_count';
+    }
+
     $sql = "SELECT p.id,
        p.create_time,
        p.title,
@@ -55,6 +62,7 @@ function get_posts($connection, $type = null, $sort = null, $user_id = null)
        p.video,
        p.link,
        p.view_count,
+       p.content_type_id,
        u.name AS user_name,
        c.name AS type,
        u.avatar,
@@ -63,10 +71,11 @@ FROM posts p
          JOIN likes l ON p.id = l.post_id
          JOIN users u ON u.id = p.user_id
          JOIN content_type c ON c.id = p.content_type_id
-WHERE c.id = '$type'
+WHERE c.id = $type
 GROUP BY p.id
 ORDER BY $sort DESC 
 LIMIT 9
+
 ";
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
@@ -85,8 +94,8 @@ LIMIT 9
  */
 function get_type_by_id($connection, $type_id)
 {
-    $sql = "SELECT * FROM content_type c
-WHERE c.id = '$type_id'
+    $sql = "SELECT * FROM content_type
+WHERE id = '$type_id'
 ";
     if ($query = mysqli_query($connection, $sql)) {
         $result = $query ? mysqli_fetch_array($query, MYSQLI_ASSOC) : null;

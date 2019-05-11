@@ -19,7 +19,13 @@ $types = get_types($connection);
 $type_block = $_GET['type_id'] ?? '';
 $types_correct = get_type_by_id($connection, $type_block);
 
-$posts = get_posts_by_filter($connection,$type_block,$types_correct);
+if ($type_block && !$types_correct) {
+    header("HTTP/1.0 404 Not Found");
+    exit();
+}
+$sort_field = sort_field();
+
+$posts = get_posts($connection, $type_block, $sort_field);
 
 $page_content = include_template('index.php', [
     'types' => $types,

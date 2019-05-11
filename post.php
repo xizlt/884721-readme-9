@@ -28,7 +28,6 @@ $subscriptions = get_count_subscriptions($connection, $post['user']);
 $comments = get_comments($connection, $post_id);
 
 
-
 $page_content = include_template('post.php', [
     'post' => $post,
     'block_post' => $block_post,
