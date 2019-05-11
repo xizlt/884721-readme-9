@@ -6,13 +6,14 @@ const WEEK = 604800;
 const MONTH = 2419200;
 const FIVE_WEEKS = 3024000;
 const YEARS = 31556926;
+
 /**
  * Возвращает текст в короткой форме по лимиту символов
  * @param string $text
  * @param int $length
  * @return string
  */
-function clips_text($text, $length = 300)
+function clips_text(string $text, int $length = 300): string
 {
     $length_content = mb_strlen($text);
     $total = 0;
@@ -29,7 +30,8 @@ function clips_text($text, $length = 300)
             $result_words[] = $word;
 
         }
-        return '<p>' . implode(' ', $result_words) . ' ...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+        return '<p>' . implode(' ',
+                $result_words) . ' ...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
     }
     return '<p>' . $text . '</p>';
 }
@@ -40,7 +42,8 @@ function clips_text($text, $length = 300)
  * @param array $data Ассоциативный массив с данными для шаблона
  * @return string Итоговый HTML
  */
-function include_template($name, array $data = []) {
+function include_template(string $name, array $data = []): string
+{
     $name = 'templates/' . $name;
     $result = '';
 
@@ -62,7 +65,7 @@ function include_template($name, array $data = []) {
  * @param string $value
  * @return string
  */
-function clean($value)
+function clean(string $value): string
 {
     $value = trim($value);
     $value = stripslashes($value);
@@ -74,7 +77,7 @@ function clean($value)
 
 /**
  * возвращает время в формате "Х дней назад"
- * @param $time
+ * @param string $time
  * @return string
  */
 function publication_date(string $time): string
@@ -129,9 +132,9 @@ function publication_date(string $time): string
  *
  * @return string Рассчитанная форма множественнго числа
  */
-function get_noun_plural_form (int $number, string $one, string $two, string $many): string
+function get_noun_plural_form(int $number, string $one, string $two, string $many): string
 {
-    $number = (int) $number;
+    $number = (int)$number;
     $mod10 = $number % 10;
     $mod100 = $number % 100;
 
@@ -154,10 +157,12 @@ function get_noun_plural_form (int $number, string $one, string $two, string $ma
 }
 
 /**
- * @param $index
- * @return false|string
+ * Генератор случайныъ чисел
+ * @param int $index
+ * @return string
  */
-function generate_random_date($index) {
+function generate_random_date(int $index): string
+{
     $deltas = [['minutes' => 59], ['hours' => 23], ['days' => 6], ['weeks' => 4], ['months' => 11]];
     $dcnt = count($deltas);
 
@@ -182,9 +187,9 @@ function generate_random_date($index) {
 /**
  * Возвращает дату в формате дд.мм.гггг чч:мм
  * @param string $time
- * @return false|string
+ * @return string
  */
-function date_for_title(string $time)
+function date_for_title(string $time): string
 {
     $timestamp = strtotime($time);
     $time = date('d.m.Y H:i', $timestamp);
@@ -194,9 +199,9 @@ function date_for_title(string $time)
 /**
  * Возвращает дату в формате дд.мм.гггг чч:мм
  * @param string $time
- * @return false|string
+ * @return string
  */
-function date_for_user(string $time)
+function date_for_user(string $time): string
 {
     $timestamp = strtotime($time);
     $time = date('Y-m-d', $timestamp);
@@ -205,10 +210,10 @@ function date_for_user(string $time)
 
 /**
  * Подключение шаблона по типу поста
- * @param $type
+ * @param string $type
  * @return string
  */
-function template_by_type($type)
+function template_by_type(string $type):string
 {
     $result = null;
     switch ($type) {
@@ -232,8 +237,8 @@ function template_by_type($type)
 }
 
 /**
- * возвращает время в формате "Х лет на сайте"
- * @param $time
+ * Возвращает время в формате "Х лет на сайте"
+ * @param string $time
  * @return string
  */
 function user_date_registration(string $time): string
@@ -275,7 +280,7 @@ function user_date_registration(string $time): string
  * Условие по сортировки
  * @return string
  */
-function sort_field()
+function sort_field():string
 {
     $sort_field = 'view_count';
     if (isset($_GET['tab'])) {

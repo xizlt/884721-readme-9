@@ -1,10 +1,10 @@
 <?php
 /**
- * подключение к БД
- * @param $config
+ * Подключение к БД
+ * @param array $config
  * @return mysqli
  */
-function connectDb($config)
+function connectDb(array $config): mysqli
 {
     $connection = mysqli_connect($config['host'], $config['user'], $config['password'], $config['database']);
 
@@ -20,10 +20,10 @@ function connectDb($config)
 
 /**
  * Возвращает типы контента
- * @param $connection
- * @return array|null
+ * @param mysqli $connection
+ * @return array
  */
-function get_types($connection)
+function get_types(mysqli $connection): array
 {
     $sql = 'SELECT * FROM content_type';
     if ($query = mysqli_query($connection, $sql)) {
@@ -37,14 +37,14 @@ function get_types($connection)
 
 
 /**
- * Возвращает посты по категориям
- * @param $connection
- * @param null $type
- * @param null $sort
- * @param null $user_id
- * @return array|null
+ * Возвращает посты по условиям
+ * @param mysqli $connection
+ * @param string|null $type
+ * @param string|null $sort
+ * @param int|null $user_id
+ * @return array
  */
-function get_posts($connection, $type = null, $sort = null, $user_id = null)
+function get_posts(mysqli $connection, string $type = null, string $sort = null, int $user_id = null): array
 {
     if (!$type) {
         $type = 'c.id';
@@ -88,37 +88,17 @@ LIMIT 9
 
 /**
  * Проверяет существования такой категории
- * @param $connection
- * @param $type_id
- * @return array|null
+ * @param mysqli $connection
+ * @param string $type_id
+ * @return int
  */
-function get_type_by_id($connection, $type_id)
+function get_type_by_id(mysqli $connection, string $type_id): int
 {
     $sql = "SELECT * FROM content_type
 WHERE id = '$type_id'
 ";
     if ($query = mysqli_query($connection, $sql)) {
-        $result = $query ? mysqli_fetch_array($query, MYSQLI_ASSOC) : null;
-    } else {
-        $error = mysqli_error($connection);
-        die('Ошибка MySQL ' . $error);
-    }
-    return $result;
-}
-
-/**
- * вернёт массив с данными поста
- * @param $connection
- * @param $post_id
- * @return array|null
- */
-function get_post_by_id($connection, $post_id)
-{
-    $sql = "SELECT * FROM posts p
-WHERE p.id = $post_id
-";
-    if ($query = mysqli_query($connection, $sql)) {
-        $result = $query ? mysqli_fetch_array($query, MYSQLI_ASSOC) : null;
+        $result = mysqli_num_rows($query);
     } else {
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);
@@ -129,11 +109,11 @@ WHERE p.id = $post_id
 
 /**
  * Возвращает информацию по посту
- * @param $connection
- * @param $post_id
+ * @param mysqli $connection
+ * @param int $post_id
  * @return array|null
  */
-function get_post_info($connection, $post_id)
+function get_post_info(mysqli $connection, int $post_id)
 {
     $sql = "SELECT p.id,
        p.create_time,
@@ -171,11 +151,11 @@ ORDER BY like_post DESC
 
 /**
  * Возвращает кол-во постов
- * @param $connection
- * @param $post_id
+ * @param mysqli $connection
+ * @param int $post_id
  * @return int
  */
-function get_count_comments($connection, $post_id)
+function get_count_comments(mysqli $connection, int $post_id): int
 {
     $sql = "SELECT
         id
@@ -215,11 +195,11 @@ WHERE user_id = $user_id
 
 /**
  * Возвращает комментарии по id поста
- * @param $connection
- * @param $post_id
- * @return array|null
+ * @param mysqli $connection
+ * @param int $post_id
+ * @return array
  */
-function get_comments($connection, $post_id)
+function get_comments(mysqli $connection, int $post_id): array
 {
     $sql = "SELECT *,
        cm.create_time AS time_comment
