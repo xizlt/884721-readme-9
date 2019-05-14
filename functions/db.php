@@ -1,10 +1,10 @@
 <?php
 /**
- * подключение к БД
- * @param $config
+ * Подключение к БД
+ * @param array $config
  * @return mysqli
  */
-function connectDb($config)
+function connectDb(array $config): mysqli
 {
     $connection = mysqli_connect($config['host'], $config['user'], $config['password'], $config['database']);
 
@@ -20,10 +20,10 @@ function connectDb($config)
 
 /**
  * Возвращает типы контента
- * @param $connection
- * @return array|int|null
+ * @param mysqli $connection
+ * @return array
  */
-function get_types($connection)
+function get_types(mysqli $connection): array
 {
     $sql = 'SELECT * FROM content_type';
     if ($query = mysqli_query($connection, $sql)) {
@@ -37,13 +37,23 @@ function get_types($connection)
 
 
 /**
- * Возвращает популярные посты на главной странице
- * @param $connection
- * @return array|int|null|string
+ * Возвращает посты по условиям
+ * @param mysqli $connection
+ * @param string|null $type
+ * @param string|null $sort
+ * @param int|null $user_id
+ * @return array
  */
-function get_posts($connection)
+function get_posts(mysqli $connection, string $type = null, string $sort = null, int $user_id = null): array
 {
-    $sql = 'SELECT p.id,
+    if (!$type) {
+        $type = 'c.id';
+    }
+    if (!$sort) {
+        $sort = 'view_count';
+    }
+
+    $sql = "SELECT p.id,
        p.create_time,
        p.title,
        p.message,
@@ -51,6 +61,8 @@ function get_posts($connection)
        p.image,
        p.video,
        p.link,
+       p.view_count,
+       p.content_type_id,
        u.name AS user_name,
        c.name AS type,
        u.avatar,
@@ -59,10 +71,144 @@ FROM posts p
          JOIN likes l ON p.id = l.post_id
          JOIN users u ON u.id = p.user_id
          JOIN content_type c ON c.id = p.content_type_id
+WHERE c.id = $type
+GROUP BY p.id
+ORDER BY $sort DESC 
+LIMIT 9
+
+";
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+/**
+ * Проверяет существования такой категории
+ * @param mysqli $connection
+ * @param string $type_id
+ * @return int
+ */
+function get_type_by_id(mysqli $connection, string $type_id): int
+{
+    $sql = "SELECT * FROM content_type
+WHERE id = '$type_id'
+";
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = mysqli_num_rows($query);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+
+/**
+ * Возвращает информацию по посту
+ * @param mysqli $connection
+ * @param int $post_id
+ * @return array|null
+ */
+function get_post_info(mysqli $connection, int $post_id)
+{
+    $sql = "SELECT p.id,
+       p.create_time,
+       p.title,
+       p.message,
+       p.quote_writer,
+       p.image,
+       p.video,
+       p.link,
+       p.view_count,
+       SUM(p.is_repost) AS repost,
+       COUNT(p.user_id) AS public,
+       u.name AS user_name,
+       c.name AS type,
+       u.avatar,
+       p.user_id AS user,
+       u.create_time as user_reg,
+       COUNT(l.user_id) AS like_post
+FROM posts p
+         JOIN likes l ON p.id = l.post_id
+         JOIN users u ON u.id = p.user_id
+         JOIN content_type c ON c.id = p.content_type_id
+WHERE p.id = $post_id
 GROUP BY p.id
 ORDER BY like_post DESC
-LIMIT 6
-';
+";
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = $query ? mysqli_fetch_array($query, MYSQLI_ASSOC) : null;
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+/**
+ * Возвращает кол-во постов
+ * @param mysqli $connection
+ * @param int $post_id
+ * @return int
+ */
+function get_count_comments(mysqli $connection, int $post_id): int
+{
+    $sql = "SELECT
+        id
+FROM comments
+WHERE post_id = $post_id
+";
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = mysqli_num_rows($query);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+/**
+ * Возвращает кол-во подписчиков автора поста
+ * @param mysqli $connection
+ * @param int $user_id
+ * @return int
+ */
+function get_count_subscriptions(mysqli $connection, int $user_id) : int
+{
+    $sql = "SELECT
+        subscriber_id
+FROM subscriptions
+WHERE user_id = $user_id
+";
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = mysqli_num_rows($query);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+/**
+ * Возвращает комментарии по id поста
+ * @param mysqli $connection
+ * @param int $post_id
+ * @return array
+ */
+function get_comments(mysqli $connection, int $post_id): array
+{
+    $sql = "SELECT *,
+       cm.create_time AS time_comment
+FROM comments cm
+     JOIN users u
+ON u.id = cm.user_id
+WHERE cm.post_id = $post_id
+LIMIT 2
+";
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
     } else {
