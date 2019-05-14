@@ -295,3 +295,33 @@ function sort_field():string
     }
     return $sort_field;
 }
+
+/**
+ * Проверяет существование формы добавления поста
+ * @param string $add_post
+ * @return bool
+ */
+function get_tab(string $add_post): bool
+{
+    $result = false;
+    if (!empty($add_post)) {
+        switch ($add_post) {
+            case 'photo':
+                $result = true;
+                break;
+            case 'video':
+                $result = true;
+                break;
+            case 'link':
+                $result = true;
+                break;
+            case 'quote':
+                $result = true;
+                break;
+            case 'text':
+                $result = true;
+                break;
+        }
+    }
+    return $result;
+}
