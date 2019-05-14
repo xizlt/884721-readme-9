@@ -5,6 +5,7 @@ const DAY = 86400;
 const WEEK = 604800;
 const MONTH = 2419200;
 const FIVE_WEEKS = 3024000;
+const YEARS = 31556926;
 
 /**
  * Возвращает текст в короткой форме по лимиту символов
@@ -12,7 +13,7 @@ const FIVE_WEEKS = 3024000;
  * @param int $length
  * @return string
  */
-function clips_text($text, $length = 300)
+function clips_text(string $text, int $length = 300): string
 {
     $length_content = mb_strlen($text);
     $total = 0;
@@ -29,7 +30,8 @@ function clips_text($text, $length = 300)
             $result_words[] = $word;
 
         }
-        return '<p>' . implode(' ', $result_words) . ' ...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+        return '<p>' . implode(' ',
+                $result_words) . ' ...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
     }
     return '<p>' . $text . '</p>';
 }
@@ -40,7 +42,8 @@ function clips_text($text, $length = 300)
  * @param array $data Ассоциативный массив с данными для шаблона
  * @return string Итоговый HTML
  */
-function include_template($name, array $data = []) {
+function include_template(string $name, array $data = []): string
+{
     $name = 'templates/' . $name;
     $result = '';
 
@@ -62,7 +65,7 @@ function include_template($name, array $data = []) {
  * @param string $value
  * @return string
  */
-function clean($value)
+function clean(string $value): string
 {
     $value = trim($value);
     $value = stripslashes($value);
@@ -74,7 +77,7 @@ function clean($value)
 
 /**
  * возвращает время в формате "Х дней назад"
- * @param $time
+ * @param string $time
  * @return string
  */
 function publication_date(string $time): string
@@ -82,32 +85,29 @@ function publication_date(string $time): string
     $dt_pub = strtotime($time);
     $dt_now = time();
     $dt_diff = $dt_now - $dt_pub;
+    $result = null;
 
     if ($dt_diff < HOUR) {
         $dt_create = floor($dt_diff / MINUTE);
         $result = $dt_create . get_noun_plural_form($dt_create, ' минута', ' минуты', ' минут') . ' назад';
-        return $result;
 
     } elseif ($dt_diff >= HOUR and $dt_diff < DAY) {
         $dt_create = floor($dt_diff / HOUR);
         $result = $dt_create . get_noun_plural_form($dt_create, ' час', ' часа', ' часов') . ' назад';
-        return $result;
 
     } elseif ($dt_diff >= DAY and $dt_diff < WEEK) {
         $dt_create = floor($dt_diff / DAY);
         $result = $dt_create . get_noun_plural_form($dt_create, ' день', ' дня', ' дней') . ' назад';
-        return $result;
 
     } elseif ($dt_diff >= WEEK and $dt_diff < FIVE_WEEKS) {
         $dt_create = floor($dt_diff / WEEK);
         $result = $dt_create . get_noun_plural_form($dt_create, ' неделя', ' недели', ' недель') . ' назад';
-        return $result;
 
     } elseif ($dt_diff >= FIVE_WEEKS) {
         $dt_create = floor($dt_diff / MONTH);
         $result = $dt_create . get_noun_plural_form($dt_create, ' месяц', ' месяца', ' месяцев') . ' назад';
-        return $result;
     }
+    return $result;
 }
 
 /**
@@ -132,9 +132,9 @@ function publication_date(string $time): string
  *
  * @return string Рассчитанная форма множественнго числа
  */
-function get_noun_plural_form (int $number, string $one, string $two, string $many): string
+function get_noun_plural_form(int $number, string $one, string $two, string $many): string
 {
-    $number = (int) $number;
+    $number = (int)$number;
     $mod10 = $number % 10;
     $mod100 = $number % 100;
 
@@ -157,10 +157,12 @@ function get_noun_plural_form (int $number, string $one, string $two, string $ma
 }
 
 /**
- * @param $index
- * @return false|string
+ * Генератор случайныъ чисел
+ * @param int $index
+ * @return string
  */
-function generate_random_date($index) {
+function generate_random_date(int $index): string
+{
     $deltas = [['minutes' => 59], ['hours' => 23], ['days' => 6], ['weeks' => 4], ['months' => 11]];
     $dcnt = count($deltas);
 
@@ -185,11 +187,111 @@ function generate_random_date($index) {
 /**
  * Возвращает дату в формате дд.мм.гггг чч:мм
  * @param string $time
- * @return false|string
+ * @return string
  */
-function date_for_title(string $time)
+function date_for_title(string $time): string
 {
     $timestamp = strtotime($time);
     $time = date('d.m.Y H:i', $timestamp);
     return $time;
+}
+
+/**
+ * Возвращает дату в формате дд.мм.гггг чч:мм
+ * @param string $time
+ * @return string
+ */
+function date_for_user(string $time): string
+{
+    $timestamp = strtotime($time);
+    $time = date('Y-m-d', $timestamp);
+    return $time;
+}
+
+/**
+ * Подключение шаблона по типу поста
+ * @param string $type
+ * @return string
+ */
+function template_by_type(string $type):string
+{
+    $result = null;
+    switch ($type) {
+        case 'post-quote':
+            $result = 'block_quote.php';
+            break;
+        case 'post-text':
+            $result = 'block_text.php';
+            break;
+        case 'post-link':
+            $result = 'block_link.php';
+            break;
+        case 'post-video':
+            $result = 'block_video.php';
+            break;
+        case 'post-photo':
+            $result = 'block_photo.php';
+            break;
+    }
+    return $result;
+}
+
+/**
+ * Возвращает время в формате "Х лет на сайте"
+ * @param string $time
+ * @return string
+ */
+function user_date_registration(string $time): string
+{
+    $dt_pub = strtotime($time);
+    $dt_now = time();
+    $dt_diff = $dt_now - $dt_pub;
+    $result = null;
+
+    if ($dt_diff < HOUR) {
+        $dt_create = floor($dt_diff / MINUTE);
+        $result = $dt_create . get_noun_plural_form($dt_create, ' минута', ' минуты', ' минут') . ' на сайте';
+
+    } elseif ($dt_diff >= HOUR and $dt_diff < DAY) {
+        $dt_create = floor($dt_diff / HOUR);
+        $result = $dt_create . get_noun_plural_form($dt_create, ' час', ' часа', ' часов') . ' на сайте';
+
+    } elseif ($dt_diff >= DAY and $dt_diff < WEEK) {
+        $dt_create = floor($dt_diff / DAY);
+        $result = $dt_create . get_noun_plural_form($dt_create, ' день', ' дня', ' дней') . ' на сайте';
+
+    } elseif ($dt_diff >= WEEK and $dt_diff < FIVE_WEEKS) {
+        $dt_create = floor($dt_diff / WEEK);
+        $result = $dt_create . get_noun_plural_form($dt_create, ' неделя', ' недели', ' недель') . ' на сайте';
+
+    } elseif ($dt_diff >= FIVE_WEEKS and $dt_diff < YEARS) {
+        $dt_create = floor($dt_diff / MONTH);
+        $result = $dt_create . get_noun_plural_form($dt_create, ' месяц', ' месяца', ' месяцев') . ' на сайте';
+
+    } elseif ($dt_diff >= YEARS) {
+        $dt_create = floor($dt_diff / YEARS);
+        $result = $dt_create . get_noun_plural_form($dt_create, ' год', ' года', ' лет') . ' на сайте';
+
+    }
+    return $result;
+}
+
+/**
+ * Условие по сортировки
+ * @return string
+ */
+function sort_field():string
+{
+    $sort_field = 'view_count';
+    if (isset($_GET['tab'])) {
+        switch ($_GET['tab']) {
+            case 'likes':
+                $sort_field = 'like_post';
+                break;
+            case 'date':
+                $sort_field = 'create_time';
+                break;
+        }
+    }
+    return $sort_field;
 }
