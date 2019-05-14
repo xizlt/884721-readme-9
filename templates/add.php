@@ -54,30 +54,18 @@
 
                     <section class="adding-post__photo tabs__content <?php if($add_post === 'photo'): ?> tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Форма добавления фото</h2>
-                        <form class="adding-post__form form" action="../add.php" method="post" enctype="multipart/form-data">
+                        <form class="adding-post__form form" action="/add.php?tab=photo" method="post" enctype="multipart/form-data">
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="photo-heading">Заголовок <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input form__input-section--error" id="post_photo" type="text" name="post_photo" placeholder="Введите заголовок">
-                                            <?= $error_text; ?>
-                                        </div>
-                                    </div>
+                                    <?= $title_post; ?>
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="photo-url" type="text" name="post_photo" placeholder="Введите ссылку">
+                                        <div class="form__input-section ">
+                                            <input class="adding-post__input form__input" id="photo-url" type="text" name="link" placeholder="Введите ссылку">
                                             <?= $error_text; ?>
                                         </div>
                                     </div>
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="photo-tags">Теги</label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="photo-tags" type="text" name="post_photo" placeholder="Введите теги">
-                                            <?= $error_text; ?>
-                                        </div>
-                                    </div>
+                                    <?= $tags_post; ?>
                                 </div>
                                 <?= $block_errors; ?>
                             </div>
@@ -106,30 +94,18 @@
 
                     <section class="adding-post__video tabs__content <?php if($add_post === 'video'): ?> tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Форма добавления видео</h2>
-                        <form class="adding-post__form form" action="../add.php" method="post" enctype="multipart/form-data">
+                        <form class="adding-post__form form" action="/add.php?tab=video" method="post" enctype="multipart/form-data">
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="video-heading">Заголовок <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="video-heading" type="text" name="post_video" placeholder="Введите заголовок">
-                                            <?= $error_text; ?>
-                                        </div>
-                                    </div>
+                                    <?= $title_post; ?>
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="video-url">Ссылка youtube <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="video-url" type="text" name="post_video" placeholder="Введите ссылку">
+                                            <input class="adding-post__input form__input" id="video-url" type="text" name="link" placeholder="Введите ссылку">
                                             <?= $error_text; ?>
                                         </div>
                                     </div>
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="video-tags">Теги</label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="video-tags" type="text" name="post_video" placeholder="Введите ссылку">
-                                            <?= $error_text; ?>
-                                        </div>
-                                    </div>
+                                    <?= $tags_post; ?>
                                 </div>
                                 <?= $block_errors; ?>
                             </div>
@@ -139,30 +115,18 @@
 
                     <section class="adding-post__text tabs__content <?php if($add_post === 'text'): ?> tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Форма добавления текста</h2>
-                        <form class="adding-post__form form" action="../add.php" method="post">
+                        <form class="adding-post__form form" action="/add.php?tab=text" method="post">
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="text-heading">Заголовок <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="text-heading" type="text" name="post_text" placeholder="Введите заголовок">
-                                            <?= $error_text; ?>
-                                        </div>
-                                    </div>
+                                    <?= $title_post; ?>
                                     <div class="adding-post__textarea-wrapper form__textarea-wrapper">
                                         <label class="adding-post__label form__label" for="post-text">Текст поста <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
-                                            <textarea class="adding-post__textarea form__textarea form__input" id="post-text" placeholder="Введите текст публикации"></textarea>
+                                            <textarea class="adding-post__textarea form__textarea form__input" id="post-text" name="message" placeholder="Введите текст публикации"></textarea>
                                             <?= $error_text; ?>
                                         </div>
                                     </div>
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="post-tags">Теги</label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="post-tags" type="text" name="post_text" placeholder="Введите теги">
-                                            <?= $error_text; ?>
-                                        </div>
-                                    </div>
+                                    <?= $tags_post; ?>
                                 </div>
                                 <?= $block_errors; ?>
                             </div>
@@ -172,37 +136,25 @@
 
                     <section class="adding-post__quote tabs__content <?php if($add_post === 'quote'): ?> tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Форма добавления цитаты</h2>
-                        <form class="adding-post__form form" action="../add.php" method="post">
+                        <form class="adding-post__form form" action="/add.php?tab=quote" method="post">
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="quote-heading">Заголовок <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="quote-heading" type="text" name="post_quote" placeholder="Введите заголовок">
-                                            <?= $error_text; ?>
-                                        </div>
-                                    </div>
+                                    <?= $title_post; ?>
                                     <div class="adding-post__input-wrapper form__textarea-wrapper">
                                         <label class="adding-post__label form__label" for="cite-text">Текст цитаты <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
-                                            <textarea class="adding-post__textarea adding-post__textarea--quote form__textarea form__input" id="cite-text" placeholder="Текст цитаты"></textarea>
+                                            <textarea class="adding-post__textarea adding-post__textarea--quote form__textarea form__input" id="cite-text" name="message" placeholder="Текст цитаты"></textarea>
                                             <?= $error_text; ?>
                                         </div>
                                     </div>
                                     <div class="adding-post__textarea-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="quote-author">Автор <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="quote-author" type="text" name="post_quote">
+                                            <input class="adding-post__input form__input" id="quote-author" type="text" name="quote">
                                             <?= $error_text; ?>
                                         </div>
                                     </div>
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="cite-tags">Теги</label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="cite-tags" type="text" name="post_quote" placeholder="Введите теги">
-                                            <?= $error_text; ?>
-                                        </div>
-                                    </div>
+                                    <?= $tags_post; ?>
                                 </div>
                                 <?= $block_errors; ?>
                             </div>
@@ -212,20 +164,14 @@
 
                     <section class="adding-post__link tabs__content <?php if($add_post === 'link'): ?> tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Форма добавления ссылки</h2>
-                        <form class="adding-post__form form" action="../add.php" method="post">
+                        <form class="adding-post__form form" action="/add.php?tab=link" method="post">
                             <div class="form__text-inputs-wrapper">
                                 <div class="form__text-inputs">
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="link-heading">Заголовок <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="link-heading" type="text" name="post_link" placeholder="Введите заголовок">
-                                            <?= $error_text; ?>
-                                        </div>
-                                    </div>
+                                    <?= $title_post; ?>
                                     <div class="adding-post__textarea-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="post-link">Ссылка <span class="form__input-required">*</span></label>
                                         <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="post-link" type="text" name="post_link">
+                                            <input class="adding-post__input form__input" id="post-link" type="text" name="link">
                                             <?= $error_text; ?>
                                         </div>
                                     </div>
