@@ -45,7 +45,6 @@ if ($errors){
     $block_errors = include_template('add_post_errors.php', ['errors' => $errors]);
 }
 
-var_dump($errors);
 
 $title_post = include_template('add_post_title.php', ['errors' => $errors]);
 $tags_post = include_template('add_post_tag.php', ['errors' => $errors]);

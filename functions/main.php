@@ -325,3 +325,81 @@ function get_tab(string $add_post): bool
     }
     return $result;
 }
+
+
+function link_and_file($file_data, $post_data)
+{
+    if ($file_data['img'] and $post_data['link']) {
+        $post_data['link'] = null;
+    }
+    return $file_data['img'];
+}
+
+
+/**
+ * Извлекает из ссылки на youtube видео его уникальный ID
+ * @param string $youtube_url Ссылка на youtube видео
+ * @return bool
+ */
+function extract_youtube_id(string $youtube_url): bool
+{
+    $id = false;
+
+    $parts = parse_url($youtube_url);
+
+    if ($parts) {
+        if ($parts['path'] == '/watch') {
+            parse_str($parts['query'], $vars);
+            $id = $vars['v'] ?? null;
+        } else {
+            if ($parts['host'] == 'youtu.be') {
+                $id = substr($parts['path'], 1);
+            }
+        }
+    }
+
+    return $id;
+}
+
+
+
+/**
+ * Проверяет, что переданная ссылка ведет на публично доступное видео с youtube
+ * @param string $youtube_url Ссылка на youtube видео
+ * @return bool
+ */
+function check_youtube_url(string $youtube_url): bool
+{
+    $res = false;
+    $id = extract_youtube_id($youtube_url);
+
+    if ($id) {
+        $api_data = ['id' => $id, 'part' => 'id,status', 'key' => 'AIzaSyC-n4aQQk0mZrZNsfswKcaljExfM1UG57c'];
+        $url = "https://www.googleapis.com/youtube/v3/videos?" . http_build_query($api_data);
+
+        $resp = file_get_contents($url);
+
+        if ($resp && $json = json_decode($resp, true)) {
+            $res = $json['pageInfo']['totalResults'] > 0 && $json['items'][0]['status']['privacyStatus'] == 'public';
+        }
+    }
+
+    return $res;
+}
+
+/**
+ * Возвращает код iframe для вставки youtube видео на страницу
+ * @param string $youtube_url Ссылка на youtube видео
+ * @return string
+ */
+function embed_youtube_video($youtube_url) {
+    $res = "";
+    $id = extract_youtube_id($youtube_url);
+
+    if ($id) {
+        $src = "https://www.youtube.com/embed/" . $id;
+        $res = '<iframe width="760" height="400" src="' . $src . '" frameborder="0"></iframe>';
+    }
+
+    return $res;
+}
