@@ -1,3 +1,4 @@
+
 <main class="page__main page__main--adding-post">
     <div class="page__main-section">
         <div class="container">
@@ -59,9 +60,9 @@
                                 <div class="form__text-inputs">
                                     <?= $title_post; ?>
                                     <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
+                                        <label class="adding-post__label form__label " for="photo-url">Ссылка из интернета</label>
                                         <div class="form__input-section ">
-                                            <input class="adding-post__input form__input" id="photo-url" type="text" name="link" placeholder="Введите ссылку">
+                                            <input class="adding-post__input form__input " id="photo-url" type="text" name="link" placeholder="Введите ссылку">
                                             <?= $error_text; ?>
                                         </div>
                                     </div>
@@ -69,17 +70,17 @@
                                 </div>
                                 <?= $block_errors; ?>
                             </div>
-                            <div class="adding-post__input-file-container form__input-container form__input-container--file">
-                                <div class="adding-post__input-file-wrapper form__input-file-wrapper">
+                            <div class="adding-post__input-file-container form__input-container form__input-container--file ">
+                                <div class="adding-post__input-file-wrapper form__input-file-wrapper ">
                                     <div class="adding-post__file-zone adding-post__file-zone--photo form__file-zone dropzone">
-                                        <input class="adding-post__input-file form__input-file" id="userpic-file-photo" type="file" name="post_photo" title=" ">
-                                        <div class="form__file-zone-text">
+                                        <input class="adding-post__input-file form__input-file " id="userpic-file-photo" type="file" name="img" title=" ">
+                                        <div class="form__file-zone-text ">
                                             <span>Перетащите фото сюда</span>
                                         </div>
                                     </div>
-                                    <button class="adding-post__input-file-button form__input-file-button form__input-file-button--photo button" type="button">
+                                    <button class="adding-post__input-file-button form__input-file-button form__input-file-button--photo button " type="button">
                                         <span>Выбрать фото</span>
-                                        <svg class="adding-post__attach-icon form__attach-icon" width="10" height="20">
+                                        <svg class="adding-post__attach-icon form__attach-icon " width="10" height="20">
                                             <use xlink:href="#icon-attach"></use>
                                         </svg>
                                     </button>
@@ -121,7 +122,7 @@
                                     <?= $title_post; ?>
                                     <div class="adding-post__textarea-wrapper form__textarea-wrapper">
                                         <label class="adding-post__label form__label" for="post-text">Текст поста <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
+                                        <div class="form__input-section <?= isset($errors['message'])? 'form__input-section--error' : ' ' ?>">
                                             <textarea class="adding-post__textarea form__textarea form__input" id="post-text" name="message" placeholder="Введите текст публикации"></textarea>
                                             <?= $error_text; ?>
                                         </div>
@@ -142,7 +143,7 @@
                                     <?= $title_post; ?>
                                     <div class="adding-post__input-wrapper form__textarea-wrapper">
                                         <label class="adding-post__label form__label" for="cite-text">Текст цитаты <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
+                                        <div class="form__input-section <?= isset($errors['message'])? 'form__input-section--error' : ' ' ?>">
                                             <textarea class="adding-post__textarea adding-post__textarea--quote form__textarea form__input" id="cite-text" name="message" placeholder="Текст цитаты"></textarea>
                                             <?= $error_text; ?>
                                         </div>
@@ -166,29 +167,22 @@
                         <h2 class="visually-hidden">Форма добавления ссылки</h2>
                         <form class="adding-post__form form" action="/add.php?tab=link" method="post">
                             <div class="form__text-inputs-wrapper">
-                                <div class="form__text-inputs">
+                                <div class="form__text-inputs ">
                                     <?= $title_post; ?>
-                                    <div class="adding-post__textarea-wrapper form__input-wrapper">
+                                    <div class="adding-post__textarea-wrapper form__input-wrapper ">
                                         <label class="adding-post__label form__label" for="post-link">Ссылка <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
+                                        <div class="form__input-section <?= isset($errors['link'])? 'form__input-section--error' : ' ' ?>">
                                             <input class="adding-post__input form__input" id="post-link" type="text" name="link">
                                             <?= $error_text; ?>
                                         </div>
                                     </div>
-                                    <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label" for="link-tags">Теги</label>
-                                        <div class="form__input-section">
-                                            <input class="adding-post__input form__input" id="link-tags" type="text" name="post_link" placeholder="Введите ссылку">
-                                            <?= $error_text; ?>
-                                        </div>
-                                    </div>
+                                    <?= $tags_post;?>
                                 </div>
                                 <?= $block_errors; ?>
                             </div>
                             <?= $send_form; ?>
                         </form>
                     </section>
-
                 </div>
             </div>
         </div>

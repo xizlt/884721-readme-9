@@ -36,25 +36,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post_data = $_POST;
     $file_data = $_FILES;
 
-    $errors = validate_post($post_data, $add_post);
+    $errors = validate_post($post_data, $add_post, $file_data);
 
 
 }
-var_dump($errors);
 $block_errors = null;
 if ($errors){
     $block_errors = include_template('add_post_errors.php', ['errors' => $errors]);
 }
 
-
+var_dump($errors);
 $error_text = include_template('add_post_text_error.php');
-$title_post = include_template('add_post_title.php', ['error_text' => $error_text]);
-$tags_post = include_template('add_post_tag.php', ['error_text' => $error_text]);
+$title_post = include_template('add_post_title.php', ['error_text' => $error_text, 'errors' => $errors]);
+$tags_post = include_template('add_post_tag.php', ['error_text' => $error_text, 'errors' => $errors]);
 $send_form = include_template('add_post_footer.php');
 $page_content = include_template('add.php', [
     'add_post' => $add_post,
     'types' => $types,
-    'errors' => $errors,
     'block_errors' => $block_errors,
     'send_form' => $send_form,
     'error_text' => $error_text,
