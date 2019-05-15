@@ -61,9 +61,13 @@
                                     <?= $title_post; ?>
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label " for="photo-url">Ссылка из интернета</label>
-                                        <div class="form__input-section ">
+                                        <div class="form__input-section <?= isset($errors['link'])? 'form__input-section--error' : ' ' ?>">
                                             <input class="adding-post__input form__input " id="photo-url" type="text" name="link" placeholder="Введите ссылку">
-                                            <?= $error_text; ?>
+                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <div class="form__error-text">
+                                                <h3 class="form__error-title">Ошибка</h3>
+                                                <p class="form__error-desc"><?= $errors['link']; ?></p>
+                                            </div>
                                         </div>
                                     </div>
                                     <?= $tags_post; ?>
@@ -73,12 +77,12 @@
                             <div class="adding-post__input-file-container form__input-container form__input-container--file ">
                                 <div class="adding-post__input-file-wrapper form__input-file-wrapper ">
                                     <div class="adding-post__file-zone adding-post__file-zone--photo form__file-zone dropzone">
-                                        <input class="adding-post__input-file form__input-file " id="userpic-file-photo" type="file" name="img" title=" ">
-                                        <div class="form__file-zone-text ">
+                                        <input class="adding-post__input-file form__input-file" id="userpic-file-photo" type="file" name="img" title=" ">
+                                        <div class="form__file-zone-text">
                                             <span>Перетащите фото сюда</span>
                                         </div>
                                     </div>
-                                    <button class="adding-post__input-file-button form__input-file-button form__input-file-button--photo button " type="button">
+                                    <button class="adding-post__input-file-button form__input-file-button form__input-file-button--photo button" type="button">
                                         <span>Выбрать фото</span>
                                         <svg class="adding-post__attach-icon form__attach-icon " width="10" height="20">
                                             <use xlink:href="#icon-attach"></use>
@@ -101,9 +105,13 @@
                                     <?= $title_post; ?>
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="video-url">Ссылка youtube <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
+                                        <div class="form__input-section <?= isset($errors['link'])? 'form__input-section--error' : ' ' ?>">
                                             <input class="adding-post__input form__input" id="video-url" type="text" name="link" placeholder="Введите ссылку">
-                                            <?= $error_text; ?>
+                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <div class="form__error-text">
+                                                <h3 class="form__error-title">Заголовок сообщения</h3>
+                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                                            </div>
                                         </div>
                                     </div>
                                     <?= $tags_post; ?>
@@ -124,7 +132,11 @@
                                         <label class="adding-post__label form__label" for="post-text">Текст поста <span class="form__input-required">*</span></label>
                                         <div class="form__input-section <?= isset($errors['message'])? 'form__input-section--error' : ' ' ?>">
                                             <textarea class="adding-post__textarea form__textarea form__input" id="post-text" name="message" placeholder="Введите текст публикации"></textarea>
-                                            <?= $error_text; ?>
+                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <div class="form__error-text">
+                                                <h3 class="form__error-title">Заголовок сообщения</h3>
+                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                                            </div>
                                         </div>
                                     </div>
                                     <?= $tags_post; ?>
@@ -145,12 +157,16 @@
                                         <label class="adding-post__label form__label" for="cite-text">Текст цитаты <span class="form__input-required">*</span></label>
                                         <div class="form__input-section <?= isset($errors['message'])? 'form__input-section--error' : ' ' ?>">
                                             <textarea class="adding-post__textarea adding-post__textarea--quote form__textarea form__input" id="cite-text" name="message" placeholder="Текст цитаты"></textarea>
-                                            <?= $error_text; ?>
+                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <div class="form__error-text">
+                                                <h3 class="form__error-title">Заголовок сообщения</h3>
+                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="adding-post__textarea-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="quote-author">Автор <span class="form__input-required">*</span></label>
-                                        <div class="form__input-section">
+                                        <div class="form__input-section <?= isset($errors['quote'])? 'form__input-section--error' : ' ' ?>">
                                             <input class="adding-post__input form__input" id="quote-author" type="text" name="quote">
                                             <?= $error_text; ?>
                                         </div>
@@ -173,7 +189,11 @@
                                         <label class="adding-post__label form__label" for="post-link">Ссылка <span class="form__input-required">*</span></label>
                                         <div class="form__input-section <?= isset($errors['link'])? 'form__input-section--error' : ' ' ?>">
                                             <input class="adding-post__input form__input" id="post-link" type="text" name="link">
-                                            <?= $error_text; ?>
+                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <div class="form__error-text">
+                                                <h3 class="form__error-title">Заголовок сообщения</h3>
+                                                <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+                                            </div>
                                         </div>
                                     </div>
                                     <?= $tags_post;?>
