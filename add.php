@@ -46,12 +46,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($file_data) {
             $post_data['img'] = upload_img($file_data['img']);
         }
+
+        $explode_tags = $post_data['tags'] ?? '';
+        if ($explode_tags) {
+            $tags_arr = explode(" ", $explode_tags);
+        }
+
+
         $post_id = add_post($connection, $post_data);
 
         if ($post_id) {
             header("Location: post.php?id=" . $post_id);
             exit();
         }
+
     }
 }
 
