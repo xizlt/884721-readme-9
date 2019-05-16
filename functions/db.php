@@ -66,16 +66,14 @@ function get_posts(mysqli $connection, string $type = null, string $sort = null,
        u.name AS user_name,
        c.name AS type,
        u.avatar,
-       COUNT(l.user_id) AS like_post
+       l.user_id AS like_post
 FROM posts p
          JOIN likes l ON p.id = l.post_id
          JOIN users u ON u.id = p.user_id
          JOIN content_type c ON c.id = p.content_type_id
 WHERE c.id = $type
-GROUP BY p.id
-ORDER BY $sort DESC 
-LIMIT 9
-
+GROUP BY like_post, p.id
+ORDER BY $sort DESC
 ";
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
@@ -137,8 +135,6 @@ FROM posts p
          JOIN users u ON u.id = p.user_id
          JOIN content_type c ON c.id = p.content_type_id
 WHERE p.id = $post_id
-GROUP BY p.id
-ORDER BY like_post DESC
 ";
     if ($query = mysqli_query($connection, $sql)) {
         $result = $query ? mysqli_fetch_array($query, MYSQLI_ASSOC) : null;
@@ -193,6 +189,7 @@ WHERE user_id = $user_id
     return $result;
 }
 
+
 /**
  * Возвращает комментарии по id поста
  * @param mysqli $connection
@@ -216,4 +213,27 @@ LIMIT 2
         die('Ошибка MySQL ' . $error);
     }
     return $result;
+}
+
+
+function add_post($connection, $post_data)
+{
+    $sql = 'INSERT INTO posts (title, message, quote_writer, image, video, link, user_id, content_type_id) 
+            VALUES (?, ?, ?, ?, ?, ?, 1, 1)';
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'ssssss',
+    $post_data['title'],
+    $post_data['message'],
+    $post_data['quote'],
+    $post_data['img'],
+    $post_data['video'],
+    $post_data['link']
+    );
+    $result = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    if (!$result) {
+        die('Ошибка при сохранении лота');
+    }
+    $lot_id = mysqli_insert_id($connection);
+    return $lot_id;
 }

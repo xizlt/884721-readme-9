@@ -62,10 +62,10 @@ function include_template(string $name, array $data = []): string
 
 /**
  * Xss защита
- * @param string $value
+ * @param $value
  * @return string
  */
-function clean(string $value): string
+function clean($value): string
 {
     $value = trim($value);
     $value = stripslashes($value);
@@ -327,15 +327,6 @@ function get_tab(string $add_post): bool
 }
 
 
-function link_and_file($file_data, $post_data)
-{
-    if ($file_data['img'] and $post_data['link']) {
-        $post_data['link'] = null;
-    }
-    return $file_data['img'];
-}
-
-
 /**
  * Извлекает из ссылки на youtube видео его уникальный ID
  * @param string $youtube_url Ссылка на youtube видео
@@ -360,7 +351,6 @@ function extract_youtube_id(string $youtube_url): bool
 
     return $id;
 }
-
 
 
 /**
@@ -402,4 +392,24 @@ function embed_youtube_video($youtube_url) {
     }
 
     return $res;
+}
+
+
+/**
+ * Возвращает путь на загруженный файл аватарки. Перемещает файл
+ * @param $file_data
+ * @return string
+ */
+function upload_img($file_data)
+{
+    $path = $file_data['name'];
+    if (!$path) {
+        return null;
+    }
+    $tmp_name = $file_data['tmp_name'];
+    $result = 'uploads/' . $path;
+    if (!move_uploaded_file($tmp_name, $result)) {
+        die('Не найдена папка uploads или отсутствуют права на запись в неё');
+    }
+    return $result;
 }

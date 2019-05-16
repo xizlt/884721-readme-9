@@ -63,7 +63,7 @@
                                         <label class="adding-post__label form__label " for="photo-url">Ссылка из интернета</label>
 
                                         <div class="form__input-section <?= isset($errors['link'])? 'form__input-section--error' : ' ' ?>">
-                                            <input class="adding-post__input form__input " id="photo-url" type="text" name="link" placeholder="Введите ссылку">
+                                            <input class="adding-post__input form__input " id="photo-url" type="text" name="link" placeholder="Введите ссылку" value="<?= isset($post_data['link'])? $post_data['link'] : ''  ?>">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title"><?= $errors['link']['for_title']; ?></h3>
@@ -79,7 +79,7 @@
                             <div class="adding-post__input-file-container form__input-container form__input-container--file ">
                                 <div class="adding-post__input-file-wrapper form__input-file-wrapper ">
                                     <div class="adding-post__file-zone adding-post__file-zone--photo form__file-zone dropzone ">
-                                        <input class="adding-post__input-file form__input-file" id="userpic-file-photo" type="file" name="img" title=" ">
+                                        <input class="adding-post__input-file form__input-file" id="userpic-file-photo" type="file" name="img" title=" " value="<?= isset($file_data['img'])? $file_data['img']['tmp_name'] : ''  ?>">
                                         <div class="form__file-zone-text ">
                                             <span>Перетащите фото сюда</span>
                                         </div>
@@ -108,7 +108,7 @@
                                     <div class="adding-post__input-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="video-url">Ссылка youtube <span class="form__input-required">*</span></label>
                                         <div class="form__input-section <?= isset($errors['link'])? 'form__input-section--error' : ' ' ?>">
-                                            <input class="adding-post__input form__input" id="video-url" type="text" name="link" placeholder="Введите ссылку">
+                                            <input class="adding-post__input form__input" id="video-url" type="text" name="link" placeholder="Введите ссылку" value="<?= isset($post_data['link'])? $post_data['link'] : ''  ?>">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title"><?= $errors['link']['for_title']; ?></h3>
@@ -132,8 +132,9 @@
                                     <?= $title_post; ?>
                                     <div class="adding-post__textarea-wrapper form__textarea-wrapper">
                                         <label class="adding-post__label form__label" for="post-text">Текст поста <span class="form__input-required">*</span></label>
+                                        <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                         <div class="form__input-section <?= isset($errors['message'])? 'form__input-section--error' : ' ' ?>">
-                                            <textarea class="adding-post__textarea form__textarea form__input" id="post-text" name="message" placeholder="Введите текст публикации"></textarea>
+                                            <textarea class="adding-post__textarea form__textarea form__input" id="post-text" name="message" placeholder="Введите текст публикации"><?= isset($post_data['message'])? $post_data['message'] : ''?></textarea>
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title"><?= $errors['message']['for_title']; ?></h3>
@@ -158,7 +159,7 @@
                                     <div class="adding-post__input-wrapper form__textarea-wrapper">
                                         <label class="adding-post__label form__label" for="cite-text">Текст цитаты <span class="form__input-required">*</span></label>
                                         <div class="form__input-section <?= isset($errors['message'])? 'form__input-section--error' : ' ' ?>">
-                                            <textarea class="adding-post__textarea adding-post__textarea--quote form__textarea form__input" id="cite-text" name="message" placeholder="Текст цитаты"></textarea>
+                                            <textarea class="adding-post__textarea adding-post__textarea--quote form__textarea form__input" id="cite-text" name="message" placeholder="Текст цитаты"><?= isset($post_data['message'])? $post_data['message'] : ''?></textarea>
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title"><?= $errors['message']['for_title']; ?></h3>
@@ -169,7 +170,7 @@
                                     <div class="adding-post__textarea-wrapper form__input-wrapper">
                                         <label class="adding-post__label form__label" for="quote-author">Автор <span class="form__input-required">*</span></label>
                                         <div class="form__input-section <?= isset($errors['quote'])? 'form__input-section--error' : ' ' ?>">
-                                            <input class="adding-post__input form__input" id="quote-author" type="text" name="quote">
+                                            <input class="adding-post__input form__input" id="quote-author" type="text" name="quote" value="<?= isset($post_data['quote'])? $post_data['quote'] : ''  ?>">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title"><?= $errors['quote']['for_title']; ?></h3>
@@ -194,7 +195,7 @@
                                     <div class="adding-post__textarea-wrapper form__input-wrapper ">
                                         <label class="adding-post__label form__label" for="post-link">Ссылка <span class="form__input-required">*</span></label>
                                         <div class="form__input-section <?= isset($errors['link'])? 'form__input-section--error' : ' ' ?>">
-                                            <input class="adding-post__input form__input" id="post-link" type="text" name="link">
+                                            <input class="adding-post__input form__input" id="post-link" type="text" name="link" value="<?= isset($post_data['link'])? $post_data['link'] : ''  ?>">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
                                                 <h3 class="form__error-title"><?= $errors['link']['for_title']; ?></h3>

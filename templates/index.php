@@ -135,7 +135,7 @@
                         <?php elseif (clean($post['type'])==='post-photo'): ?>
                             <!--содержимое для поста-фото-->
                             <div class="post-photo__image-wrapper">
-                                <img src="<?= clean($post['image']); ?>" alt="Фото от пользователя" width="360" height="240">
+                                <img src="<?= $post['image']; ?>" alt="Фото от пользователя" width="360" height="240">
                             </div>
 
                         <?php elseif (clean($post['type'])==='post-text'): ?>

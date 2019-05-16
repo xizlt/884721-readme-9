@@ -30,7 +30,11 @@ if (!get_tab($add_post)) {
     exit();
 }
 
+$file_data = [];
+$post_data = [];
 $errors = [];
+$block_errors = null;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $post_data = $_POST;
@@ -38,16 +42,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $errors = validate_post($post_data, $add_post, $file_data);
 
+    if (empty($errors)) {
+        if ($file_data) {
+            $post_data['img'] = upload_img($file_data['img']);
+        }
+        $post_id = add_post($connection, $post_data);
 
+        if ($post_id) {
+            header("Location: post.php?id=" . $post_id);
+            exit();
+        }
+    }
 }
-$block_errors = null;
+
 if ($errors){
     $block_errors = include_template('add_post_errors.php', ['errors' => $errors]);
 }
 
-
-$title_post = include_template('add_post_title.php', ['errors' => $errors]);
-$tags_post = include_template('add_post_tag.php', ['errors' => $errors]);
+$title_post = include_template('add_post_title.php', ['errors' => $errors, 'post_data' => $post_data]);
+$tags_post = include_template('add_post_tag.php', ['errors' => $errors, 'post_data' => $post_data]);
 $send_form = include_template('add_post_footer.php');
 $page_content = include_template('add.php', [
     'add_post' => $add_post,
@@ -56,7 +69,9 @@ $page_content = include_template('add.php', [
     'send_form' => $send_form,
     'title_post' => $title_post,
     'tags_post' => $tags_post,
-    'errors' => $errors
+    'errors' => $errors,
+    'file_data' => $file_data,
+    'post_data' => $post_data
 ]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,

@@ -17,10 +17,12 @@ $connection = connectDb($config['db']);
 $post_id = $_GET['id'] ?? '';
 $post = get_post_info($connection, $post_id);
 
+
 if (!$post_id or !$post) {
     header("HTTP/1.0 404 Not Found");
     exit();
 }
+
 
 $block_post = include_template(template_by_type($post['type']), ['post' => $post]);
 $comments_count = get_count_comments($connection, $post_id);

@@ -29,7 +29,7 @@ function validate_post(array $post_data, string $add_post, array $file_data): ar
         if ($error = validate_post_photo($file_data['img'])) {
             $errors['img'] = $error;
         }
-        if ($error = validate_post_link($post_data['link'])) {
+        if ($error = validate_post_link_upload($post_data['link'])) {
             $errors['link'] = $error;
         }
     } elseif ($add_post === 'video') {
@@ -127,6 +127,38 @@ function validate_post_quote(string $quote)
  * @param $link
  * @return array|null
  */
+function validate_post_link_upload($link)
+{
+    if (empty($link)) {
+        return $arr = [
+            'for_block' => 'Ссылка. Заполните поле',
+            'for_title' => 'Заполните поле',
+            'for_text' => 'Необходимо заполнить данное поле'
+        ];
+    }
+    if (!filter_var($link, FILTER_VALIDATE_URL)) {
+        return $arr = [
+            'for_block' => 'Ссылка. Неправильно указана ссылка',
+            'for_title' => 'Неверный формат',
+            'for_text' => 'Необходимо заполнить поле в полном формате ссылки. Например: https://www.google.com/'
+        ];
+    }
+    if (!file_get_contents($link)) {
+        return $arr = [
+            'for_block' => 'Ссылка. Неверно указан путь',
+            'for_title' => 'Ошибка в загрузке',
+            'for_text' => 'Проверьте правильность пути к файлу'
+        ];
+    }
+    return null;
+}
+
+
+/**
+ * Проверяет поле ссылка
+ * @param $link
+ * @return array|null
+ */
 function validate_post_link($link)
 {
     if (empty($link)) {
@@ -146,20 +178,18 @@ function validate_post_link($link)
     return null;
 }
 
+
 function validate_post_tags($tags)
 {
-    if (empty($tags)) {
-        return $arr = [
-            'for_block' => 'Ссылка. Заполните поле',
-            'for_title' => 'Заполните поле',
-            'for_text' => 'Необходимо заполнить данное поле'
-        ];
+    $explode_tags = $tags ?? '';
+    if ($explode_tags) {
+        $tags_arr = explode(" ", $explode_tags);
     }
-    if (!filter_var($tags, FILTER_VALIDATE_URL)) {
+    if (empty($tags_arr)) {
         return $arr = [
-            'for_block' => 'Ссылка. Неправильно указана ссылка',
-            'for_title' => 'Неверный формат',
-            'for_text' => 'Необходимо заполнить поле в полном формате ссылки. Например: https://www.google.com/'
+            'for_block' => 'Тег. Укажите тег',
+            'for_title' => 'Пустое поле',
+            'for_text' => 'Необходимо указать хотя бы 1 тег'
         ];
     }
     return null;
