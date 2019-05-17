@@ -23,12 +23,10 @@ if (!$post_id or !$post) {
     exit();
 }
 
-
 $block_post = include_template(template_by_type($post['type']), ['post' => $post]);
 $comments_count = get_count_comments($connection, $post_id);
 $subscriptions = get_count_subscriptions($connection, $post['user']);
 $comments = get_comments($connection, $post_id);
-
 
 $page_content = include_template('post.php', [
     'post' => $post,

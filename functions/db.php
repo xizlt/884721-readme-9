@@ -66,13 +66,13 @@ function get_posts(mysqli $connection, string $type = null, string $sort = null,
        u.name AS user_name,
        c.name AS type,
        u.avatar,
-       l.user_id AS like_post
+       count(l.user_id) AS like_post
 FROM posts p
-         JOIN likes l ON p.id = l.post_id
-         JOIN users u ON u.id = p.user_id
+         LEFT JOIN likes l ON p.id = l.post_id
+         LEFT JOIN  users u ON u.id = p.user_id
          JOIN content_type c ON c.id = p.content_type_id
-WHERE c.id = $type
-GROUP BY like_post, p.id
+WHERE p.content_type_id = $type
+GROUP BY p.id
 ORDER BY $sort DESC
 ";
     if ($query = mysqli_query($connection, $sql)) {
@@ -88,15 +88,15 @@ ORDER BY $sort DESC
  * Проверяет существования такой категории
  * @param mysqli $connection
  * @param string $type_id
- * @return int
+ * @return array|null
  */
-function get_type_by_id(mysqli $connection, string $type_id): int
+function get_type_by_id(mysqli $connection, string $type_id)
 {
     $sql = "SELECT * FROM content_type
 WHERE id = '$type_id'
 ";
     if ($query = mysqli_query($connection, $sql)) {
-        $result = mysqli_num_rows($query);
+        $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
     } else {
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);

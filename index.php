@@ -23,9 +23,9 @@ if ($type_block && !$types_correct) {
     header("HTTP/1.0 404 Not Found");
     exit();
 }
-$sort_field = sort_field();
+$sort = sort_field();
 
-$posts = get_posts($connection, $type_block, $sort_field);
+$posts = get_posts($connection, $type_block, $sort);
 
 $page_content = include_template('index.php', [
     'types' => $types,

@@ -124,10 +124,10 @@ function validate_post_quote(string $quote)
 
 /**
  * Проверяет поле ссылка
- * @param $link
+ * @param string $link
  * @return array|null
  */
-function validate_post_link_upload($link)
+function validate_post_link_upload(string $link)
 {
     if (empty($link)) {
         return $arr = [
@@ -143,11 +143,20 @@ function validate_post_link_upload($link)
             'for_text' => 'Необходимо заполнить поле в полном формате ссылки. Например: https://www.google.com/'
         ];
     }
-    if (!file_get_contents($link)) {
+    $urlHeaders = get_headers($link, 1);
+// проверяем ответ сервера на наличие кода: 200 - ОК
+    if (!strpos($urlHeaders[0], '200')) {
         return $arr = [
             'for_block' => 'Ссылка. Неверно указан путь',
             'for_title' => 'Ошибка в загрузке',
             'for_text' => 'Проверьте правильность пути к файлу'
+        ];
+    }
+    if ($urlHeaders['Content-Type'] !== 'image/jpg' and $urlHeaders['Content-Type'] !== 'image/jpeg' and $urlHeaders['Content-Type'] !== 'image/png') {
+        return $arr = [
+            'for_block' => 'Ссылка. Неподдерживаемый формат',
+            'for_title' => 'Неподдерживаемый формат',
+            'for_text' => 'Необходимо загрузить файл в следующих форматах: .jpg .jpeg .png'
         ];
     }
     return null;
@@ -178,7 +187,11 @@ function validate_post_link($link)
     return null;
 }
 
-
+/**
+ * Проверяет поле теги
+ * @param $tags
+ * @return array|null
+ */
 function validate_post_tags($tags)
 {
     $explode_tags = $tags ?? '';
@@ -222,7 +235,11 @@ function validate_post_photo(array $file_data)
     ];
 }
 
-
+/**
+ * Проверяет поле ссылка на видео
+ * @param $link
+ * @return array|null
+ */
 function validate_post_video($link)
 {
     if (empty($link)) {
