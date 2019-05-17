@@ -21,7 +21,7 @@ INSERT INTO posts (title, message, user_id, content_type_id, image, link)
     ('Игра престолов', 'Не могу дождаться начала финального сезона своего любимого сериала!', 2, 2, NULL, NULL),
     ('Наконец, обработал фотки!', NULL, 3, 3, 'img/rock-medium.jpg', NULL),
     ('Моя мечта', NULL, 4, 3, 'img/coast-medium.jpg', NULL),
-    ('Лучшие курсы', NULL, 2, 4, NULL, 'www.htmlacademy.ru');
+    ('Лучшие курсы', NULL, 2, 5, NULL, 'www.htmlacademy.ru');
 
 
 -- Внес комментарии
@@ -42,6 +42,15 @@ INSERT INTO likes (user_id, post_id)
       (4, 2),
       (2, 5);
 
+
+-- добавил лайк к посту;
+INSERT INTO likes
+SET post_id = 3, user_id = 2;
+
+
+-- подписался на пользователя.
+INSERT INTO subscriptions
+SET subscriber_id = 3, user_id = 4;
 
 -- получил список постов с сортировкой по популярности и вместе с именами авторов и типом контента;
 SELECT p.id,
@@ -101,12 +110,4 @@ FROM comments cm
 WHERE p.id = 2;
 
 
--- добавил лайк к посту;
-INSERT INTO likes
-    SET post_id = 3, user_id = 2;
-
-
--- подписался на пользователя.
-INSERT INTO subscriptions
-    SET subscriber_id = 3, user_id = 4;
 

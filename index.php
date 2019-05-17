@@ -1,19 +1,5 @@
 <?php
-date_default_timezone_set("Europe/Moscow");
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-$is_auth = rand(0, 1);
-
-$user_name = 'Иван'; // укажите здесь ваше имя
-
-require_once 'functions/main.php';
-require_once 'functions/db.php';
-
-$config = require 'config.php';
-$connection = connectDb($config['db']);
+require 'bootstrap.php';
 
 $types = get_types($connection);
 $type_block = $_GET['type_id'] ?? '';

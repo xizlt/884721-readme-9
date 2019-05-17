@@ -10,7 +10,7 @@
                     <ul class="adding-post__tabs-list filters__list tabs__list">
 
                         <li class="adding-post__tabs-item filters__item">
-                            <a class="adding-post__tabs-link filters__button filters__button--photo <?php if($add_post === 'photo'): ?> filters__button--active tabs__item tabs__item--active <?php endif; ?>button" href="add.php?tab=photo">
+                            <a class="adding-post__tabs-link filters__button filters__button--photo <?php if($tab === 'photo'): ?> filters__button--active tabs__item tabs__item--active <?php endif; ?>button" href="add.php?tab=photo">
                                 <svg class="filters__icon" width="22" height="18">
                                     <use xlink:href="#icon-filter-photo"></use>
                                 </svg>
@@ -18,7 +18,7 @@
                             </a>
                         </li>
                         <li class="adding-post__tabs-item filters__item">
-                            <a class="adding-post__tabs-link filters__button filters__button--video tabs__item button <?php if($add_post === 'video'): ?> filters__button--active tabs__item tabs__item--active <?php endif; ?> button" href="add.php?tab=video">
+                            <a class="adding-post__tabs-link filters__button filters__button--video tabs__item button <?php if($tab === 'video'): ?> filters__button--active tabs__item tabs__item--active <?php endif; ?> button" href="add.php?tab=video">
                                 <svg class="filters__icon" width="24" height="16">
                                     <use xlink:href="#icon-filter-video"></use>
                                 </svg>
@@ -26,7 +26,7 @@
                             </a>
                         </li>
                         <li class="adding-post__tabs-item filters__item">
-                            <a class="adding-post__tabs-link filters__button filters__button--text tabs__item <?php if($add_post === 'text'): ?> filters__button--active tabs__item tabs__item--active <?php endif; ?> button" href="add.php?tab=text">
+                            <a class="adding-post__tabs-link filters__button filters__button--text tabs__item <?php if($tab === 'text'): ?> filters__button--active tabs__item tabs__item--active <?php endif; ?> button" href="add.php?tab=text">
                                 <svg class="filters__icon" width="20" height="21">
                                     <use xlink:href="#icon-filter-text"></use>
                                 </svg>
@@ -34,7 +34,7 @@
                             </a>
                         </li>
                         <li class="adding-post__tabs-item filters__item">
-                            <a class="adding-post__tabs-link filters__button filters__button--quote tabs__item <?php if($add_post === 'quote'): ?> filters__button--active tabs__item tabs__item--active <?php endif; ?> button" href="add.php?tab=quote">
+                            <a class="adding-post__tabs-link filters__button filters__button--quote tabs__item <?php if($tab === 'quote'): ?> filters__button--active tabs__item tabs__item--active <?php endif; ?> button" href="add.php?tab=quote">
                                 <svg class="filters__icon" width="21" height="20">
                                     <use xlink:href="#icon-filter-quote"></use>
                                 </svg>
@@ -42,7 +42,7 @@
                             </a>
                         </li>
                         <li class="adding-post__tabs-item filters__item">
-                            <a class="adding-post__tabs-link filters__button filters__button--link tabs__item <?php if($add_post === 'link'): ?>filters__button--active tabs__item tabs__item--active <?php endif; ?>button" href="add.php?tab=link">
+                            <a class="adding-post__tabs-link filters__button filters__button--link tabs__item <?php if($tab === 'link'): ?>filters__button--active tabs__item tabs__item--active <?php endif; ?>button" href="add.php?tab=link">
                                 <svg class="filters__icon" width="21" height="18">
                                     <use xlink:href="#icon-filter-link"></use>
                                 </svg>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="adding-post__tab-content">
 
-                    <section class="adding-post__photo tabs__content <?php if($add_post === 'photo'): ?> tabs__content--active<?php endif; ?>">
+                    <section class="adding-post__photo tabs__content <?php if($tab === 'photo'): ?> tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Форма добавления фото</h2>
                         <form class="adding-post__form form" action="/add.php?tab=photo" method="post" enctype="multipart/form-data">
                             <div class="form__text-inputs-wrapper">
@@ -99,7 +99,7 @@
                         </form>
                     </section>
 
-                    <section class="adding-post__video tabs__content <?php if($add_post === 'video'): ?> tabs__content--active<?php endif; ?>">
+                    <section class="adding-post__video tabs__content <?php if($tab === 'video'): ?> tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Форма добавления видео</h2>
                         <form class="adding-post__form form" action="/add.php?tab=video" method="post" enctype="multipart/form-data">
                             <div class="form__text-inputs-wrapper">
@@ -124,7 +124,7 @@
                         </form>
                     </section>
 
-                    <section class="adding-post__text tabs__content <?php if($add_post === 'text'): ?> tabs__content--active<?php endif; ?>">
+                    <section class="adding-post__text tabs__content <?php if($tab === 'text'): ?> tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Форма добавления текста</h2>
                         <form class="adding-post__form form" action="/add.php?tab=text" method="post">
                             <div class="form__text-inputs-wrapper">
@@ -150,7 +150,7 @@
                         </form>
                     </section>
 
-                    <section class="adding-post__quote tabs__content <?php if($add_post === 'quote'): ?> tabs__content--active<?php endif; ?>">
+                    <section class="adding-post__quote tabs__content <?php if($tab === 'quote'): ?> tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Форма добавления цитаты</h2>
                         <form class="adding-post__form form" action="/add.php?tab=quote" method="post">
                             <div class="form__text-inputs-wrapper">
@@ -186,7 +186,7 @@
                         </form>
                     </section>
 
-                    <section class="adding-post__link tabs__content <?php if($add_post === 'link'): ?> tabs__content--active<?php endif; ?>">
+                    <section class="adding-post__link tabs__content <?php if($tab === 'link'): ?> tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Форма добавления ссылки</h2>
                         <form class="adding-post__form form" action="/add.php?tab=link" method="post">
                             <div class="form__text-inputs-wrapper">
