@@ -35,6 +35,9 @@ $post_data = [];
 $errors = [];
 $block_errors = null;
 
+$name_type = get_name_type($add_post);
+$type_id = get_type_id($name_type, $types);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $post_data = $_POST;
@@ -51,16 +54,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($explode_tags) {
             $tags_arr = explode(" ", $explode_tags);
         }
-
-
-        $post_id = add_post($connection, $post_data);
-
+        $post_id = add_post($connection, $post_data, $type_id);
         if ($post_id) {
             header("Location: post.php?id=" . $post_id);
             exit();
         }
 
     }
+
 }
 
 if ($errors){

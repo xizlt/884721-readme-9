@@ -396,7 +396,7 @@ function embed_youtube_video($youtube_url) {
 
 
 /**
- * Возвращает путь на загруженный файл аватарки. Перемещает файл
+ * Возвращает путь на загруженный файл . Перемещает файл
  * @param $file_data
  * @return string
  */
@@ -412,4 +412,47 @@ function upload_img($file_data)
         die('Не найдена папка uploads или отсутствуют права на запись в неё');
     }
     return $result;
+}
+
+/**
+ * Возвращает название типа поста по условию $_GET
+ * @param string $add_post
+ * @return string
+ */
+function get_name_type(string $add_post): string
+{
+    switch ($add_post) {
+        case 'photo':
+            return 'post-photo';
+            break;
+        case 'video':
+            return 'post-video';
+            break;
+        case 'link':
+            return 'post-link';
+            break;
+        case 'quote':
+            return 'post-quote';
+            break;
+        case 'text':
+            return 'post-text';
+            break;
+    }
+    return $add_post;
+}
+
+/**
+ * Возвращает id типа поста из данных метода $_GET
+ * @param string $name_type
+ * @param array $types
+ * @return int
+ */
+function get_type_id(string $name_type, array $types): int
+{
+    foreach ($types as $type) {
+        if ($name_type === $type['name']) {
+            return $type['id'];
+        }
+    }
+    return null;
 }

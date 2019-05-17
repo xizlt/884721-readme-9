@@ -215,19 +215,26 @@ LIMIT 2
     return $result;
 }
 
-
-function add_post($connection, $post_data)
+/**
+ * Добовление поста
+ * @param mysqli $connection
+ * @param array $post_data
+ * @param int $type_id
+ * @return int|string
+ */
+function add_post(mysqli $connection, array $post_data, int $type_id)
 {
     $sql = 'INSERT INTO posts (title, message, quote_writer, image, video, link, user_id, content_type_id) 
-            VALUES (?, ?, ?, ?, ?, ?, 1, 1)';
+            VALUES (?, ?, ?, ?, ?, ?, 1, ?)';
     $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'ssssss',
-    $post_data['title'],
-    $post_data['message'],
-    $post_data['quote'],
-    $post_data['img'],
-    $post_data['video'],
-    $post_data['link']
+    mysqli_stmt_bind_param($stmt, 'ssssssi',
+        $post_data['title'],
+        $post_data['message'],
+        $post_data['quote'],
+        $post_data['img'],
+        $post_data['video'],
+        $post_data['link'],
+        $type_id
     );
     $result = mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
