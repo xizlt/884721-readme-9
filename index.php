@@ -3,6 +3,8 @@ require 'bootstrap.php';
 
 $types = get_types($connection);
 $type_block = $_GET['type_id'] ?? '';
+$type_block = clean($type_block);
+
 $types_correct = get_type_by_id($connection, $type_block);
 
 if ($type_block && !$types_correct) {

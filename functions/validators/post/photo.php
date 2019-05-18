@@ -1,12 +1,18 @@
 <?php
 
+/**
+ * Возвращает ошибки добавления поста типа photo
+ * @param array $post_data
+ * @param array $file_data
+ * @return array
+ */
 function validate_post_photo(array $post_data, array $file_data): array
 {
     $errors = [];
     if ($error = validate_title($post_data['title'])) {
         $errors['title'] = $error;
     }
-    if ($error = validate_img($file_data['img'])) {
+    if ($error = validate_img($file_data['img'], $post_data)) {
         $errors['img'] = $error;
     }
     if ($error = validate_link_upload($post_data['link'])) {
@@ -15,15 +21,16 @@ function validate_post_photo(array $post_data, array $file_data): array
     if ($error = validate_tags($post_data['tags'])) {
         $errors['tags'] = $error;
     }
+
     return $errors;
 }
 
 /**
- * Проверяет поле загрузки файла
+ * Возвращает ошибки в форме поля загрузки файла
  * @param array $file_data
  * @return array|null
  */
-function validate_img(array $file_data)
+function validate_img(array $file_data, $post_data)
 {
     $tmp_name = $file_data['tmp_name'];
     if ($tmp_name) {
@@ -38,15 +45,17 @@ function validate_img(array $file_data)
         }
         return null;
     }
-    return $arr = [
-        'for_block' => 'Файл. Выберите файл',
-        'for_title' => 'Невыбран файл',
-        'for_text' => 'Выберите файл для загрузки'
-    ];
+    if (!$tmp_name and !$post_data['link']) {
+        return $arr = [
+            'for_block' => 'Загрузите файл или укажите ссылку',
+            'for_title' => 'Незагружен файл',
+            'for_text' => 'Необходимо загрузить файл в следующих форматах: .jpg .jpeg .png или указать ссылку на картинку'
+        ];
+    }
 }
 
 /**
- * Проверяет поле ссылка
+ * Возвращает ошибки в форме поля ссылка
  * @param string $link
  * @return array|null
  */

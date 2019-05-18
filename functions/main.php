@@ -62,11 +62,22 @@ function include_template(string $name, array $data = []): string
 
 /**
  * Xss защита
- * @param $value
- * @return string
+ * @param string|array $value
+ * @return string|array
  */
-function clean($value): string
+function clean($value)
 {
+    if (gettype($value) === 'array') {
+        $result = [];
+        foreach ($value as $key => $val) {
+            $val = trim($val);
+            $val = stripslashes($val);
+            $val = strip_tags($val);
+            $val = htmlspecialchars($val);
+            $result += [$key => $val];
+        }
+        return $result;
+    }
     $value = trim($value);
     $value = stripslashes($value);
     $value = strip_tags($value);
@@ -213,9 +224,9 @@ function date_for_user(string $time): string
  * @param string $type
  * @return string
  */
-function template_by_type(string $type):string
+function template_by_type(string $type): string
 {
-    $result = null;
+    $result = '';
     switch ($type) {
         case 'post-quote':
             $result = 'block_quote.php';
@@ -280,7 +291,7 @@ function user_date_registration(string $time): string
  * Условие по сортировки
  * @return string
  */
-function sort_field():string
+function sort_field(): string
 {
     $sort_field = 'view_count';
     if (isset($_GET['tab'])) {
@@ -382,7 +393,8 @@ function check_youtube_url(string $youtube_url): bool
  * @param string $youtube_url Ссылка на youtube видео
  * @return string
  */
-function embed_youtube_video($youtube_url) {
+function embed_youtube_video($youtube_url)
+{
     $res = "";
     $id = extract_youtube_id($youtube_url);
 

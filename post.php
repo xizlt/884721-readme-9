@@ -2,10 +2,13 @@
 require 'bootstrap.php';
 
 $post_id = $_GET['id'] ?? '';
+if (empty($post_id)) {
+    header("HTTP/1.0 404 Not Found");
+    exit();
+}
+
 $post = get_post_info($connection, $post_id);
-
-
-if (!$post_id or !$post) {
+if (!$post) {
     header("HTTP/1.0 404 Not Found");
     exit();
 }

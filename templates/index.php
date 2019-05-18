@@ -101,46 +101,46 @@
 
         <div class="popular__posts">
             <?php foreach ($posts as $post): ?>
-                <article class="popular__post post <?= clean($post['type']); ?>">
+                <article class="popular__post post <?= $post['type']; ?>">
                     <header class="post__header">
-                        <h2><a href="post.php?id=<?= $post['id']; ?>" title="<?= clean($post['title']); ?>"><?= clean($post['title']); ?></a></h2>
+                        <h2><a href="post.php?id=<?= $post['id']; ?>" title="<?= $post['title']; ?>"><?=$post['title']; ?></a></h2>
                     </header>
                     <div class="post__main">
-                        <?php if (clean($post['type'])==='post-quote'): ?>
+                        <?php if ($post['type']==='post-quote'): ?>
                             <!--содержимое для поста-цитаты-->
                             <blockquote>
                                 <p>
-                                    <?= clips_text(clean($post['message'])); ?>
+                                    <?= clips_text($post['message']); ?>
                                 </p>
                                 <cite><?= (!$post['quote_writer'])? 'Неизвестный Автор' : $post['quote_writer']; ?></cite>
                             </blockquote>
 
-                        <?php elseif (clean($post['type'])==='post-link'): ?>
+                        <?php elseif ($post['type']==='post-link'): ?>
                             <!--содержимое для поста-ссылки-->
                             <div class="post-link__wrapper">
-                                <a class="post-link__external" href="http://<?= clean($post['link']); ?>" title="Перейти по ссылке">
+                                <a class="post-link__external" href="http://<?= $post['link']; ?>" title="Перейти по ссылке">
                                     <div class="post-link__info-wrapper">
                                         <div class="post-link__icon-wrapper">
                                             <img src="img/logo-vita.jpg" alt="Иконка">
                                         </div>
                                         <div class="post-link__info">
-                                            <h3><?= clean($post['title']); ?></h3>
+                                            <h3><?= $post['title']; ?></h3>
                                         </div>
                                     </div>
                                     <p> </p>
-                                    <span><?= clean($post['link']); ?></span>
+                                    <span><?= $post['link']; ?></span>
                                 </a>
                             </div>
 
-                        <?php elseif (clean($post['type'])==='post-photo'): ?>
+                        <?php elseif ($post['type']==='post-photo'): ?>
                             <!--содержимое для поста-фото-->
                             <div class="post-photo__image-wrapper">
                                 <img src="<?= $post['image']; ?>" alt="Фото от пользователя" width="360" height="240">
                             </div>
 
-                        <?php elseif (clean($post['type'])==='post-text'): ?>
+                        <?php elseif ($post['type']==='post-text'): ?>
                             <!--содержимое для поста-текста-->
-                            <p><?= clips_text(clean($post['message'])); ?></p>
+                            <p><?= clips_text($post['message']); ?></p>
                         <?php endif; ?>
 
                     </div>
@@ -149,11 +149,11 @@
                             <a class="post__author-link" href="#" title="Автор">
                                 <div class="post__avatar-wrapper">
                                     <!--укажите путь к файлу аватара-->
-                                    <img class="post__author-avatar" src="<?= clean($post['avatar']); ?>" alt="Аватар пользователя">
+                                    <img class="post__author-avatar" src="<?= $post['avatar']; ?>" alt="Аватар пользователя">
                                 </div>
-                                    <?php $generate_index_array = clean($post['create_time']); ?>
+                                    <?php $generate_index_array = $post['create_time']; ?>
                                 <div class="post__info">
-                                    <b class="post__author-name"><?= clean($post['user_name']); ?></b>
+                                    <b class="post__author-name"><?= $post['user_name']; ?></b>
                                     <time class="post__time" datetime="<?= $generate_index_array; ?>" title="<?= date_for_title($generate_index_array) ?>"><?= publication_date($generate_index_array); ?></time>
                                 </div>
 

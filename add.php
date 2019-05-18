@@ -38,6 +38,7 @@ $type_id = get_type_id($name_type, $types);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $post_data = $_POST;
+    $post_data = clean($post_data);
     $file_data = $_FILES;
 
     switch ($tab) {
@@ -58,28 +59,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             break;
     }
 
-    if (empty($errors)) {
-        if ($file_data) {
-            $post_data['img'] = upload_img($file_data['img']);
+
+    if (!$errors) {
+
+        $post_data['img'] = upload_img($file_data['img']);
+
+        if (!$post_data['img']) {
+            $path = 'uploads/' . basename($post_data['link']);
+            $file = file_get_contents($post_data['link']);
+            file_put_contents($path, $file);
+            $post_data['img'] = $path;
+            $post_data['link'] = null;
         }
+
+
         $post_id = add_post($connection, $post_data, $type_id);
 
         $string_tags = $post_data['tags'];
-        if($string_tags) {
+        if ($string_tags) {
             add_tags($connection, $string_tags, $post_id);
         }
         if ($post_id) {
             header("Location: post.php?id=" . $post_id);
             exit();
         }
-
     }
-
-}
-
-if ($errors){
     $block_errors = include_template('add_post_errors.php', ['errors' => $errors]);
 }
+
 
 $title_post = include_template('add_post_title.php', ['errors' => $errors, 'post_data' => $post_data]);
 $tags_post = include_template('add_post_tag.php', ['errors' => $errors, 'post_data' => $post_data]);

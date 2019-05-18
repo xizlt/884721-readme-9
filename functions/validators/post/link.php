@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Возвращает ошибки добавления поста типа link
+ * @param array $post_data
+ * @return array
+ */
 function validate_post_link(array $post_data): array
 {
     $errors = [];
@@ -16,7 +21,7 @@ function validate_post_link(array $post_data): array
 }
 
 /**
- * Проверяет поле ссылка
+ * Возвращает ошибки в форме поля ссылка
  * @param $link
  * @return array|null
  */

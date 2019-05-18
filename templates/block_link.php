@@ -6,8 +6,8 @@
                     <img src="img/logo-vita.jpg" alt="Иконка">
                 </div>
                 <div class="post-link__info">
-                    <h3><?= clean($post['title']); ?></h3>
-                    <p><?= clean($post['message']); ?></p>
+                    <h3><?= $post['title']; ?></h3>
+                    <p><?= $post['message']; ?></p>
                 </div>
             </div>
             <span><?= $post['link']; ?></span>

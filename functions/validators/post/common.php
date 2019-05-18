@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Возвращает ошибки в форме поля title
+ * @param string $title
+ * @return array|null
+ */
 function validate_title(string $title): ?array
 {
     if (empty($title)) {
@@ -19,8 +24,18 @@ function validate_title(string $title): ?array
     return null;
 }
 
+/**
+ * Возвращает ошибку если найден недопустимый символ в слове
+ * @param string $tags
+ * @return array|null
+ */
 function validate_tags(string $tags): ?array
 {
-    // TODO: реализовать проверку что строка состоит из букв и пробелов
+    if(preg_match("/[^(\w)|(\x7F-\xFF)|(\s)]/",$tags))
+        return $arr = [
+    'for_block' => 'Теги. Недопустимые символы',
+    'for_title' => 'Недопустимые символы',
+    'for_text' => 'В тегах можно использовать только буквы, цифры, пробел и нижнее подчеркивание'
+];
     return null;
 }

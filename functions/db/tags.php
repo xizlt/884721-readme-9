@@ -35,7 +35,7 @@ function add_tag(mysqli $connection, string $name):int
 
 function add_posts_tags(mysqli $connection, int $tag_id, int $post_id):int
 {
-    $sql = 'INSERT INTO posts_tags ($tag_id, $post_id) 
+    $sql = 'INSERT INTO posts_tags (tag_id, post_id) 
             VALUES (?,?)';
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 'ii', $tag_id, $post_id);

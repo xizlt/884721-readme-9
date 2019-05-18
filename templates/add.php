@@ -60,7 +60,7 @@
                                 <div class="form__text-inputs">
                                     <?= $title_post; ?>
                                     <div class="adding-post__input-wrapper form__input-wrapper">
-                                        <label class="adding-post__label form__label " for="photo-url">Ссылка из интернета</label>
+                                        <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
 
                                         <div class="form__input-section <?= isset($errors['link'])? 'form__input-section--error' : ' ' ?>">
                                             <input class="adding-post__input form__input " id="photo-url" type="text" name="link" placeholder="Введите ссылку" value="<?= isset($post_data['link'])? $post_data['link'] : ''  ?>">

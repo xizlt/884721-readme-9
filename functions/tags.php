@@ -25,6 +25,11 @@ function add_tags(mysqli $connection, string $string_tags, int $post_id)
     }
 }
 
+/**
+ * Возвращает массив разбитый по отдельным словам
+ * @param string $string_tags
+ * @return array
+ */
 function split_tags_string(string $string_tags):array
 {
     if ($string_tags) {

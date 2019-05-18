@@ -54,7 +54,7 @@ ORDER BY $sort DESC
  * @param int $post_id
  * @return array|null
  */
-function get_post_info(mysqli $connection, int $post_id)
+function get_post_info(mysqli $connection, int $post_id): ?array
 {
     $sql = "SELECT p.id,
        p.create_time,
@@ -80,12 +80,17 @@ FROM posts p
 WHERE p.id = $post_id
 ";
     if ($query = mysqli_query($connection, $sql)) {
-        $result = $query ? mysqli_fetch_array($query, MYSQLI_ASSOC) : null;
+        $result = mysqli_fetch_assoc($query);
     } else {
         $error = mysqli_error($connection);
-        die('Ошибка MySQL ' . $error);
+        die('Ошибка MySQL: ' . $error);
     }
-    return $result;
+
+    if ($result['id']) {
+        return $result;
+    }
+
+    return null;
 }
 
 /**

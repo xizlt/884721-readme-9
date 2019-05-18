@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Возвращает ошибки добавления поста типа quote
+ * @param array $post_data
+ * @return array
+ */
 function validate_post_quote(array $post_data): array
 {
     $errors = [];
@@ -19,7 +24,7 @@ function validate_post_quote(array $post_data): array
 }
 
 /**
- * Проверят поле автор
+ * Возвращает ошибки в форме поля автор
  * @param string $quote
  * @return array|null
  */

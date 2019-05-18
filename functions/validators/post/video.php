@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Возвращает ошибки добавления поста типа video
+ * @param array $post_data
+ * @return array
+ */
 function validate_post_video(array $post_data): array
 {
     $errors = [];
@@ -16,7 +21,7 @@ function validate_post_video(array $post_data): array
 }
 
 /**
- * Проверяет поле ссылка на видео
+ * Возвращает ошибки в форме поля ссылка на видео
  * @param $link
  * @return array|null
  */
