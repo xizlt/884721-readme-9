@@ -59,7 +59,7 @@ function validate_img(array $file_data, $post_data)
  * @param string $link
  * @return array|null
  */
-function validate_link_upload(string $link)
+function validate_link_upload(string $link): ?array
 {
     if (!empty($link)) {
         if (!filter_var($link, FILTER_VALIDATE_URL)) {
@@ -69,22 +69,22 @@ function validate_link_upload(string $link)
                 'for_text' => 'Необходимо заполнить поле в полном формате ссылки. Например: https://www.google.com/'
             ];
         }
-        $urlHeaders = get_headers($link, 1);
-// проверяем ответ сервера на наличие кода: 200 - ОК
-        if (!strpos($urlHeaders[0], '200')) {
-            return $arr = [
-                'for_block' => 'Ссылка. Неверно указан путь',
-                'for_title' => 'Ошибка в загрузке',
-                'for_text' => 'Проверьте правильность пути к файлу'
-            ];
+            $urlHeaders = get_headers($link, 1);
+            if (!strpos($urlHeaders[0], '200')) {
+                return $arr = [
+                    'for_block' => 'Ссылка. Неверно указан путь',
+                    'for_title' => 'Ошибка в загрузке',
+                    'for_text' => 'Проверьте правильность пути к файлу'
+                ];
+            }
+            if ($urlHeaders['Content-Type'] !== 'image/jpg' and $urlHeaders['Content-Type'] !== 'image/jpeg' and $urlHeaders['Content-Type'] !== 'image/png') {
+                return $arr = [
+                    'for_block' => 'Ссылка. Неподдерживаемый формат',
+                    'for_title' => 'Неподдерживаемый формат',
+                    'for_text' => 'Необходимо загрузить файл в следующих форматах: .jpg .jpeg .png'
+                ];
+            }
         }
-        if ($urlHeaders['Content-Type'] !== 'image/jpg' and $urlHeaders['Content-Type'] !== 'image/jpeg' and $urlHeaders['Content-Type'] !== 'image/png') {
-            return $arr = [
-                'for_block' => 'Ссылка. Неподдерживаемый формат',
-                'for_title' => 'Неподдерживаемый формат',
-                'for_text' => 'Необходимо загрузить файл в следующих форматах: .jpg .jpeg .png'
-            ];
-        }
-    }
+
     return null;
 }

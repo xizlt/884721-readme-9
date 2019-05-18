@@ -13,17 +13,7 @@ require 'functions/validators/post/photo.php';
 require 'functions/validators/post/link.php';
 require 'functions/validators/post/quote.php';
 require 'functions/tags.php';
-
-function upload_img_by_url($post_data)
-{
-    if ($post_data) {
-        $path = 'uploads/' . basename($post_data);
-        $file = file_get_contents($post_data);
-        file_put_contents($path, $file);
-        return $path;
-    }
-    return null;
-}
+require 'functions/photo.php';
 
 $types = get_types($connection);
 $tab = $_GET['tab'] ?? null;
@@ -69,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = validate_post_photo($post_data, $file_data);
             break;
     }
-    
+
     if (!$errors) {
 
         if ($tab === TAB_PHOTO) {
