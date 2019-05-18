@@ -62,15 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$errors) {
 
-        $post_data['img'] = upload_img($file_data['img']);
+            $post_data['img'] = upload_img($file_data['img']);
 
-        if (!$post_data['img']) {
-            $path = 'uploads/' . basename($post_data['link']);
-            $file = file_get_contents($post_data['link']);
-            file_put_contents($path, $file);
-            $post_data['img'] = $path;
-            $post_data['link'] = null;
-        }
 
 
         $post_id = add_post($connection, $post_data, $type_id);
@@ -84,7 +77,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
     }
+
+
     $block_errors = include_template('add_post_errors.php', ['errors' => $errors]);
+
 }
 
 

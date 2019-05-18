@@ -41,12 +41,15 @@ function validate_video($link)
             'for_text' => 'Необходимо заполнить поле в полном формате ссылки. Например: https://www.google.com/'
         ];
     }
-    if (!check_youtube_url($link)) {
+    $urlHeaders = get_headers($link, 1);
+// проверяем ответ сервера на наличие кода: 200 - ОК
+    if (!strpos($urlHeaders[0], '200')) {
         return $arr = [
-            'for_block' => 'Ссылка. Данного файла нет',
-            'for_title' => 'Файла нет',
-            'for_text' => 'Проверьте наличие указываемого видео. Возможно его удалили или органичили доступ'
+            'for_block' => 'Ссылка. Неверно указан путь',
+            'for_title' => 'Ошибка в загрузке',
+            'for_text' => 'Проверьте правильность пути к файлу'
         ];
     }
+
     return null;
 }
