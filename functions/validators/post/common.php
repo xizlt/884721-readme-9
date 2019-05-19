@@ -31,11 +31,12 @@ function validate_title(string $title): ?array
  */
 function validate_tags(string $tags): ?array
 {
-    if(preg_match("/[^(\w)|(\x7F-\xFF)|(\s)]/",$tags))
+    if (preg_match("/[^(\w)|(\x7F-\xFF)|(\s)]/", $tags)) {
         return $arr = [
-    'for_block' => 'Теги. Недопустимые символы',
-    'for_title' => 'Недопустимые символы',
-    'for_text' => 'В тегах можно использовать только буквы, цифры, пробел и нижнее подчеркивание'
-];
+            'for_block' => 'Теги. Недопустимые символы',
+            'for_title' => 'Недопустимые символы',
+            'for_text' => 'В тегах можно использовать только буквы, цифры, пробел и нижнее подчеркивание'
+        ];
+    }
     return null;
 }

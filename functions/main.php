@@ -365,31 +365,7 @@ function extract_youtube_id(string $youtube_url): bool
 
 
 /**
- * Проверяет, что переданная ссылка ведет на публично доступное видео с youtube
- * @param string $youtube_url Ссылка на youtube видео
- * @return bool
- */
-function check_youtube_url(string $youtube_url): bool
-{
-    $res = false;
-    $id = extract_youtube_id($youtube_url);
-
-    if ($id) {
-        $api_data = ['id' => $id, 'part' => 'id,status', 'key' => 'AIzaSyC-n4aQQk0mZrZNsfswKcaljExfM1UG57c'];
-        $url = "https://www.googleapis.com/youtube/v3/videos?" . http_build_query($api_data);
-
-        $resp = file_get_contents($url);
-
-        if ($resp && $json = json_decode($resp, true)) {
-            $res = $json['pageInfo']['totalResults'] > 0 && $json['items'][0]['status']['privacyStatus'] == 'public';
-        }
-    }
-
-    return $res;
-}
-
-/**
- * Возвращает код iframe для вставки youtube видео на страницу
+ * Возвращает код iframe для вставки youtube видео на страницу поста
  * @param string $youtube_url Ссылка на youtube видео
  * @return string
  */
@@ -401,6 +377,25 @@ function embed_youtube_video($youtube_url)
     if ($id) {
         $src = "https://www.youtube.com/embed/" . $id;
         $res = '<iframe width="760" height="400" src="' . $src . '" frameborder="0"></iframe>';
+    }
+
+    return $res;
+}
+
+
+/**
+ * Возвращает код iframe для вставки youtube видео на главную страницу
+ * @param string $youtube_url Ссылка на youtube видео
+ * @return string
+ */
+function embed_youtube_video_index($youtube_url)
+{
+    $res = "";
+    $id = extract_youtube_id($youtube_url);
+
+    if ($id) {
+        $src = "https://www.youtube.com/embed/" . $id;
+        $res = '<iframe width="360" height="240" src="' . $src . '" frameborder="0"></iframe>';
     }
 
     return $res;

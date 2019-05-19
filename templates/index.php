@@ -94,7 +94,6 @@
                     </li>
                     <?php endif; ?>
                     <?php endforeach; ?>
-
                 </ul>
             </div>
         </div>
@@ -112,7 +111,7 @@
                                 <p>
                                     <?= clips_text($post['message']); ?>
                                 </p>
-                                <cite><?= (!$post['quote_writer'])? 'Неизвестный Автор' : $post['quote_writer']; ?></cite>
+                                <cite><?= $post['quote_writer']; ?></cite>
                             </blockquote>
 
                         <?php elseif ($post['type']==='post-link'): ?>
@@ -136,6 +135,12 @@
                             <!--содержимое для поста-фото-->
                             <div class="post-photo__image-wrapper">
                                 <img src="<?= $post['image']; ?>" alt="Фото от пользователя" width="360" height="240">
+                            </div>
+
+                        <?php elseif ($post['type']==='post-video'): ?>
+                            <!--содержимое для поста-фото-->
+                            <div class="post-photo__image-wrapper">
+                                <?= embed_youtube_video_index($post['video']); ?>
                             </div>
 
                         <?php elseif ($post['type']==='post-text'): ?>
