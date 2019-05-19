@@ -28,7 +28,7 @@ CREATE TABLE posts
     id              INT AUTO_INCREMENT PRIMARY KEY,
     create_time     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     title           VARCHAR(250)  NOT NULL,
-    message         VARCHAR(1000) NULL,
+    message         TEXT NULL,
     quote_writer    VARCHAR(250)  NULL,
     image           VARCHAR(1000) NULL,
     video           VARCHAR(1000) NULL,
@@ -41,7 +41,6 @@ CREATE TABLE posts
 );
 
 CREATE INDEX title_idx ON posts (title);
-CREATE INDEX messages_idx ON posts (message);
 
 
 ALTER TABLE posts
@@ -124,22 +123,22 @@ ALTER TABLE messages
         REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
-CREATE TABLE hash_tags
+CREATE TABLE tags
 (
     id   INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NULL UNIQUE
 );
 
 
-CREATE TABLE hash2post
+CREATE TABLE posts_tags
 (
     post_id INT NULL,
-    hash_id INT NULL
+    tag_id INT NULL
 );
 
-ALTER TABLE hash2post
+ALTER TABLE posts_tags
     ADD FOREIGN KEY (post_id)
         REFERENCES posts (id) ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE hash2post
-    ADD FOREIGN KEY (hash_id)
-        REFERENCES hash_tags (id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE posts_tags
+    ADD FOREIGN KEY (tag_id)
+        REFERENCES tags (id) ON DELETE CASCADE ON UPDATE CASCADE;

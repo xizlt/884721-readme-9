@@ -2,9 +2,9 @@
 	<div class="post__main">
 	  <blockquote>
           <p>
-              <?= clean($post['message']); ?>
+              <?= $post['message']; ?>
           </p>
-		<cite><?= (!$post['quote_writer'])? 'Неизвестный Автор' : $post['quote_writer']; ?></cite>
+		<cite><?= $post['quote_writer']; ?></cite>
 	  </blockquote>
 	</div>
 </div>

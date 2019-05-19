@@ -1,31 +1,19 @@
 <?php
-date_default_timezone_set("Europe/Moscow");
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-$is_auth = rand(0, 1);
-
-$user_name = 'Иван'; // укажите здесь ваше имя
-
-require_once 'functions/main.php';
-require_once 'functions/db.php';
-
-$config = require 'config.php';
-$connection = connectDb($config['db']);
+require 'bootstrap.php';
 
 $types = get_types($connection);
 $type_block = $_GET['type_id'] ?? '';
+$type_block = clean($type_block);
+
 $types_correct = get_type_by_id($connection, $type_block);
 
 if ($type_block && !$types_correct) {
     header("HTTP/1.0 404 Not Found");
     exit();
 }
-$sort_field = sort_field();
+$sort = sort_field();
 
-$posts = get_posts($connection, $type_block, $sort_field);
+$posts = get_posts($connection, $type_block, $sort);
 
 $page_content = include_template('index.php', [
     'types' => $types,
