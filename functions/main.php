@@ -395,7 +395,7 @@ function embed_youtube_video_index($youtube_url)
 
     if ($id) {
         $src = "https://www.youtube.com/embed/" . $id;
-        $res = '<iframe width="360" height="240" src="' . $src . '" frameborder="0"></iframe>';
+        $res = '<iframe width="360" height="188" src="' . $src . '" frameborder="0"></iframe>';
     }
 
     return $res;
