@@ -62,11 +62,22 @@ function include_template(string $name, array $data = []): string
 
 /**
  * Xss защита
- * @param string $value
- * @return string
+ * @param string|array $value
+ * @return string|array
  */
-function clean(string $value): string
+function clean($value)
 {
+    if (gettype($value) === 'array') {
+        $result = [];
+        foreach ($value as $key => $val) {
+            $val = trim($val);
+            $val = stripslashes($val);
+            $val = strip_tags($val);
+            $val = htmlspecialchars($val);
+            $result += [$key => $val];
+        }
+        return $result;
+    }
     $value = trim($value);
     $value = stripslashes($value);
     $value = strip_tags($value);
@@ -213,9 +224,9 @@ function date_for_user(string $time): string
  * @param string $type
  * @return string
  */
-function template_by_type(string $type):string
+function template_by_type(string $type): string
 {
-    $result = null;
+    $result = '';
     switch ($type) {
         case 'post-quote':
             $result = 'block_quote.php';
@@ -280,7 +291,7 @@ function user_date_registration(string $time): string
  * Условие по сортировки
  * @return string
  */
-function sort_field():string
+function sort_field(): string
 {
     $sort_field = 'view_count';
     if (isset($_GET['tab'])) {
@@ -294,4 +305,161 @@ function sort_field():string
         }
     }
     return $sort_field;
+}
+
+/**
+ * Проверяет существование формы добавления поста
+ * @param string $add_post
+ * @return bool
+ */
+function get_tab(string $add_post): bool
+{
+    $result = false;
+    if (!empty($add_post)) {
+        switch ($add_post) {
+            case 'photo':
+                $result = true;
+                break;
+            case 'video':
+                $result = true;
+                break;
+            case 'link':
+                $result = true;
+                break;
+            case 'quote':
+                $result = true;
+                break;
+            case 'text':
+                $result = true;
+                break;
+        }
+    }
+    return $result;
+}
+
+
+/**
+ * Извлекает из ссылки на youtube видео его уникальный ID
+ * @param string $youtube_url Ссылка на youtube видео
+ * @return bool|mixed|string|null
+ */
+function extract_youtube_id(string $youtube_url)
+{
+    $id = false;
+
+    $parts = parse_url($youtube_url);
+
+    if ($parts) {
+        if ($parts['path'] == '/watch') {
+            parse_str($parts['query'], $vars);
+            $id = $vars['v'] ?? null;
+        } else {
+            if ($parts['host'] == 'youtu.be') {
+                $id = substr($parts['path'], 1);
+            }
+        }
+    }
+
+    return $id;
+}
+
+
+/**
+ * Возвращает код iframe для вставки youtube видео на страницу поста
+ * @param string $youtube_url Ссылка на youtube видео
+ * @return string
+ */
+function embed_youtube_video($youtube_url)
+{
+    $res = "";
+    $id = extract_youtube_id($youtube_url);
+
+    if ($id) {
+        $src = "https://www.youtube.com/embed/" . $id;
+        $res = '<iframe width="760" height="400" src="' . $src . '" frameborder="0"></iframe>';
+    }
+
+    return $res;
+}
+
+
+/**
+ * Возвращает код iframe для вставки youtube видео на главную страницу
+ * @param string $youtube_url Ссылка на youtube видео
+ * @return string
+ */
+function embed_youtube_video_index($youtube_url)
+{
+    $res = "";
+    $id = extract_youtube_id($youtube_url);
+
+    if ($id) {
+        $src = "https://www.youtube.com/embed/" . $id;
+        $res = '<iframe width="360" height="188" src="' . $src . '" frameborder="0"></iframe>';
+    }
+
+    return $res;
+}
+
+
+/**
+ * Возвращает путь на загруженный файл . Перемещает файл
+ * @param $file_data
+ * @return string
+ */
+function upload_img($file_data)
+{
+    $path = $file_data['name'];
+    if (!$path) {
+        return null;
+    }
+    $tmp_name = $file_data['tmp_name'];
+    $result = 'uploads/' . $path;
+    if (!move_uploaded_file($tmp_name, $result)) {
+        die('Не найдена папка uploads или отсутствуют права на запись в неё');
+    }
+    return $result;
+}
+
+/**
+ * Возвращает название типа поста по условию $_GET
+ * @param string $add_post
+ * @return string
+ */
+function get_name_type(string $add_post): string
+{
+    switch ($add_post) {
+        case 'photo':
+            return 'post-photo';
+            break;
+        case 'video':
+            return 'post-video';
+            break;
+        case 'link':
+            return 'post-link';
+            break;
+        case 'quote':
+            return 'post-quote';
+            break;
+        case 'text':
+            return 'post-text';
+            break;
+    }
+    return $add_post;
+}
+
+/**
+ * Возвращает id типа поста из данных метода $_GET
+ * @param string $name_type
+ * @param array $types
+ * @return int
+ */
+function get_type_id(string $name_type, array $types): int
+{
+    foreach ($types as $type) {
+        if ($name_type === $type['name']) {
+            return $type['id'];
+        }
+    }
+    return null;
 }
