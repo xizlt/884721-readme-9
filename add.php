@@ -65,6 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($tab === TAB_PHOTO) {
             $post_data['img'] = upload_img($file_data['img']) ?? upload_img_by_url($post_data['link']);
         }
+        if ($tab === TAB_VIDEO) {
+            $post_data['video'] = $post_data['link'];
+            $post_data['link'] = null;
+        }
 
         $post_id = add_post($connection, $post_data, $type_id);
 

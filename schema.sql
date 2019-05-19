@@ -41,7 +41,6 @@ CREATE TABLE posts
 );
 
 CREATE INDEX title_idx ON posts (title);
-CREATE INDEX messages_idx ON posts (message);
 
 
 ALTER TABLE posts
