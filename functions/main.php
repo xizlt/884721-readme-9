@@ -341,9 +341,9 @@ function get_tab(string $add_post): bool
 /**
  * Извлекает из ссылки на youtube видео его уникальный ID
  * @param string $youtube_url Ссылка на youtube видео
- * @return bool
+ * @return bool|mixed|string|null
  */
-function extract_youtube_id(string $youtube_url): bool
+function extract_youtube_id(string $youtube_url)
 {
     $id = false;
 
