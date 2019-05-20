@@ -74,22 +74,25 @@ function get_post_info(mysqli $connection, int $post_id): ?array
        u.create_time as user_reg,
        COUNT(l.user_id) AS like_post
 FROM posts p
-         JOIN likes l ON p.id = l.post_id
+         left JOIN likes l ON p.id = l.post_id
          JOIN users u ON u.id = p.user_id
          JOIN content_type c ON c.id = p.content_type_id
-WHERE p.id = $post_id
+WHERE p.id = ?
+GROUP BY p.id
 ";
-    if ($query = mysqli_query($connection, $sql)) {
-        $result = mysqli_fetch_assoc($query);
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$post_id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_assoc($res);
     } else {
         $error = mysqli_error($connection);
-        die('Ошибка MySQL: ' . $error);
+        die('Ошибка MySQL ' . $error);
     }
-
     if ($result['id']) {
         return $result;
     }
-
     return null;
 }
 

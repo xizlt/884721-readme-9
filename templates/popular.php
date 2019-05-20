@@ -8,7 +8,7 @@
                 <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
                 <ul class="popular__sorting-list sorting__list">
                     <li class="sorting__item sorting__item--popular">
-                        <a class="sorting__link <?php if(isset($_GET['tab']) && $_GET['tab'] === 'view'):?>sorting__link--active<?php endif; ?>" href="<?php if ($type_block): ?>/?type_id=<?= $type_block; ?>&tab=view<?php else: ?>/?tab=view<?php endif;?>">
+                        <a class="sorting__link <?php if(isset($_GET['tab']) && $_GET['tab'] === 'view'):?>sorting__link--active<?php endif; ?>" href="<?php if ($type_block): ?>popular.php?type_id=<?= $type_block; ?>&tab=view<?php else: ?>popular.php?tab=view<?php endif;?>">
                             <span>Популярность</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -16,7 +16,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link <?php if(isset($_GET['tab']) && $_GET['tab'] === 'likes'):?>sorting__link--active<?php endif; ?>" href="<?php if ($type_block): ?>/?type_id=<?= $type_block; ?>&tab=likes<?php else: ?>/?tab=likes<?php endif; ?>">
+                        <a class="sorting__link <?php if(isset($_GET['tab']) && $_GET['tab'] === 'likes'):?>sorting__link--active<?php endif; ?>" href="<?php if ($type_block): ?>popular.php?type_id=<?= $type_block; ?>&tab=likes<?php else: ?>popular.php?tab=likes<?php endif; ?>">
                             <span>Лайки</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -24,7 +24,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link <?php if(isset($_GET['tab']) && $_GET['tab'] === 'date'):?>sorting__link--active<?php endif; ?>" href="<?php if ($type_block): ?>/?type_id=<?= $type_block; ?>&tab=date<?php else: ?>/?tab=date<?php endif; ?>">
+                        <a class="sorting__link <?php if(isset($_GET['tab']) && $_GET['tab'] === 'date'):?>sorting__link--active<?php endif; ?>" href="<?php if ($type_block): ?>popular.php?type_id=<?= $type_block; ?>&tab=date<?php else: ?>popular.php?tab=date<?php endif; ?>">
                             <span>Дата</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -37,7 +37,7 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all <?php if(empty($type_block)): ?> filters__button--active <?php endif;?>" href="/">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?php if(empty($type_block)): ?> filters__button--active <?php endif;?>" href="popular.php">
                             <span>Все</span>
                         </a>
                     </li>
