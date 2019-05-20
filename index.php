@@ -1,31 +1,30 @@
 <?php
+
 require 'bootstrap.php';
+require 'functions/validators/user/login.php';
 
-$types = get_types($connection);
-$type_block = $_GET['type_id'] ?? '';
-$type_block = clean($type_block);
+$login_data = null;
+$errors = null;
 
-$types_correct = get_type_by_id($connection, $type_block);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $login_data = $_POST ?? null;
+    $login_data = clean($login_data);
+    $user = get_user_by_email($connection, $login_data['email']);
+    $errors = validate_login($connection, $login_data, $user['password']);
 
-if ($type_block && !$types_correct) {
-    header("HTTP/1.0 404 Not Found");
-    exit();
+    if (!$errors) {
+        $_SESSION['user_id'] = $user['id'];
+
+        header("Location: feed.php");
+        exit();
+    }
 }
-$sort = sort_field();
 
-$posts = get_posts($connection, $type_block, $sort);
-
-$page_content = include_template('index.php', [
-    'types' => $types,
-    'posts' => $posts,
-    'types_correct' => $types_correct,
-    'type_block' => $type_block,
-    'connection' => $connection
-]);
-$layout_content = include_template('layout.php', [
-    'page_content' => $page_content,
+$layout_content = include_template('index.php', [
     'title' => 'Популярное',
     'is_auth' => $is_auth,
-    'user_name' => $user_name
+    'user_name' => $user_name,
+    'errors' => $errors,
+    'login_data' => $login_data
 ]);
 print ($layout_content);

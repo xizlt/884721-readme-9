@@ -45,3 +45,32 @@ function add_user($connection, $user_data)
     }
     return null;
 }
+
+/**
+ * Получение массива с данными о пользователе по id
+ * @param mysqli $connection
+ * @param int $id
+ * @return array|null
+ */
+function get_user_by_id(mysqli $connection, int $id): ?array
+{
+    $sql = "SELECT * FROM users WHERE id = $id";
+    $res = mysqli_query($connection, $sql);
+    $user = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
+    return $user;
+}
+
+/**
+ * Получение данных юзера
+ * @param mysqli $connection
+ * @param string $email
+ * @return array|null
+ */
+function get_user_by_email(mysqli $connection, string $email): ?array
+{
+    $email = mysqli_real_escape_string($connection, $email);
+    $sql = "SELECT * FROM users WHERE email = '$email'";
+    $res = mysqli_query($connection, $sql);
+    $user = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
+    return $user;
+}

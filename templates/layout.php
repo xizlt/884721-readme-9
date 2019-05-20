@@ -15,7 +15,7 @@
 <header class="header">
     <div class="header__wrapper container">
         <div class="header__logo-wrapper">
-            <a class="header__logo-link" href="index.php">
+            <a class="header__logo-link" href="popular.php">
                 <img class="header__logo" src="img/logo.svg" alt="Логотип readme" width="128" height="24">
             </a>
             <p class="header__topic">
@@ -98,7 +98,7 @@
                                             </a>
                                         </li>
                                         <li class="header__profile-nav-item">
-                                            <a class="header__profile-nav-link" href="#">
+                                            <a class="header__profile-nav-link" href="/logout.php">
                           <span class="header__profile-nav-text">
                             Выход
                           </span>
@@ -115,7 +115,7 @@
                     <?php else: ?>
                     <ul class="header__user-nav">
                         <li class="header__authorization">
-                            <a class="header__user-button header__authorization-button button" href="login.php">Вход</a>
+                            <a class="header__user-button header__authorization-button button" href="/">Вход</a>
                         </li>
                         <li>
                             <a class="header__user-button header__register-button button <?php if(preg_match("'registration.php'", $_SERVER['REQUEST_URI'])): ?> header__user-button--active <?php endif; ?>" href="registration.php">Регистрация</a>

@@ -1,4 +1,5 @@
 <?php
+
 date_default_timezone_set("Europe/Moscow");
 
 ini_set('display_errors', 1);
@@ -21,3 +22,15 @@ require_once 'functions/db/users.php';
 
 $config = require 'config.php';
 $connection = connectDb($config['db']);
+
+if (isset($_SESSION['user_id'])) {
+    $user = get_user_by_id($connection, $_SESSION['user_id']);
+    if ($user) {
+        header("Location: feed.php");
+        exit();
+    }else{
+        header("Location: index.php");
+        exit();
+    }
+}
+
