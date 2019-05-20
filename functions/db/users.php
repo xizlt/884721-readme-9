@@ -9,11 +9,16 @@
 function get_email(mysqli $connection, string $email): ?bool
 {
     $email_user = mysqli_real_escape_string($connection, $email);
-    $sql = "SELECT id FROM users WHERE email = '$email_user'";
-    $res = mysqli_query($connection, $sql);
-    $isset = mysqli_num_rows($res);
-    if ($isset > 0) {
-        return true;
+    $sql = "SELECT id FROM users WHERE email = ?";
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$email_user]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $isset = mysqli_num_rows($res);
+        if ($isset > 0) {
+            return true;
+        }
     }
     return null;
 }
@@ -54,10 +59,18 @@ function add_user($connection, $user_data)
  */
 function get_user_by_id(mysqli $connection, int $id): ?array
 {
-    $sql = "SELECT * FROM users WHERE id = $id";
-    $res = mysqli_query($connection, $sql);
-    $user = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
-    return $user;
+    $sql = "SELECT * FROM users WHERE id = ?";
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_array($res, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
 }
 
 /**
@@ -69,8 +82,16 @@ function get_user_by_id(mysqli $connection, int $id): ?array
 function get_user_by_email(mysqli $connection, string $email): ?array
 {
     $email = mysqli_real_escape_string($connection, $email);
-    $sql = "SELECT * FROM users WHERE email = '$email'";
-    $res = mysqli_query($connection, $sql);
-    $user = $res ? mysqli_fetch_array($res, MYSQLI_ASSOC) : null;
-    return $user;
+    $sql = "SELECT * FROM users WHERE email = ?";
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$email]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_array($res, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
 }

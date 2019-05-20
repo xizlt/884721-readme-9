@@ -7,7 +7,7 @@ $type_block = $_GET['type_id'] ?? '';
 $type_block = clean($type_block);
 
 $types_correct = get_type_by_id($connection, $type_block);
-
+var_dump($type_block);
 if ($type_block && !$types_correct) {
     header("HTTP/1.0 404 Not Found");
     exit();

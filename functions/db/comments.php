@@ -10,10 +10,14 @@ function get_count_comments(mysqli $connection, int $post_id): int
     $sql = "SELECT
         id
 FROM comments
-WHERE post_id = $post_id
+WHERE post_id = ?
 ";
-    if ($query = mysqli_query($connection, $sql)) {
-        $result = mysqli_num_rows($query);
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$post_id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_num_rows($res);
     } else {
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);
@@ -34,11 +38,15 @@ function get_comments(mysqli $connection, int $post_id): array
 FROM comments cm
      JOIN users u
 ON u.id = cm.user_id
-WHERE cm.post_id = $post_id
+WHERE cm.post_id = ?
 LIMIT 2
 ";
-    if ($query = mysqli_query($connection, $sql)) {
-        $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$post_id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_all($res, MYSQLI_ASSOC);
     } else {
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);

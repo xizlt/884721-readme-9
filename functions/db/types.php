@@ -26,13 +26,19 @@ function get_types(mysqli $connection): array
 function get_type_by_id(mysqli $connection, string $type_id): ?array
 {
     $sql = "SELECT * FROM content_type
-WHERE id = '$type_id'
+WHERE id = ?
 ";
-    if ($query = mysqli_query($connection, $sql)) {
-        $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
+    $result = null;
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$type_id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_array($res, MYSQLI_ASSOC);
     } else {
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);
     }
     return $result;
+
 }
