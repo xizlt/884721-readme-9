@@ -77,7 +77,7 @@ function validate_link_upload(string $link): ?array
                     'for_text' => 'Проверьте правильность пути к файлу'
                 ];
             }
-            if ($urlHeaders['Content-Type'] !== 'image/gif' and $urlHeaders['Content-Type'] !== 'image/jpeg' and $urlHeaders['Content-Type'] !== 'image/png') {
+            if (!is_image($urlHeaders['Content-Type'])) {
                 return $arr = [
                     'for_block' => 'Ссылка. Неподдерживаемый формат',
                     'for_title' => 'Неподдерживаемый формат',
