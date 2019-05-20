@@ -14,3 +14,16 @@ function upload_img_by_url(string $data): string
     }
     return null;
 }
+
+function is_image(string $file_type): bool
+{
+    switch ($file_type) {
+        case 'image/gif':
+            return true;
+        case 'image/jpeg':
+            return true;
+        case 'image/png':
+            return true;
+    }
+    return false;
+}

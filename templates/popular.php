@@ -117,16 +117,17 @@
                         <?php elseif ($post['type']==='post-link'): ?>
                             <!--содержимое для поста-ссылки-->
                             <div class="post-link__wrapper">
-                                <a class="post-link__external" href="http://<?= $post['link']; ?>" title="Перейти по ссылке">
+                                <a class="post-link__external" href="<?= $post['link']; ?>" title="Перейти по ссылке">
                                     <div class="post-link__info-wrapper">
                                         <div class="post-link__icon-wrapper">
                                             <img src="img/logo-vita.jpg" alt="Иконка">
                                         </div>
                                         <div class="post-link__info">
                                             <h3><?= $post['title']; ?></h3>
+
                                         </div>
                                     </div>
-                                    <p> </p>
+                                    <p>  </p>
                                     <span><?= $post['link']; ?></span>
                                 </a>
                             </div>
@@ -138,39 +139,28 @@
                             </div>
 
                         <?php elseif ($post['type']==='post-video'): ?>
-
-
-
-                            <article class="popular__post post post-video">
-                                <div class="post__main">
-                                    <div class="post-video__block">
-                                        <div class="post-video__preview">
-                                            <?= embed_youtube_video_index($post['video']); ?>
-                                        </div>
-                                        <div class="post-video__control">
-                                            <button class="post-video__play post-video__play--paused button button--video" type="button"><span class="visually-hidden">Запустить видео</span></button>
-                                            <div class="post-video__scale-wrapper">
-                                                <div class="post-video__scale">
-                                                    <div class="post-video__bar">
-                                                        <div class="post-video__toggle"></div>
-                                                    </div>
+                                <div class="post-video__block">
+                                    <div class="post-video__preview">
+                                        <?= embed_youtube_video_index($post['video']); ?>
+                                    </div>
+                                    <div class="post-video__control">
+                                        <button class="post-video__play post-video__play--paused button button--video" type="button"><span class="visually-hidden">Запустить видео</span></button>
+                                        <div class="post-video__scale-wrapper">
+                                            <div class="post-video__scale">
+                                                <div class="post-video__bar">
+                                                    <div class="post-video__toggle"></div>
                                                 </div>
                                             </div>
-                                            <button class="post-video__fullscreen post-video__fullscreen--inactive button button--video" type="button"><span class="visually-hidden">Полноэкранный режим</span></button>
                                         </div>
-                                        <button class="post-video__play-big button" type="button">
-                                            <svg class="post-video__play-big-icon" width="14" height="14">
-                                                <use xlink:href="#icon-video-play-big"></use>
-                                            </svg>
-                                            <span class="visually-hidden">Запустить проигрыватель</span>
-                                        </button>
+                                        <button class="post-video__fullscreen post-video__fullscreen--inactive button button--video" type="button"><span class="visually-hidden">Полноэкранный режим</span></button>
                                     </div>
+                                    <button class="post-video__play-big button" type="button">
+                                        <svg class="post-video__play-big-icon" width="27" height="28">
+                                            <use xlink:href="#icon-video-play-big"></use>
+                                        </svg>
+                                        <span class="visually-hidden">Запустить проигрыватель</span>
+                                    </button>
                                 </div>
-
-                            </article>
-
-
-
 
                         <?php elseif ($post['type']==='post-text'): ?>
                             <!--содержимое для поста-текста-->

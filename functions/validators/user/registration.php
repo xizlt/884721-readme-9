@@ -132,7 +132,7 @@ function validate_user_email(mysqli $connection, string $email): ?array
  */
 function validate_user_about(string $about): ?array
 {
-    if (mb_strlen($about) > 900) {
+    if (mb_strlen($about) > 1000) {
         return $arr = [
             'for_block' => 'Информация о себе. Максимальная длина 1000 символов',
             'for_title' => 'Привышена длина',
@@ -153,14 +153,13 @@ function validate_avatar_file(array $file_data): ?array
     if ($tmp_name) {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $tmp_name);
-        if ($file_type !== 'image/gif' and $file_type !== 'image/jpeg' and $file_type !== 'image/png') {
+        if (!is_image($file_type)) {
             return $arr = [
                 'for_block' => 'Файл. Неподдерживаемый формат',
                 'for_title' => 'Неверный формат',
                 'for_text' => 'Необходимо загрузить файл в следующих форматах: .gif .jpeg .png'
             ];
         }
-        return null;
     }
     return null;
 }

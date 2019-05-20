@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $layout_content = include_template('index.php', [
     'title' => 'Популярное',
     'is_auth' => $is_auth,
-    'user_name' => $user_name,
+    'user' => $user,
     'errors' => $errors,
     'login_data' => $login_data
 ]);

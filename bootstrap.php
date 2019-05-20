@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 date_default_timezone_set("Europe/Moscow");
 
 ini_set('display_errors', 1);
@@ -7,8 +7,6 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $is_auth = rand(0, 1);
-
-$user_name = 'Иван'; // укажите здесь ваше имя
 
 require_once 'functions/main.php';
 require_once 'functions/db/common.php';
@@ -19,18 +17,19 @@ require_once 'functions/db/tags.php';
 require_once 'functions/db/types.php';
 require_once 'functions/db/users.php';
 
-
 $config = require 'config.php';
 $connection = connectDb($config['db']);
 
-if (isset($_SESSION['user_id'])) {
-    $user = get_user_by_id($connection, $_SESSION['user_id']);
-    if ($user) {
-        header("Location: feed.php");
-        exit();
-    }else{
+$user = null;
+$user_id_sessions = $_SESSION['user_id'] ?? null;
+if (isset($user_id_sessions)) {
+    $user = get_user_by_id($connection, $user_id_sessions);
+    if (!$user) {
         header("Location: index.php");
         exit();
     }
 }
+
+
+
 

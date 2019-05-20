@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 require 'bootstrap.php';
 
 $types = get_types($connection);
@@ -26,7 +26,7 @@ $page_content = include_template('popular.php', [
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Популярное',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name
+    'user' => $user,
+    'is_auth' => $is_auth
 ]);
 print ($layout_content);
