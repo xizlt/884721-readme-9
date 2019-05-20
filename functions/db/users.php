@@ -9,11 +9,17 @@
 function get_email(mysqli $connection, string $email): ?bool
 {
     $email_user = mysqli_real_escape_string($connection, $email);
-    $sql = "SELECT id FROM users WHERE email = '$email_user'";
-    $res = mysqli_query($connection, $sql);
-    $isset = mysqli_num_rows($res);
-    if ($isset > 0) {
-        return true;
+    $sql = "SELECT id FROM users WHERE email = ?";
+
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$email_user]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $isset = mysqli_num_rows($res);
+        if ($isset > 0) {
+            return true;
+        }
     }
     return null;
 }
