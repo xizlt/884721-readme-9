@@ -15,7 +15,7 @@
 <header class="header">
     <div class="header__wrapper container">
         <div class="header__logo-wrapper">
-            <a class="header__logo-link" href="main.html">
+            <a class="header__logo-link" href="index.php">
                 <img class="header__logo" src="img/logo.svg" alt="Логотип readme" width="128" height="24">
             </a>
             <p class="header__topic">
@@ -36,8 +36,9 @@
         </form>
         <div class="header__nav-wrapper">
             <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
-            <?php if ($is_auth===1): ?>
+
                 <nav class="header__nav">
+                    <?php if ($is_auth===1): ?>
                     <ul class="header__my-nav">
                         <li class="header__my-page header__my-page--popular">
                             <a class="header__page-link header__page-link--active" title="Популярный контент">
@@ -111,8 +112,17 @@
                             <a class="header__post-button button button--transparent" href="add.php">Пост</a>
                         </li>
                     </ul>
+                    <?php else: ?>
+                    <ul class="header__user-nav">
+                        <li class="header__authorization">
+                            <a class="header__user-button header__authorization-button button" href="login.php">Вход</a>
+                        </li>
+                        <li>
+                            <a class="header__user-button header__register-button button <?php if(preg_match("'registration.php'", $_SERVER['REQUEST_URI'])): ?> header__user-button--active <?php endif; ?>" href="registration.php">Регистрация</a>
+                        </li>
+                    </ul>
+                    <?php endif; ?>
                 </nav>
-            <?php endif; ?>
         </div>
     </div>
 </header>

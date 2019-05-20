@@ -1,57 +1,85 @@
 <?php
 
-
-//Возвращает массив ошибок при валидации формы регистрации юзера
-
+/**
+ * Возвращает массив ошибок при валидации формы регистрации юзера
+ * @param mysqli $connection
+ * @param array $user_data
+ * @param array $file_data
+ * @return array|null
+ */
 function validate_user(mysqli $connection, array $user_data, array $file_data): ?array
 {
     $errors = [];
     if ($error = validate_user_name($user_data['name'])) {
         $errors['name'] = $error;
     }
-    if ($error = validate_user_password($user_data['password'])) {
+    if ($error = validate_user_password($user_data['password'], $user_data['password-repeat'])) {
         $errors['password'] = $error;
     }
     if ($error = validate_user_email($connection, $user_data['email'])) {
         $errors['email'] = $error;
     }
-    if ($error = validate_user_about($user_data['contacts'])) {
-        $errors['contacts'] = $error;
+    if ($error = validate_user_about($user_data['about'])) {
+        $errors['about'] = $error;
     }
-    if ($error = validate_avatar_file($file_data['uploads'])) {
-        $errors['uploads'] = $error;
+    if ($error = validate_avatar_file($file_data['avatar'])) {
+        $errors['avatar'] = $error;
     }
     return $errors;
 }
 
 /**
  * Проверяет поле Имя для формы регистрации
- * @param $name
- * @return string|null
+ * @param string $name
+ * @return array|null
  */
-function validate_user_name($name)
+function validate_user_name(string $name): ?array
 {
     if (empty($name)) {
-        return 'Заполните поле Имя';
+        return $arr = [
+            'for_block' => 'Имя. Заполните поле',
+            'for_title' => 'Заполните поле',
+            'for_text' => 'Необходимо заполнить данное поле'
+        ];
     }
-    if (mb_strlen($name) > 255) {
-        return 'Допустимая длина строки 255 символов';
+    if (mb_strlen($name) > 250) {
+        return $arr = [
+            'for_block' => 'Имя. Максимальная длина 250 символов',
+            'for_title' => 'Привышена длина',
+            'for_text' => 'Максимальная длина 250 символов.'
+        ];
     }
     return null;
 }
 
 /**
  * Проверяет поле Пароль для формы регистрации
- * @param $password
- * @return string|null
+ * @param string $password
+ * @param string $password_repeat
+ * @return array|null
  */
-function validate_user_password($password)
+function validate_user_password(string $password, string $password_repeat): ?array
 {
     if (empty($password)) {
-        return 'Заполните поле пароль';
+        return $arr = [
+            'for_block' => 'Пароль. Заполните поле',
+            'for_title' => 'Заполните поле',
+            'for_text' => 'Необходимо заполнить данное поле'
+        ];
     }
-    if (mb_strlen($password) > 255) {
-        return 'Допустимая длина строки 255 символов';
+    if (mb_strlen($password) > 250) {
+        return $arr = [
+            'for_block' => 'Пароль. Максимальная длина 250 символов',
+            'for_title' => 'Привышена длина',
+            'for_text' => 'Максимальная длина 250 символов.'
+        ];
+    }
+    if ($password !== $password_repeat) {
+        return $arr = [
+            'for_block' => 'Пароль. Несовпадают',
+            'for_title' => 'Проверьте пароль',
+            'for_text' => 'Вы неверно ввели повторный пароль'
+        ];
     }
     return null;
 }
@@ -79,7 +107,7 @@ function validate_user_email(mysqli $connection, string $email): ?array
         ];
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_URL)) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return $arr = [
             'for_block' => 'Email. Неправильно указан',
             'for_title' => 'Неверный формат',
@@ -98,17 +126,18 @@ function validate_user_email(mysqli $connection, string $email): ?array
 }
 
 /**
- * Проверяет поле контакты для формы регистрации
- * @param $contacts
- * @return string|null
+ * Проверяет поле информация о себе
+ * @param string $about
+ * @return array|null
  */
-function validate_user_about($contacts)
+function validate_user_about(string $about): ?array
 {
-    if (empty($contacts)) {
-        return 'Заполните поле контакты';
-    }
-    if (mb_strlen($contacts) > 1000) {
-        return 'Допустимая длина строки 1000 символов';
+    if (mb_strlen($about) > 900) {
+        return $arr = [
+            'for_block' => 'Информация о себе. Максимальная длина 1000 символов',
+            'for_title' => 'Привышена длина',
+            'for_text' => 'Максимальная длина 1000 символов.'
+        ];
     }
     return null;
 }
@@ -116,17 +145,22 @@ function validate_user_about($contacts)
 /**
  * Проверяет поле аватар для формы регистрации
  * @param $file_data
- * @return string|null
+ * @return array|null
  */
-function validate_avatar_file($file_data)
+function validate_avatar_file(array $file_data): ?array
 {
-    if (!$tmp_name = get_value($file_data, 'tmp_name')) {
+    $tmp_name = $file_data['tmp_name'];
+    if ($tmp_name) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $file_type = finfo_file($finfo, $tmp_name);
+        if ($file_type !== 'image/gif' and $file_type !== 'image/jpeg' and $file_type !== 'image/png') {
+            return $arr = [
+                'for_block' => 'Файл. Неподдерживаемый формат',
+                'for_title' => 'Неверный формат',
+                'for_text' => 'Необходимо загрузить файл в следующих форматах: .gif .jpeg .png'
+            ];
+        }
         return null;
-    }
-    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-    $file_type = finfo_file($finfo, $tmp_name);
-    if ($file_type !== 'image/gif' and $file_type !== 'image/jpg' and $file_type !== 'image/jpeg' and $file_type !== 'image/png') {
-        return 'Файл нужно загрузить в формате .jpg, .jpeg, .png';
     }
     return null;
 }

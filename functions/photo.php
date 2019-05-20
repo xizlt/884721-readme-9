@@ -1,11 +1,14 @@
 <?php
 
-
-function upload_img_by_url($post_data)
+/**
+ * @param array $data
+ * @return string
+ */
+function upload_img_by_url(string $data): string
 {
-    if ($post_data) {
-        $path = 'uploads/' . basename($post_data);
-        $file = file_get_contents($post_data);
+    if ($data) {
+        $path = 'uploads/' . basename($data);
+        $file = file_get_contents($data);
         file_put_contents($path, $file);
         return $path;
     }

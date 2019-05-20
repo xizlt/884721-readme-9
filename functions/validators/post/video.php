@@ -50,13 +50,13 @@ function validate_video($link)
             'for_text' => 'Проверьте правильность пути к файлу'
         ];
     }
- /*   if (!check_youtube_url($link)) {
+    if (!check_youtube_url($link)) {
         return $arr = [
             'for_block' => 'Ссылка. Ограничен доступ',
             'for_title' => 'Ошибка',
             'for_text' => 'Проверьте что переданная ссылка ведет на публично доступное видео с youtube'
         ];
-    }*/
+    }
     return null;
 }
 
@@ -66,12 +66,13 @@ function validate_video($link)
  * @param string $youtube_url Ссылка на youtube видео
  * @return bool
  */
-function check_youtube_url($youtube_url) {
+function check_youtube_url($youtube_url)
+{
     $res = false;
     $id = extract_youtube_id($youtube_url);
 
     if ($id) {
-        $api_data = ['id' => $id, 'part' => 'id,status', 'key' => 'AIzaSyC-n4aQQk0mZrZNsfswKcaljExfM1UG57c'];
+        $api_data = ['id' => $id, 'part' => 'id,status', 'key' => 'AIzaSyBN-AXBnCPxO3HJfZZdZEHMybVfIgt16PQ'];
         $url = "https://www.googleapis.com/youtube/v3/videos?" . http_build_query($api_data);
 
         $resp = file_get_contents($url);
