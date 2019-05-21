@@ -57,7 +57,7 @@ function add_user($connection, $user_data)
  * @param int $id
  * @return array|null
  */
-function get_user_by_id(mysqli $connection, int $id): ?array
+function get_user_by_id(mysqli $connection, int $id): array
 {
     $sql = "SELECT * FROM users WHERE id = ?";
     mysqli_prepare($connection, $sql);

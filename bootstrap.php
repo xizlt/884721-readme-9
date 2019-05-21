@@ -20,16 +20,15 @@ require_once 'functions/db/users.php';
 $config = require 'config.php';
 $connection = connectDb($config['db']);
 
-$user = null;
+$user= null;
 $user_id_sessions = $_SESSION['user_id'] ?? null;
-if (isset($user_id_sessions)) {
-    $user = get_user_by_id($connection, $user_id_sessions);
-    if (!$user) {
-        header("Location: index.php");
-        exit();
-    }
+if ($user_id_sessions) {
+    $user = get_user_by_id($connection, $user_id_sessions)?? null;
 }
-
+if (empty($user['id'])) {
+    header("Location: index.php");
+    exit();
+}
 
 
 
