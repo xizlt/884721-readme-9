@@ -124,10 +124,9 @@
                                         </div>
                                         <div class="post-link__info">
                                             <h3><?= $post['title']; ?></h3>
-
+                                            <p> <?= isset($post['message'])? $post['message'] : ''  ?> </p>
                                         </div>
                                     </div>
-                                    <p>  </p>
                                     <span><?= $post['link']; ?></span>
                                 </a>
                             </div>
@@ -170,10 +169,10 @@
                     </div>
                     <footer class="post__footer">
                         <div class="post__author">
-                            <a class="post__author-link" href="#" title="Автор">
+                            <a class="post__author-link" href="profile.php?id=<?= $post['user'];?>" title="Автор">
                                 <div class="post__avatar-wrapper">
                                     <!--укажите путь к файлу аватара-->
-                                    <img class="post__author-avatar" src="<?= $post['avatar']; ?>" alt="Аватар пользователя">
+                                    <?php if ($post['avatar']): ?><img class="post__author-avatar" src="<?= $post['avatar'];?>" alt="Аватар пользователя"><?php endif;?>
                                 </div>
                                     <?php $generate_index_array = $post['create_time']; ?>
                                 <div class="post__info">

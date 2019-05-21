@@ -12,16 +12,17 @@ if ($type_block && !$types_correct) {
     header("HTTP/1.0 404 Not Found");
     exit();
 }
-$sort = sort_field();
 
-$posts = get_posts($connection, $type_block, $sort);
+
+$posts = get_posts($connection, $type_block, null, $user['id']);
+
 
 $page_content = include_template('feed.php', [
-    'types' => $types,
     'posts' => $posts,
+    'connection' => $connection,
     'types_correct' => $types_correct,
-    'type_block' => $type_block,
-    'connection' => $connection
+    'types' => $types,
+    'type_block'=> $type_block
 ]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,

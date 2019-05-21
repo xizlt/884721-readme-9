@@ -203,6 +203,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="adding-post__textarea-wrapper form__textarea-wrapper">
+                                        <label class="adding-post__label form__label" for="post-text">Описание ссылки</label>
+                                        <div class="form__input-section <?= isset($errors['message'])? 'form__input-section--error' : ' ' ?>">
+                                            <textarea class="adding-post__textarea form__textarea form__input" id="post-text" placeholder="Введите текст публикации" value="<?= isset($post_data['message'])? $post_data['message'] : ''  ?>" name="message"></textarea>
+                                            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                            <div class="form__error-text">
+                                                <h3 class="form__error-title"><?= $errors['message']['for_title']; ?></h3>
+                                                <p class="form__error-desc"><?= $errors['message']['for_text']; ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <?= $tags_post;?>
                                 </div>
                                 <?= $block_errors; ?>

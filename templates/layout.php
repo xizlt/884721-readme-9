@@ -22,6 +22,7 @@
                 micro blogging
             </p>
         </div>
+        <?php if ($user): ?>
         <form class="header__search-form form" action="search.php" method="get">
             <div class="header__search">
                 <label class="visually-hidden">Поиск</label>
@@ -34,6 +35,7 @@
                 </button>
             </div>
         </form>
+        <?php endif;?>
         <div class="header__nav-wrapper">
             <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
 
