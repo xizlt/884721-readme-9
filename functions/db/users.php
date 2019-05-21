@@ -10,6 +10,7 @@ function get_email(mysqli $connection, string $email): ?bool
 {
     $email_user = mysqli_real_escape_string($connection, $email);
     $sql = "SELECT id FROM users WHERE email = ?";
+
     mysqli_prepare($connection, $sql);
     $stmt = db_get_prepare_stmt($connection, $sql, [$email_user]);
     mysqli_stmt_execute($stmt);

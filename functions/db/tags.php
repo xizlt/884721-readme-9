@@ -4,7 +4,7 @@ function get_tag_by_name(mysqli $connection, string $name): ?array
 { $result = null;
         $sql = "SELECT * FROM tags
                 WHERE name = ?";
-
+ 
     mysqli_prepare($connection, $sql);
     $stmt = db_get_prepare_stmt($connection, $sql, [$name]);
     mysqli_stmt_execute($stmt);
@@ -25,8 +25,8 @@ function get_tag_by_name(mysqli $connection, string $name): ?array
  */
 function add_tag(mysqli $connection, string $name):int
 {
-    $sql = 'INSERT INTO tags (name) 
-            VALUES (?)';
+    $sql = "INSERT INTO tags (name) 
+            VALUES ?";
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 's', $name);
     $result = mysqli_stmt_execute($stmt);

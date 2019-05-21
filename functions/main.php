@@ -448,6 +448,7 @@ function get_type_id(string $name_type, array $types): int
 }
 
 
+
 /**
  * Создает подготовленное выражение на основе готового SQL запроса и переданных данных
  *
