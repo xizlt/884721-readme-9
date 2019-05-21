@@ -116,20 +116,22 @@ GROUP BY p.id
  * @param mysqli $connection
  * @param array $post_data
  * @param int $type_id
+ * @param int $user
  * @return int|string
  */
-function add_post(mysqli $connection, array $post_data, int $type_id)
+function add_post(mysqli $connection, array $post_data, int $type_id, int $user)
 {
     $sql = 'INSERT INTO posts (title, message, quote_writer, image, video, link, user_id, content_type_id) 
-            VALUES (?, ?, ?, ?, ?, ?, 1, ?)';
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'ssssssi',
+    mysqli_stmt_bind_param($stmt, 'ssssssii',
         $post_data['title'],
         $post_data['message'],
         $post_data['quote'],
         $post_data['img'],
         $post_data['video'],
         $post_data['link'],
+        $user,
         $type_id
     );
     $result = mysqli_stmt_execute($stmt);

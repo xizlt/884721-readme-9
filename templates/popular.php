@@ -109,7 +109,7 @@
                             <!--содержимое для поста-цитаты-->
                             <blockquote>
                                 <p>
-                                    <?= clips_text($post['message']); ?>
+                                    <?= clips_text($post['message'], $post['id']); ?>
                                 </p>
                                 <cite><?= $post['quote_writer']; ?></cite>
                             </blockquote>
@@ -140,7 +140,8 @@
                         <?php elseif ($post['type']==='post-video'): ?>
                                 <div class="post-video__block">
                                     <div class="post-video__preview">
-                                        <?= embed_youtube_video_index($post['video']); ?>
+                                        <img src="//img.youtube.com/vi/<?= extract_youtube_id($post['video']); ?>/1.jpg" alt="Превью к видео" width="360" height="188">
+
                                     </div>
                                     <div class="post-video__control">
                                         <button class="post-video__play post-video__play--paused button button--video" type="button"><span class="visually-hidden">Запустить видео</span></button>
@@ -163,7 +164,8 @@
 
                         <?php elseif ($post['type']==='post-text'): ?>
                             <!--содержимое для поста-текста-->
-                            <p><?= clips_text($post['message']); ?></p>
+
+                            <p><?= clips_text($post['message'], $post['id']); ?></p>
                         <?php endif; ?>
 
                     </div>

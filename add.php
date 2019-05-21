@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $post_data['link'] = null;
         }
 
-        $post_id = add_post($connection, $post_data, $type_id);
+        $post_id = add_post($connection, $post_data, $type_id, $user['id']);
 
         $string_tags = $post_data['tags'];
         if ($string_tags) {

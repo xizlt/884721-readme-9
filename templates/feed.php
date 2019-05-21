@@ -12,7 +12,7 @@
                     <article class="feed__post post post-photo">
                         <?php require 'header_posts.php'; ?>
                         <div class="post__main">
-                            <h2><a href="post.php<?= $post['id'];?>"><?= $post['title'];?></a></h2>
+                            <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title'];?></a></h2>
                             <div class="post-photo__image-wrapper">
                                 <img src="<?= $post['image'];?>" alt="Фото от пользователя" width="760" height="396">
                             </div>
@@ -24,11 +24,10 @@
                     <article class="feed__post post post-text">
                         <?php require 'header_posts.php'; ?>
                         <div class="post__main">
-                            <h2><a href="post.php<?= $post['id'];?>"><?= $post['title'];?></a></h2>
+                            <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title'];?></a></h2>
                             <p>
-                                <?= $post['message'];?>
+                                <?= clips_text($post['message'], $post['id']);?>
                             </p>
-                            <a class="post-text__more-link" href="#">Читать далее</a>
                         </div>
                         <?php require 'footer_posts.php'; ?>
                     </article>
@@ -36,14 +35,16 @@
                     <?php elseif($post['type'] === 'post-video'): ?>
                     <article class="feed__post post post-video">
                         <?php require 'header_posts.php'; ?>
+
                         <div class="post__main">
+                            <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title'];?></a></h2>
                             <div class="post-video__block">
                                 <div class="post-video__preview">
-                                    <img src="img/coast.jpg" alt="Превью к видео" width="760" height="396">
+                                    <img src="//img.youtube.com/vi/<?= extract_youtube_id($post['video']); ?>/1.jpg" alt="Превью к видео" width="760" height="396">
                                 </div>
                                 <div class="post-video__control">
                                     <button class="post-video__play post-video__play--paused button button--video" type="button"><span class="visually-hidden">Запустить видео</span></button>
-                                    <div class="post-video__scale-wrapper">
+                                        <div class="post-video__scale-wrapper">
                                         <div class="post-video__scale">
                                             <div class="post-video__bar">
                                                 <div class="post-video__toggle"></div>
@@ -58,8 +59,10 @@
                                     </svg>
                                     <span class="visually-hidden">Запустить проигрыватель</span>
                                 </button>
+
                             </div>
                         </div>
+
                         <?php require 'footer_posts.php'; ?>
                     </article>
 
@@ -67,6 +70,7 @@
                     <article class="feed__post post post-quote">
                         <?php require 'header_posts.php'; ?>
                         <div class="post__main">
+                            <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title'];?></a></h2>
                             <blockquote>
                                 <p>
                                     <?= $post['message'];?>

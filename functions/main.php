@@ -10,10 +10,11 @@ const YEARS = 31556926;
 /**
  * Возвращает текст в короткой форме по лимиту символов
  * @param string $text
+ * @param string $post_id
  * @param int $length
  * @return string
  */
-function clips_text(string $text, int $length = 300): string
+function clips_text(string $text, string $post_id, int $length = 300): string
 {
     $length_content = mb_strlen($text);
     $total = 0;
@@ -31,7 +32,7 @@ function clips_text(string $text, int $length = 300): string
 
         }
         return '<p>' . implode(' ',
-                $result_words) . ' ...' . '</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+                $result_words) . ' ...' . '</p>' . '<a class="post-text__more-link" href="post.php?id='.$post_id.'">Читать далее</a>';
     }
     return '<p>' . $text . '</p>';
 }
@@ -382,24 +383,6 @@ function embed_youtube_video($youtube_url)
     return $res;
 }
 
-
-/**
- * Возвращает код iframe для вставки youtube видео на главную страницу
- * @param string $youtube_url Ссылка на youtube видео
- * @return string
- */
-function embed_youtube_video_index($youtube_url)
-{
-    $res = "";
-    $id = extract_youtube_id($youtube_url);
-
-    if ($id) {
-        $src = "https://www.youtube.com/embed/" . $id;
-        $res = '<iframe width="360" height="188" src="' . $src . '" frameborder="0"></iframe>';
-    }
-
-    return $res;
-}
 
 
 /**
