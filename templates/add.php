@@ -111,8 +111,8 @@
                                             <input class="adding-post__input form__input" id="video-url" type="text" name="link" placeholder="Введите ссылку" value="<?= isset($post_data['link'])? $post_data['link'] : ''  ?>">
                                             <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
                                             <div class="form__error-text">
-                                                <h3 class="form__error-title"><?= $errors['link']['for_title']; ?></h3>
-                                                <p class="form__error-desc"><?= $errors['link']['for_text']; ?></p>
+                                                <h3 class="form__error-title"><?= $errors['video']['for_title']; ?></h3>
+                                                <p class="form__error-desc"><?= $errors['video']['for_text']; ?></p>
                                             </div>
                                         </div>
                                     </div>

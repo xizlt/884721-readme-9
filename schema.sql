@@ -11,8 +11,8 @@ CREATE TABLE users
     email       VARCHAR(250) UNIQUE NOT NULL,
     name        VARCHAR(250)        NOT NULL,
     password    VARCHAR(250)        NOT NULL,
-    avatar      VARCHAR(900)        NULL,
-    about       VARCHAR(900)        NULL
+    avatar      VARCHAR(1000)        NULL,
+    about       VARCHAR(1000)        NULL
 );
 
 

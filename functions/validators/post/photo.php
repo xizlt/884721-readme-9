@@ -36,11 +36,11 @@ function validate_img(array $file_data, $post_data)
     if ($tmp_name) {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $tmp_name);
-        if ($file_type !== 'image/jpg' and $file_type !== 'image/jpeg' and $file_type !== 'image/png') {
+        if ($file_type !== 'image/gif' and $file_type !== 'image/jpeg' and $file_type !== 'image/png') {
             return $arr = [
                 'for_block' => 'Файл. Неподдерживаемый формат',
                 'for_title' => 'Неверный формат',
-                'for_text' => 'Необходимо загрузить файл в следующих форматах: .jpg .jpeg .png'
+                'for_text' => 'Необходимо загрузить файл в следующих форматах: .gif .jpeg .png'
             ];
         }
         return null;
@@ -49,7 +49,7 @@ function validate_img(array $file_data, $post_data)
         return $arr = [
             'for_block' => 'Загрузите файл или укажите ссылку',
             'for_title' => 'Незагружен файл',
-            'for_text' => 'Необходимо загрузить файл в следующих форматах: .jpg .jpeg .png или указать ссылку на картинку'
+            'for_text' => 'Необходимо загрузить файл в следующих форматах: .gif .jpeg .png или указать ссылку на картинку'
         ];
     }
 }
@@ -77,11 +77,11 @@ function validate_link_upload(string $link): ?array
                     'for_text' => 'Проверьте правильность пути к файлу'
                 ];
             }
-            if ($urlHeaders['Content-Type'] !== 'image/jpg' and $urlHeaders['Content-Type'] !== 'image/jpeg' and $urlHeaders['Content-Type'] !== 'image/png') {
+            if (!is_image($urlHeaders['Content-Type'])) {
                 return $arr = [
                     'for_block' => 'Ссылка. Неподдерживаемый формат',
                     'for_title' => 'Неподдерживаемый формат',
-                    'for_text' => 'Необходимо загрузить файл в следующих форматах: .jpg .jpeg .png'
+                    'for_text' => 'Необходимо загрузить файл в следующих форматах: .gif .jpeg .png'
                 ];
             }
         }
