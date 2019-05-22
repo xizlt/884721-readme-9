@@ -47,6 +47,11 @@ function validate_link($link)
     return null;
 }
 
+/**
+ * Возвращает ошибки в форме поля описание ссылки
+ * @param string $message
+ * @return array|null
+ */
 function validate_message_link(string $message): ?array
 {
     if (mb_strlen($message) > 1000) {
