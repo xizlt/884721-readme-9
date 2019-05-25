@@ -1,5 +1,10 @@
 <?php
+
 require 'bootstrap.php';
+if (!$user) {
+    header('Location: /');
+    exit();
+}
 
 $post_id = $_GET['id'] ?? '';
 if (empty($post_id)) {

@@ -25,9 +25,6 @@ $user_id = $_SESSION['user_id'] ?? null;
 if ($user_id) {
     $user = get_user_by_id($connection, $user_id) ?? null;
 }
-if (basename(__FILE__) !== 'index.php' && !$user) {
-    header('Location: /');
-    exit();
-}
+
 
 

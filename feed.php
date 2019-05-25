@@ -2,6 +2,11 @@
 
 require 'bootstrap.php';
 
+if (!$user) {
+    header('Location: /');
+    exit();
+}
+
 $types = get_types($connection);
 $type_block = $_GET['type_id'] ?? '';
 $type_block = clean($type_block);

@@ -5,15 +5,21 @@ const TAB_VIDEO = 'video';
 const TAB_QUOTE = 'quote';
 const TAB_PHOTO = 'photo';
 
-require 'bootstrap.php';
-require 'functions/validators/post/common.php';
-require 'functions/validators/post/text.php';
-require 'functions/validators/post/video.php';
-require 'functions/validators/post/photo.php';
-require 'functions/validators/post/link.php';
-require 'functions/validators/post/quote.php';
-require 'functions/tags.php';
-require 'functions/photo.php';
+require_once 'bootstrap.php';
+
+if (!$user) {
+    header('Location: /');
+    exit();
+}
+
+require_once 'functions/validators/post/common.php';
+require_once 'functions/validators/post/text.php';
+require_once 'functions/validators/post/video.php';
+require_once 'functions/validators/post/photo.php';
+require_once 'functions/validators/post/link.php';
+require_once 'functions/validators/post/quote.php';
+require_once 'functions/tags.php';
+require_once 'functions/photo.php';
 
 $types = get_types($connection);
 $tab = $_GET['tab'] ?? null;
