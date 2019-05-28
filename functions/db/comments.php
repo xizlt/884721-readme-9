@@ -41,7 +41,6 @@ FROM comments cm
      JOIN users u
 ON u.id = cm.user_id
 WHERE cm.post_id = ?
-LIMIT 2
 ";
     mysqli_prepare($connection, $sql);
     $stmt = db_get_prepare_stmt($connection, $sql, [$post_id]);

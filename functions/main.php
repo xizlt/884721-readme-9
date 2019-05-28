@@ -209,7 +209,7 @@ function date_for_title(string $time): string
 }
 
 /**
- * Возвращает дату в формате дд.мм.гггг чч:мм
+ * Возвращает дату в формате дд.мм.гггг
  * @param string $time
  * @return string
  */
