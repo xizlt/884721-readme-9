@@ -28,6 +28,8 @@ function get_type_by_id(mysqli $connection, string $type_id): ?array
     $sql = "SELECT * FROM content_type
 WHERE id = ?
 ";
+
+    $result = null;
     mysqli_prepare($connection, $sql);
     $stmt = db_get_prepare_stmt($connection, $sql, [$type_id]);
     mysqli_stmt_execute($stmt);
@@ -39,4 +41,5 @@ WHERE id = ?
         die('Ошибка MySQL ' . $error);
     }
     return $result;
+
 }

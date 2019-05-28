@@ -1,31 +1,47 @@
 <?php
-require 'bootstrap.php';
+session_start();
+date_default_timezone_set("Europe/Moscow");
 
-$types = get_types($connection);
-$type_block = $_GET['type_id'] ?? '';
-$type_block = clean($type_block);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-$types_correct = get_type_by_id($connection, $type_block);
+$is_auth = rand(0, 1);
 
-if ($type_block && !$types_correct) {
-    header("HTTP/1.0 404 Not Found");
-    exit();
+require_once 'functions/main.php';
+require_once 'functions/db/common.php';
+require_once 'functions/db/comments.php';
+require_once 'functions/db/posts.php';
+require_once 'functions/db/subscriptions.php';
+require_once 'functions/db/tags.php';
+require_once 'functions/db/types.php';
+require_once 'functions/db/users.php';
+require 'functions/validators/user/login.php';
+
+$config = require 'config.php';
+$connection = connectDb($config['db']);
+
+$login_data = null;
+$errors = null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $login_data = $_POST ?? null;
+    $login_data = clean($login_data);
+    $user = get_user_by_email($connection, $login_data['email']);
+    $errors = validate_login($connection, $login_data, $user['password']);
+
+    if (!$errors) {
+        $_SESSION['user_id'] = $user['id'];
+
+        header("Location: feed.php");
+        exit();
+    }
 }
-$sort = sort_field();
 
-$posts = get_posts($connection, $type_block, $sort);
-
-$page_content = include_template('index.php', [
-    'types' => $types,
-    'posts' => $posts,
-    'types_correct' => $types_correct,
-    'type_block' => $type_block,
-    'connection' => $connection
-]);
-$layout_content = include_template('layout.php', [
-    'page_content' => $page_content,
+$layout_content = include_template('index.php', [
     'title' => 'Популярное',
     'is_auth' => $is_auth,
-    'user_name' => $user_name
+    'errors' => $errors,
+    'login_data' => $login_data
 ]);
 print ($layout_content);

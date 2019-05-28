@@ -17,7 +17,7 @@
                                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                     <use xlink:href="#icon-heart-active"></use>
                                 </svg>
-                                <span><?= ($post['like_post']) ?? '0'; ?></span>
+                                <span><?= $post['like_post']; ?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
                             <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
@@ -31,7 +31,7 @@
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-repost"></use>
                                 </svg>
-                                <span><?= ($post['repost']) ?? '0'; ?> </span>
+                                <span><?= $post['repost']; ?> </span>
                                 <span class="visually-hidden">количество репостов</span>
                             </a>
                         </div>
@@ -81,12 +81,12 @@
                 <div class="post-details__user user">
                     <div class="post-details__user-info user__info">
                         <div class="post-details__avatar user__avatar">
-                            <a class="post-details__avatar-link user__avatar-link" href="#">
-                                <img class="post-details__picture user__picture" src="<?= $post['avatar']; ?>" alt="Аватар пользователя">
+                            <a class="post-details__avatar-link user__avatar-link" href="profile.php?id=<?= $post['user']; ?>">
+                                <?php if ($post['avatar']): ?><img class="post-details__picture user__picture" src="<?= $post['avatar'];?>" alt="Аватар пользователя" width="60" height="60"><?php endif;?>
                             </a>
                         </div>
                         <div class="post-details__name-wrapper user__name-wrapper">
-                            <a class="post-details__name user__name" href="#">
+                            <a class="post-details__name user__name" href="profile.php?id=<?= $post['user']; ?>">
                                 <span><?= $post['user_name']; ?></span>
                             </a>
                             <time class="post-details__time user__time" datetime="<?= date_for_user($post['user_reg']); ?>"><?= user_date_registration($post['user_reg']); ?></time>

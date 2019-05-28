@@ -4,17 +4,30 @@
  * Возвращает посты по условиям
  * @param mysqli $connection
  * @param string|null $type
- * @param string|null $sort
+ * @param string|null $order_by
  * @param int|null $user_id
  * @return array
  */
-function get_posts(mysqli $connection, string $type = null, string $sort = null, int $user_id = null): array
+function get_posts(mysqli $connection, string $type = null, string $order_by = null, int $user_id = null): array
 {
-    if (!$type) {
-        $type = 'c.id';
+    $type_ind = 'p.content_type_id = ';
+    if ($user_id) {
+        if ($type) {
+            $where = "u.id = $user_id AND $type_ind $type";
+        }
+        if (!$type) {
+            $where = "u.id = $user_id AND $type_ind  c.id";
+        }
+    } else {
+        if ($type) {
+            $where = $type_ind . $type;
+        }
+        if (!$type) {
+            $where = "$type_ind c.id";
+        }
     }
-    if (!$sort) {
-        $sort = 'view_count';
+    if (!$order_by) {
+        $order_by = 'view_count';
     }
 
     $sql = "SELECT p.id,
@@ -28,16 +41,18 @@ function get_posts(mysqli $connection, string $type = null, string $sort = null,
        p.view_count,
        p.content_type_id,
        u.name AS user_name,
+       u.id AS user,
        c.name AS type,
        u.avatar,
+       SUM(p.is_repost) AS repost,
        count(l.user_id) AS like_post
 FROM posts p
          LEFT JOIN likes l ON p.id = l.post_id
          LEFT JOIN  users u ON u.id = p.user_id
          JOIN content_type c ON c.id = p.content_type_id
-WHERE p.content_type_id = $type
+WHERE $where
 GROUP BY p.id
-ORDER BY $sort DESC
+ORDER BY $order_by DESC
 ";
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
@@ -101,20 +116,22 @@ GROUP BY p.id
  * @param mysqli $connection
  * @param array $post_data
  * @param int $type_id
+ * @param int $user
  * @return int|string
  */
-function add_post(mysqli $connection, array $post_data, int $type_id)
+function add_post(mysqli $connection, array $post_data, int $type_id, int $user)
 {
     $sql = 'INSERT INTO posts (title, message, quote_writer, image, video, link, user_id, content_type_id) 
-            VALUES (?, ?, ?, ?, ?, ?, 1, ?)';
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'ssssssi',
+    mysqli_stmt_bind_param($stmt, 'ssssssii',
         $post_data['title'],
         $post_data['message'],
         $post_data['quote'],
         $post_data['img'],
         $post_data['video'],
         $post_data['link'],
+        $user,
         $type_id
     );
     $result = mysqli_stmt_execute($stmt);

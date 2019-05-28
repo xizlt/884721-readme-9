@@ -51,3 +51,48 @@ function add_user($connection, $user_data)
     }
     return null;
 }
+
+/**
+ * Получение массива с данными о пользователе по id
+ * @param mysqli $connection
+ * @param int $id
+ * @return array|null
+ */
+function get_user_by_id(mysqli $connection, int $id): array
+{
+    $sql = "SELECT * FROM users WHERE id = ?";
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_array($res, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+/**
+ * Получение данных юзера
+ * @param mysqli $connection
+ * @param string $email
+ * @return array|null
+ */
+function get_user_by_email(mysqli $connection, string $email): ?array
+{
+    $email = mysqli_real_escape_string($connection, $email);
+    $sql = "SELECT * FROM users WHERE email = ?";
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$email]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_array($res, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
