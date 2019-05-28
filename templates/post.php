@@ -67,7 +67,7 @@
                                         </p>
                                     </div>
                                 </li>
-<?php endforeach; ?>
+                                <?php endforeach; ?>
                             </ul>
                             <?php if ($comments_count > 2): ?>
                             <a class="comments__more-link" href="#">

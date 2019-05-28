@@ -46,59 +46,118 @@
                     </ul>
                 </div>
                 <div class="profile__tab-content">
-                    <?php foreach ($posts as $post): ?>
 
                     <section class="profile__posts tabs__content tabs__content--active">
                         <h2 class="visually-hidden">Публикации</h2>
+                        <?php foreach ($posts as $post): ?>
 
+                        <?php if ($post['type'] === 'post-photo'): ?>
                         <article class="profile__post post post-photo">
                             <header class="post__header">
                                 <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title']; ?></a></h2>
                             </header>
                             <div class="post__main">
                                 <div class="post-photo__image-wrapper">
-                                    <img src="img/rock.jpg" alt="Фото от пользователя" width="760" height="396">
+                                    <img src="<?= $post['image']; ?>" alt="Фото от пользователя" width="760" height="396">
                                 </div>
                             </div>
                            <?php require "templates/profile_footer_posts.php"; ?>
-
                             <?php require 'templates/profile_comments_block.php'; ?>
-
                         </article>
 
+                        <?php elseif ($post['type'] === 'post-video'): ?>
+                            <article class="profile__post post post-video">
+                                <header class="post__header">
+                                    <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title']; ?></a></h2>
+                                </header>
+                                <div class="post__main">
+                                    <div class="post-video__block">
+                                        <div class="post-video__preview">
+                                            <img src="//img.youtube.com/vi/<?= extract_youtube_id($post['video']); ?>/1.jpg" alt="Превью к видео" width="760" height="396">
+                                        </div>
+                                        <div class="post-video__control">
+                                            <button class="post-video__play post-video__play--paused button button--video" type="button"><span class="visually-hidden">Запустить видео</span></button>
+                                            <div class="post-video__scale-wrapper">
+                                                <div class="post-video__scale">
+                                                    <div class="post-video__bar">
+                                                        <div class="post-video__toggle"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <button class="post-video__fullscreen post-video__fullscreen--inactive button button--video" type="button"><span class="visually-hidden">Полноэкранный режим</span></button>
+                                        </div>
+                                        <button class="post-video__play-big button" type="button">
+                                            <svg class="post-video__play-big-icon" width="27" height="28">
+                                                <use xlink:href="#icon-video-play-big"></use>
+                                            </svg>
+                                            <span class="visually-hidden">Запустить проигрыватель</span>
+                                        </button>
 
-                        <article class="profile__post post post-text">
-                            <header class="post__header">
-                                <div class="post__author">
-                                    <a class="post__author-link" href="#" title="Автор">
-                                        <div class="post__avatar-wrapper post__avatar-wrapper--repost">
-                                            <img class="post__author-avatar" src="img/userpic-tanya.jpg" alt="Аватар пользователя">
-                                        </div>
-                                        <div class="post__info">
-                                            <b class="post__author-name">Репост: Таня Фирсова</b>
-                                            <time class="post__time" datetime="2019-03-30T14:31">25 минут назад</time>
-                                        </div>
-                                    </a>
+                                    </div>
                                 </div>
-                            </header>
-                            <div class="post__main">
-                                <h2><a href="#">Полезный пост про Байкал</a></h2>
+                                <?php require "templates/profile_footer_posts.php"; ?>
+                                <?php require 'templates/profile_comments_block.php'; ?>
+                            </article>
+
+                        <?php elseif ($post['type'] === 'post-text'): ?>
+                            <article class="profile__post post post-text">
                                 <p>
-                                    Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
                                 </p>
-                                <a class="post-text__more-link" href="#">Читать далее</a>
-                            </div>
-                            <?php require "templates/profile_footer_posts.php"; ?>
-
-                            <form class="comments__form form" action="#" method="post">
-                                <div class="comments__my-avatar">
-                                    <img class="comments__picture" src="img/userpic.jpg" alt="Аватар пользователя">
+                                <header class="post__header">
+                                    <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title']; ?></a></h2>
+                                </header>
+                                <div class="post__main">
+                                    <p>
+                                        <?= clips_text($post['message'], $post['id']);?>
+                                    </p>
                                 </div>
-                                <textarea class="comments__textarea form__textarea" placeholder="Ваш комментарий"></textarea>
-                                <label class="visually-hidden">Ваш комментарий</label>
-                                <button class="comments__submit button button--green" type="submit">Отправить</button>
-                            </form>
-                        </article>
+                                <?php require "templates/profile_footer_posts.php"; ?>
+                                <?php require 'templates/profile_comments_block.php'; ?>
+                            </article>
+
+                        <?php elseif ($post['type'] === 'post-quote'): ?>
+                            <article class="profile__post post post-quote">
+                                <header class="post__header">
+                                    <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title']; ?></a></h2>
+                                </header>
+                                <div class="post__main">
+                                    <blockquote>
+                                        <p>
+                                            <?= $post['message'];?>
+                                        </p>
+                                        <cite><?= $post['quote_writer'];?></cite>
+                                    </blockquote>
+                                </div>
+                                <?php require "templates/profile_footer_posts.php"; ?>
+                                <?php require 'templates/profile_comments_block.php'; ?>
+                            </article>
+
+
+                        <?php elseif ($post['type'] === 'post-link'): ?>
+                            <article class="profile__post post post-link">
+                                <div class="post__main">
+                                    <div class="post-link__wrapper">
+                                        <a class="post-link__external" href="<?= $post['link'];?>" title="Перейти по ссылке">
+                                            <div class="post-link__icon-wrapper">
+                                                <img src="img/logo-vita.jpg" alt="Иконка">
+                                            </div>
+                                            <div class="post-link__info">
+                                                <h3><?= $post['title'];?></h3>
+                                                <p><?= $post['message'];?></p>
+                                                <span><?= $post['link'];?></span>
+                                            </div>
+                                            <svg class="post-link__arrow" width="11" height="16">
+                                                <use xlink:href="#icon-arrow-right-ad"></use>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                                <?php require "templates/profile_footer_posts.php"; ?>
+                                <?php require 'templates/profile_comments_block.php'; ?>
+                            </article>
+
+                        <?php endif;?>
+                        <?php endforeach; ?>
                     </section>
 
                     <section class="profile__likes tabs__content">
@@ -241,7 +300,7 @@
                             </li>
                         </ul>
                     </section>
-                    <?php endforeach; ?>
+
                     <section class="profile__subscriptions tabs__content">
                         <h2 class="visually-hidden">Подписки</h2>
                         <ul class="profile__subscriptions-list">

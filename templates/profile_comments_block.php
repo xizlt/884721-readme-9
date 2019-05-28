@@ -38,17 +38,20 @@
     </div>
 </div>
 
+
+    <form class="comments__form form <?= !empty($error)? 'form__input-section--error' : ' ' ?>" action="profile.php?id=<?= $user_profile['id']; ?>&post-id=<?= $post['id']?>" method="post">
+        <div class="comments__my-avatar">
+            <?php if ($user['avatar']): ?> <img class="comments__picture" src="<?= $user['avatar']; ?>" alt="Аватар пользователя"><?php endif;?>
+        </div>
+        <textarea class="comments__textarea form__textarea " placeholder="Ваш комментарий" name="comment"></textarea>
+            <span class="form__error-label form__error-label--comments"><?= $error; ?></span>
+            <label class="visually-hidden">Ваш комментарий</label>
+        <button class="comments__submit button button--green" type="submit">Отправить</button>
+    </form>
+
+
 <?php else: ?>
     <div class="comments">
         <a class="comments__button button" href="profile.php?id=<?= $user_profile['id']; ?>&show=true">Показать комментарии</a>
     </div>
 <?php endif; ?>
-
-<form class="comments__form form" action="profile.php?id=<?= $user_profile['id']; ?>&post-id=<?= $post['id']?>" method="post">
-    <div class="comments__my-avatar">
-       <?php if ($user['avatar']): ?> <img class="comments__picture" src="<?= $user['avatar']; ?>" alt="Аватар пользователя"><?php endif;?>
-    </div>
-    <textarea class="comments__textarea form__textarea" placeholder="Ваш комментарий" name="comment"></textarea>
-    <label class="visually-hidden">Ваш комментарий</label>
-    <button class="comments__submit button button--green" type="submit">Отправить</button>
-</form>

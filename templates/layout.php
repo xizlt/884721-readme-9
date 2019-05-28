@@ -48,7 +48,7 @@
                             </a>
                         </li>
                         <li class="header__my-page header__my-page--feed">
-                            <a class="header__page-link" href="feed.php" title="Моя лента">
+                            <a class="header__page-link" href="feed.php?id=<?=$user['id']; ?>" title="Моя лента">
                                 <span class="visually-hidden">Моя лента</span>
                             </a>
                         </li>
@@ -61,7 +61,7 @@
                     <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
                     <ul class="header__user-nav">
                         <li class="header__profile">
-                            <a class="header__profile-link" href="profile.php">
+                            <a class="header__profile-link" href="profile.php?id=<?=$user['id']; ?>">
                                 <div class="header__avatar-wrapper">
                                     <?php if(isset($user['avatar'])): ?><img class="header__profile-avatar" src="<?= $user['avatar']; ?>" alt="Аватар профиля"><?php endif; ?>
                                 </div>

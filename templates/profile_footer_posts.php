@@ -19,10 +19,10 @@
                 <span class="visually-hidden">количество репостов</span>
             </a>
         </div>
-        <time class="post__time" datetime="2019-01-30T23:41">15 минут назад</time>
+        <time class="post__time" datetime="<?= $post['create_time'];?>"><?= publication_date($post['create_time']);?></time>
     </div>
     <ul class="post__tags">
-        <?php $tags = get_tag_by_id($connection, $post['id']); ?>
+        <?php $tags = get_tag_by_id($connection, $post['id']) ?? null; ?>
         <?php if ($tags): ?>
             <?php foreach ($tags as $tag): ?>
                 <?php $tag_word = get_tags($connection, $tag['tag_id']); ?>

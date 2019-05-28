@@ -502,3 +502,21 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
 
     return $stmt;
 }
+
+/**
+ * Возвращает имя пользователя с переносом имени
+ * @param string $name
+ * @return string
+ */
+function name_profile(string $name): string
+{
+    $words = explode(" ", $name);
+    if ($words < 1) {
+        return $name;
+    }
+    $result = null;
+    foreach ($words as $word) {
+        $result .= $word . '<br>';
+    }
+    return $result;
+}
