@@ -44,7 +44,7 @@ function get_posts(mysqli $connection, string $type = null, string $order_by = n
        u.id AS user,
        c.name AS type,
        u.avatar,
-       SUM(p.is_repost) AS repost,
+       p.is_repost AS repost,
        count(l.user_id) AS like_post
 FROM posts p
          LEFT JOIN likes l ON p.id = l.post_id
@@ -182,6 +182,26 @@ function add_comment(mysqli $connection, int $user_id, int $post_id, string $com
     $sql = 'INSERT INTO comments (user_id, post_id, message) VALUE (? ,? ,?)';
     $stmt = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($stmt, 'iis', $user_id, $post_id, $comment
+    );
+    $result = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    return $result;
+}
+
+/**
+ * Обнавляет таблицу постов и добовляет кол-ву репостов +1
+ * @param mysqli $connection
+ * @param int $post_id
+ * @return bool
+ */
+function add_repost(mysqli $connection, int $post_id): bool
+{
+    $sql = "UPDATE posts SET is_repost = is_repost + 1
+WHERE id = ?
+";
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'ii', $post_id, $post_id
     );
     $result = mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
