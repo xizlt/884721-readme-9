@@ -6,6 +6,8 @@
  * @param string|null $type
  * @param string|null $order_by
  * @param int|null $user_id
+ * @param int|null $page_items
+ * @param int|null $offset
  * @return array
  */
 function get_posts(mysqli $connection, string $type = null, string $order_by = null, int $user_id = null, int $page_items = null, int $offset = null): array
@@ -195,12 +197,18 @@ WHERE id = ?
 /**
  * Возвращает кол-во постов
  * @param mysqli $connection
- * @return array
+ * @param int|null $type_id
+ * @return int
  */
-function get_count_posts(mysqli $connection) : int
+function get_count_posts(mysqli $connection, int $type_id = null) : int
 {
-    $sql = "SELECT id AS cnt
+    $where = null;
+    if ($type_id) {
+        $where = "where content_type_id = $type_id";
+    }
+    $sql = "SELECT *
 FROM posts
+$where
 ";
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_num_rows($query);

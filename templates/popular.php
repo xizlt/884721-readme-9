@@ -209,13 +209,13 @@
                 </article>
             <?php endforeach; ?>
         </div>
-        <?php if ($pages_count >= 1 ): ?>
+        <?php if ($pages_count > 1 ): ?>
         <div class="popular__page-links">
             <?php if ($cur_page > 1): ?>
-            <a class="popular__page-link popular__page-link--prev button button--gray" href="popular.php?page=<?= ($cur_page - 1); ?>">Предыдущая страница</a>
+            <a class="popular__page-link popular__page-link--prev button button--gray" href="popular.php?<?php if ($type_block): ?>type_id=<?=$type_block;?><?php endif;?>&page=<?= ($cur_page - 1); ?>">Предыдущая страница</a>
             <?php endif;?>
             <?php if ($cur_page < $pages_count): ?>
-            <a class="popular__page-link popular__page-link--next button button--gray" href="popular.php?page=<?= ($cur_page + 1); ?>">Следующая страница</a>
+            <a class="popular__page-link popular__page-link--next button button--gray" href="popular.php?<?php if ($type_block): ?>type_id=<?=$type_block;?><?php endif;?>&page=<?= ($cur_page + 1); ?>">Следующая страница</a>
             <?php endif;?>
         </div>
         <?php endif; ?>

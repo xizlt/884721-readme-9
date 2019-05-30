@@ -7,8 +7,8 @@ if (!$user) {
 }
 
 $types = get_types($connection);
-$type_block = $_GET['type_id'] ?? '';
-$type_block = clean($type_block);
+$type_block = $_GET['type_id'] ?? null;
+$type_block = (int)clean($type_block);
 
 $types_correct = get_type_by_id($connection, $type_block);
 
@@ -24,7 +24,7 @@ if (!$cur_page) {
     exit();
 }
 $page_items = 9;
-$items_count = get_count_posts($connection);
+$items_count = get_count_posts($connection, $type_block);
 $pages_count = ceil($items_count / $page_items);
 $offset = ($cur_page - 1) * $page_items;
 $pages = range(1, $pages_count);
@@ -32,7 +32,6 @@ if ($cur_page > $pages_count) {
     header("HTTP/1.0 404 Not Found");
     exit();
 }
-
 
 $posts = get_posts($connection, $type_block, $sort, null, $page_items, $offset);
 
