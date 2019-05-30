@@ -23,9 +23,16 @@
                         <span class="profile__rating-text user__rating-text">подписчиков</span>
                     </p>
                 </div>
+
                 <div class="profile__user-buttons user__buttons">
+                    <?php if ($user['id'] !== $user_profile['id']): ?>
+                    <?php if ($subscription_check === 0): ?>
                     <button class="profile__user-button user__button user__button--subscription button button--main" type="button">Подписаться</button>
+                  <?php else: ?>
+                    <button class="profile__user-button user__button user__button--subscription button button--main" type="button">Отписаться</button>
+                    <?php endif; ?>
                     <a class="profile__user-button user__button user__button--writing button button--green" href="message.php">Сообщение</a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -51,7 +58,8 @@
                         <h2 class="visually-hidden">Публикации</h2>
                         <?php foreach ($posts as $post): ?>
 
-                        <?php if ($post['type'] === 'post-photo'): ?>
+
+                       <?php if ($post['type'] === 'post-photo'): ?>
                         <article class="profile__post post post-photo">
                             <header class="post__header">
                                 <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title']; ?></a></h2>

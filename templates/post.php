@@ -38,12 +38,20 @@
                         <span class="post__view"><?= $post['view_count']; ?></span>
                     </div>
                     <div class="comments">
-                        <form class="comments__form form" action="#" method="post">
+
+                        <form class="comments__form form " action="post.php?id=<?= $post['id']?>&show=true" method="post">
                             <div class="comments__my-avatar">
-                                <img class="comments__picture" src="img/userpic.jpg" alt="Аватар пользователя">
+                                <?php if ($user['avatar']): ?> <img class="comments__picture" src="<?= post['avatar']; ?>" alt="Аватар пользователя"><?php endif;?>
                             </div>
-                            <textarea class="comments__textarea form__textarea" placeholder="Ваш комментарий"></textarea>
-                            <label class="visually-hidden">Ваш комментарий</label>
+                            <div class="form__input-section <?= !empty($error)? ' form__input-section--error' : ' ' ?>">
+                                <textarea class="comments__textarea form__textarea " placeholder="Ваш комментарий" name="comment"></textarea>
+                                <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+                                <div class="form__error-text">
+                                    <p class="form__error-desc"><?= $error; ?></p>
+                                </div>
+                                <label class="visually-hidden">Ваш комментарий</label>
+                            </div>
+
                             <button class="comments__submit button button--green" type="submit">Отправить</button>
                         </form>
                         <div class="comments__list-wrapper">
@@ -51,13 +59,13 @@
                                 <?php foreach ($comments as $comment): ?>
                                 <li class="comments__item user">
                                     <div class="comments__avatar">
-                                        <a class="user__avatar-link" href="#">
-                                            <img class="comments__picture" src="<?= $comment['avatar']; ?>" alt="Аватар пользователя">
+                                        <a class="user__avatar-link" href="profile.php?id=<?= $comment['user_id'];?>">
+                                            <?php if ($post['avatar']): ?><img class="comments__picture" src="<?= $comment['avatar']; ?>" alt="Аватар пользователя"><?php endif; ?>
                                         </a>
                                     </div>
                                     <div class="comments__info">
                                         <div class="comments__name-wrapper">
-                                            <a class="comments__user-name" href="#">
+                                            <a class="comments__user-name" href="profile.php?id=<?= $comment['user_id'];?>">
                                                 <span><?= $comment['name']; ?></span>
                                             </a>
                                             <time class="comments__time" datetime="<?= date_for_user($comment['time_comment']); ?>"><?= publication_date($comment['time_comment']);?></time>
@@ -70,10 +78,13 @@
                                 <?php endforeach; ?>
                             </ul>
                             <?php if ($comments_count > 2): ?>
-                            <a class="comments__more-link" href="#">
-                                <span>Показать все комментарии</span>
-                                <sup class="comments__amount">45</sup>
-                            </a>
+                                <?php $count_comments = get_count_comments($connection, $post['id']);?>
+                                <?php if ($count_comments > 2): ?>
+                                    <a class="comments__more-link" href="post.php">
+                                        <span>Показать все комментарии</span>
+                                        <sup class="comments__amount"><?= $count_comments ?></sup>
+                                    </a>
+                                <?php endif; ?>
                             <?php endif;?>
                         </div>
                     </div>
@@ -100,7 +111,7 @@
                             <span class="post-details__rating-text user__rating-text">подписчиков</span>
                         </p>
                         <p class="post-details__rating-item user__rating-item user__rating-item--publications">
-                            <span class="post-details__rating-amount user__rating-amount"><?= $post['public'];?></span>
+                            <span class="post-details__rating-amount user__rating-amount"><?= $public_count;?></span>
                             <span class="post-details__rating-text user__rating-text">публикаций</span>
                         </p>
                     </div>

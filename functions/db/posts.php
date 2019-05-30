@@ -8,7 +8,7 @@
  * @param int|null $user_id
  * @return array
  */
-function get_posts(mysqli $connection, string $type = null, string $order_by = null, int $user_id = null): array
+function get_posts(mysqli $connection, string $type = null, string $order_by = null, int $user_id = null, int $page_items = null, int $offset = null): array
 {
     $type_ind = 'p.content_type_id = ';
     if ($user_id) {
@@ -53,6 +53,8 @@ FROM posts p
 WHERE $where
 GROUP BY p.id
 ORDER BY $order_by DESC
+LIMIT $page_items 
+OFFSET $offset
 ";
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
@@ -80,7 +82,7 @@ function get_post_info(mysqli $connection, int $post_id): ?array
        p.video,
        p.link,
        p.view_count,
-       SUM(p.is_repost) AS repost,
+       p.is_repost AS repost,
        COUNT(p.user_id) AS public,
        u.name AS user_name,
        c.name AS type,
@@ -169,25 +171,6 @@ WHERE user_id = ?
     return $result;
 }
 
-/**
- * Добовляет комментарий к посту
- * @param mysqli $connection
- * @param int $user_id
- * @param int $post_id
- * @param string $comment
- * @return bool
- */
-function add_comment(mysqli $connection, int $user_id, int $post_id, string $comment): bool
-{
-    $sql = 'INSERT INTO comments (user_id, post_id, message) VALUE (? ,? ,?)';
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'iis', $user_id, $post_id, $comment
-    );
-    $result = mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
-
-    return $result;
-}
 
 /**
  * Обнавляет таблицу постов и добовляет кол-ву репостов +1
@@ -206,5 +189,24 @@ WHERE id = ?
     $result = mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 
+    return $result;
+}
+
+/**
+ * Возвращает кол-во постов
+ * @param mysqli $connection
+ * @return array
+ */
+function get_count_posts(mysqli $connection) : int
+{
+    $sql = "SELECT id AS cnt
+FROM posts
+";
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = mysqli_num_rows($query);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
     return $result;
 }

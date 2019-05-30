@@ -54,3 +54,24 @@ WHERE cm.post_id = ?
     }
     return $result;
 }
+
+
+/**
+ * Добовляет комментарий к посту
+ * @param mysqli $connection
+ * @param int $user_id
+ * @param int $post_id
+ * @param string $comment
+ * @return bool
+ */
+function add_comment(mysqli $connection, int $user_id, int $post_id, string $comment): bool
+{
+    $sql = 'INSERT INTO comments (user_id, post_id, message) VALUE (? ,? ,?)';
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'iis', $user_id, $post_id, $comment
+    );
+    $result = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    return $result;
+}

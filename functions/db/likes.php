@@ -37,4 +37,21 @@ WHERE post_id = ?
     return $result;
 }
 
-
+function get_like_by_user(mysqli $connection, int $post_id, int $user_id): ?int
+{
+    $sql = "SELECT id
+FROM likes
+WHERE post_id = ? AND user_id = ?
+";
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$post_id, $user_id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_num_rows($res);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}

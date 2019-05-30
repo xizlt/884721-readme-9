@@ -18,14 +18,32 @@ if ($type_block && !$types_correct) {
 }
 $sort = sort_field();
 
-$posts = get_posts($connection, $type_block, $sort);
+$cur_page = $_GET['page'] ?? 1;
+if (!$cur_page) {
+    header("HTTP/1.0 404 Not Found");
+    exit();
+}
+$page_items = 9;
+$items_count = get_count_posts($connection);
+$pages_count = ceil($items_count / $page_items);
+$offset = ($cur_page - 1) * $page_items;
+$pages = range(1, $pages_count);
+if ($cur_page > $pages_count) {
+    header("HTTP/1.0 404 Not Found");
+    exit();
+}
+
+
+$posts = get_posts($connection, $type_block, $sort, null, $page_items, $offset);
 
 $page_content = include_template('popular.php', [
     'types' => $types,
     'posts' => $posts,
     'types_correct' => $types_correct,
     'type_block' => $type_block,
-    'connection' => $connection
+    'connection' => $connection,
+    'cur_page' => $cur_page,
+    'pages_count' => $pages_count
 ]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,

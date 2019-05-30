@@ -39,13 +39,19 @@
 </div>
 
 
-    <form class="comments__form form <?= !empty($error)? 'form__input-section--error' : ' ' ?>" action="profile.php?id=<?= $user_profile['id']; ?>&post-id=<?= $post['id']?>" method="post">
+    <form class="comments__form form " action="profile.php?id=<?= $user_profile['id']; ?>&post-id=<?= $post['id']?>&show=true" method="post">
         <div class="comments__my-avatar">
             <?php if ($user['avatar']): ?> <img class="comments__picture" src="<?= $user['avatar']; ?>" alt="Аватар пользователя"><?php endif;?>
         </div>
-        <textarea class="comments__textarea form__textarea " placeholder="Ваш комментарий" name="comment"></textarea>
-            <span class="form__error-label form__error-label--comments"><?= $error; ?></span>
+        <div class="form__input-section <?= !empty($error)? ' form__input-section--error' : ' ' ?>">
+            <textarea class="comments__textarea form__textarea " placeholder="Ваш комментарий" name="comment"></textarea>
+            <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
+            <div class="form__error-text">
+                <p class="form__error-desc"><?= $error; ?></p>
+            </div>
             <label class="visually-hidden">Ваш комментарий</label>
+        </div>
+
         <button class="comments__submit button button--green" type="submit">Отправить</button>
     </form>
 
