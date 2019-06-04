@@ -16,11 +16,13 @@ if (empty($post_id)) {
 }
 
 $post = get_post_info($connection, $post_id);
+
 if (!$post) {
     header("HTTP/1.0 404 Not Found");
     exit();
 }
 
+add_view($connection, $post_id);
 
 $error = null;
 
@@ -36,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-
+$subscription_check = get_subscription($connection, $user['id'], $post['user']);
 $block_post = include_template(template_by_type($post['type']), ['post' => $post]);
 $comments_count = get_count_comments($connection, $post_id);
 $subscriptions = get_count_subscriptions($connection, $post['user']);
@@ -52,7 +54,8 @@ $page_content = include_template('post.php', [
     'user' => $user,
     'error' => $error,
     'connection' => $connection,
-    'public_count' => $public_count
+    'public_count' => $public_count,
+    'subscription_check' => $subscription_check
 ]);
 
 $layout_content = include_template('layout.php', [

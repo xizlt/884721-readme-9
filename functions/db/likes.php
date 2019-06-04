@@ -1,6 +1,12 @@
 <?php
 
-
+/**
+ * Добавление лайка посту
+ * @param mysqli $connection
+ * @param int $post_id
+ * @param int $user
+ * @return int|null
+ */
 function add_like(mysqli $connection, int $post_id, int $user): ?int
 {
     $sql = 'INSERT INTO likes (user_id, post_id) 
@@ -10,14 +16,19 @@ function add_like(mysqli $connection, int $post_id, int $user): ?int
     $result = mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     if (!$result) {
-        die('Ошибка при сохранении лота');
+        die('Ошибка при сохранении');
     }
     $id = mysqli_insert_id($connection);
     return $id;
 }
 
 
-
+/**
+ * Возвращает кол-во лайков для поста
+ * @param mysqli $connection
+ * @param int $post_id
+ * @return int|null
+ */
 function get_likes(mysqli $connection, int $post_id): ?int
 {
     $sql = "SELECT count(user_id) AS likes
@@ -37,6 +48,13 @@ WHERE post_id = ?
     return $result;
 }
 
+/**
+ * Проверяет ставил ли юзер этому посту лайк
+ * @param mysqli $connection
+ * @param int $post_id
+ * @param int $user_id
+ * @return int|null
+ */
 function get_like_by_user(mysqli $connection, int $post_id, int $user_id): ?int
 {
     $sql = "SELECT id

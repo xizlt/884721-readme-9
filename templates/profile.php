@@ -26,12 +26,12 @@
 
                 <div class="profile__user-buttons user__buttons">
                     <?php if ($user['id'] !== $user_profile['id']): ?>
-                    <?php if ($subscription_check === 0): ?>
-                    <button class="profile__user-button user__button user__button--subscription button button--main" type="button">Подписаться</button>
+                    <?php if (empty($subscription_check)): ?>
+                            <a href="add_sub.php?id=<?=$user_profile['id'];?>&subscription=true" id="true"><button class="profile__user-button user__button user__button--subscription button button--main" style="width: 100%; margin-bottom: 10px;" type="button">Подписаться</button></a>
                   <?php else: ?>
-                    <button class="profile__user-button user__button user__button--subscription button button--main" type="button">Отписаться</button>
-                    <?php endif; ?>
-                    <a class="profile__user-button user__button user__button--writing button button--green" href="message.php">Сообщение</a>
+                            <a href="add_sub.php?subscription=false&id=<?=$user_profile['id'];?>" id="false"><button class="profile__user-button user__button user__button--subscription button button--main" style="width: 100%; margin-bottom: 10px;" type="button">Отписаться</button></a>
+                            <a class="profile__user-button user__button user__button--writing button button--green" href="message.php">Сообщение</a>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
             </div>
@@ -61,9 +61,13 @@
 
                        <?php if ($post['type'] === 'post-photo'): ?>
                         <article class="profile__post post post-photo">
-                            <header class="post__header">
-                                <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title']; ?></a></h2>
-                            </header>
+                            <?php if (empty($post['repost_doner_id'])): ?>
+                                <header class="post__header">
+                                    <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title']; ?></a></h2>
+                                </header>
+                            <?php else: ?>
+                                <?php require 'templates/repost.php'; ?>
+                            <?php endif; ?>
                             <div class="post__main">
                                 <div class="post-photo__image-wrapper">
                                     <img src="<?= $post['image']; ?>" alt="Фото от пользователя" width="760" height="396">
@@ -75,9 +79,13 @@
 
                         <?php elseif ($post['type'] === 'post-video'): ?>
                             <article class="profile__post post post-video">
+                                <?php if (empty($post['repost_doner_id'])): ?>
                                 <header class="post__header">
                                     <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title']; ?></a></h2>
                                 </header>
+                                <?php else: ?>
+                                    <?php require 'templates/repost.php'; ?>
+                                <?php endif; ?>
                                 <div class="post__main">
                                     <div class="post-video__block">
                                         <div class="post-video__preview">
@@ -111,9 +119,13 @@
                             <article class="profile__post post post-text">
                                 <p>
                                 </p>
-                                <header class="post__header">
-                                    <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title']; ?></a></h2>
-                                </header>
+                                <?php if (empty($post['repost_doner_id'])): ?>
+                                    <header class="post__header">
+                                        <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title']; ?></a></h2>
+                                    </header>
+                                <?php else: ?>
+                                    <?php require 'templates/repost.php'; ?>
+                                <?php endif; ?>
                                 <div class="post__main">
                                     <p>
                                         <?= clips_text($post['message'], $post['id']);?>
@@ -125,9 +137,13 @@
 
                         <?php elseif ($post['type'] === 'post-quote'): ?>
                             <article class="profile__post post post-quote">
-                                <header class="post__header">
-                                    <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title']; ?></a></h2>
-                                </header>
+                                <?php if (empty($post['repost_doner_id'])): ?>
+                                    <header class="post__header">
+                                        <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title']; ?></a></h2>
+                                    </header>
+                                <?php else: ?>
+                                    <?php require 'templates/repost.php'; ?>
+                                <?php endif; ?>
                                 <div class="post__main">
                                     <blockquote>
                                         <p>
@@ -142,7 +158,10 @@
 
 
                         <?php elseif ($post['type'] === 'post-link'): ?>
-                            <article class="profile__post post post-link">
+                                <?php if (!empty($post['repost_doner_id'])): ?>
+                                    <?php require 'templates/repost.php'; ?>
+                                <?php endif; ?>
+                            <article class="profile__post post">
                                 <div class="post__main">
                                     <div class="post-link__wrapper">
                                         <a class="post-link__external" href="<?= $post['link'];?>" title="Перейти по ссылке">

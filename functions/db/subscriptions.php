@@ -42,7 +42,7 @@ function add_subscription(mysqli $connection, int $user, int $subscriber): int
     $result = mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     if (!$result) {
-        die('Ошибка при сохранении лота');
+        die('Ошибка при сохранении');
     }
     $id = mysqli_insert_id($connection);
     return $id;
@@ -60,11 +60,11 @@ function dell_subscription(mysqli $connection, int $user, int $subscriber): bool
     $sql = "DELETE FROM subscriptions 
 WHERE subscriber_id = ? AND user_id = ?";
     $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'ii', $subscriber, $user);
+    mysqli_stmt_bind_param($stmt, 'ii', $user, $subscriber);
     $result = mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     if (!$result) {
-        die('Ошибка при сохранении лота');
+        die('Ошибка при сохранении');
     }
     return $result;
 }
@@ -74,14 +74,14 @@ WHERE subscriber_id = ? AND user_id = ?";
  * @param mysqli $connection
  * @param int $user
  * @param int $subscriber
- * @return int|null
- */
-function get_subscription(mysqli $connection, int $user, int $subscriber): ?int
+ * @return int
+*/
+function get_subscription(mysqli $connection, int $user, int $subscriber): int
 {
-    $sql = "SELECT id FROM subscriptions 
+    $sql = "SELECT * FROM subscriptions 
 WHERE user_id = ? AND subscriber_id = ?";
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'ii', $user, $subscriber);
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$subscriber, $user]);
     mysqli_stmt_execute($stmt);
     $res = mysqli_stmt_get_result($stmt);
     if ($res) {

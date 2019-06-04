@@ -42,6 +42,7 @@ $page_content = include_template('popular.php', [
     'type_block' => $type_block,
     'connection' => $connection,
     'cur_page' => $cur_page,
+    'user' => $user,
     'pages_count' => $pages_count
 ]);
 $layout_content = include_template('layout.php', [

@@ -10,9 +10,24 @@
  * @param int|null $offset
  * @return array
  */
-function get_posts(mysqli $connection, string $type = null, string $order_by = null, int $user_id = null, int $page_items = null, int $offset = null): array
-{
+function get_posts(
+    mysqli $connection,
+    string $type = null,
+    string $order_by = null,
+    int $user_id = null,
+    int $page_items = null,
+    int $offset = null
+): array {
     $type_ind = 'p.content_type_id = ';
+    $limit = null;
+    $offsets = null;
+
+    if ($page_items) {
+        $limit = "LIMIT $page_items";
+    }
+    if ($offset) {
+        $offsets = "OFFSET $offset";
+    }
     if ($user_id) {
         if ($type) {
             $where = "u.id = $user_id AND $type_ind $type";
@@ -47,6 +62,7 @@ function get_posts(mysqli $connection, string $type = null, string $order_by = n
        c.name AS type,
        u.avatar,
        p.is_repost AS repost,
+       p.repost_doner_id,
        count(l.user_id) AS like_post
 FROM posts p
          LEFT JOIN likes l ON p.id = l.post_id
@@ -55,8 +71,7 @@ FROM posts p
 WHERE $where
 GROUP BY p.id
 ORDER BY $order_by DESC
-LIMIT $page_items 
-OFFSET $offset
+$limit $offsets
 ";
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
@@ -85,6 +100,7 @@ function get_post_info(mysqli $connection, int $post_id): ?array
        p.link,
        p.view_count,
        p.is_repost AS repost,
+       p.content_type_id,
        COUNT(p.user_id) AS public,
        u.name AS user_name,
        c.name AS type,
@@ -175,23 +191,54 @@ WHERE user_id = ?
 
 
 /**
- * Обнавляет таблицу постов и добовляет кол-ву репостов +1
  * @param mysqli $connection
- * @param int $post_id
- * @return bool
+ * @param int $user
+ * @param array $post
  */
-function add_repost(mysqli $connection, int $post_id): bool
+function add_repost(mysqli $connection, int $user, array $post)
 {
-    $sql = "UPDATE posts SET is_repost = is_repost + 1
-WHERE id = ?
-";
-    $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'ii', $post_id, $post_id
-    );
-    $result = mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
+    mysqli_prepare($connection,
+        "START TRANSACTION");
 
-    return $result;
+    $res1 = mysqli_prepare($connection, "UPDATE posts SET is_repost = is_repost + 1 WHERE id = ?");
+    mysqli_stmt_bind_param($res1, 'i', $post['id']);
+    mysqli_stmt_execute($res1);
+
+    $sql = "INSERT INTO posts (
+                   title, 
+                   message, 
+                   quote_writer, 
+                   image, 
+                   video, 
+                   link, 
+                   user_id, 
+                   content_type_id, 
+                   repost_doner_id) 
+                VALUE (? ,?, ?, ? ,?, ?, ? ,?, ?)";
+
+    $res3 = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($res3, 'ssssssiii',
+        $post['title'],
+        $post['message'],
+        $post['quote_writer'],
+        $post['image'],
+        $post['video'],
+        $post['link'],
+        $user,
+        $post['content_type_id'],
+        $post['user']
+    );
+    mysqli_stmt_execute($res3);
+
+
+    if ($res1 and $res3) {
+        mysqli_query($connection,
+            "COMMIT");
+    } else {
+        mysqli_query($connection,
+            "ROLLBACK");
+    }
+
 }
 
 /**
@@ -200,7 +247,7 @@ WHERE id = ?
  * @param int|null $type_id
  * @return int
  */
-function get_count_posts(mysqli $connection, int $type_id = null) : int
+function get_count_posts(mysqli $connection, int $type_id = null): int
 {
     $where = null;
     if ($type_id) {
@@ -215,6 +262,20 @@ $where
     } else {
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+
+function add_view(mysqli $connection, int $id): bool
+{
+    $sql = "UPDATE posts SET view_count = view_count + 1 WHERE id = ?";
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$id]);
+    $result = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    if (!$result) {
+        die('Ошибка при сохранении лота');
     }
     return $result;
 }

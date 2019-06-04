@@ -10,12 +10,10 @@
 
                     <div class="post__indicators">
                         <div class="post__buttons">
-                            <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                            <a class="post__indicator post__indicator--likes button" href="add_like.php?post_id=<?=$post['id'];?>" title="Лайк">
+                                <?php $like_check = get_like_by_user($connection, $post['id'], $user['id']); ?>
                                 <svg class="post__indicator-icon" width="20" height="17">
-                                    <use xlink:href="#icon-heart"></use>
-                                </svg>
-                                <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
-                                    <use xlink:href="#icon-heart-active"></use>
+                                    <use xlink:href="#icon-heart<?php if ($like_check): ?>-active<?php endif;?>"></use>
                                 </svg>
                                 <span><?= $post['like_post']; ?></span>
                                 <span class="visually-hidden">количество лайков</span>
@@ -27,7 +25,7 @@
                                 <span><?= $comments_count; ?></span>
                                 <span class="visually-hidden">количество комментариев</span>
                             </a>
-                            <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
+                            <a class="post__indicator post__indicator--repost button" href="add_repost.php?post_id=<?=$post['id'];?>" title="Репост">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-repost"></use>
                                 </svg>
@@ -41,7 +39,7 @@
 
                         <form class="comments__form form " action="post.php?id=<?= $post['id']?>&show=true" method="post">
                             <div class="comments__my-avatar">
-                                <?php if ($user['avatar']): ?> <img class="comments__picture" src="<?= post['avatar']; ?>" alt="Аватар пользователя"><?php endif;?>
+                                <?php if ($user['avatar']): ?> <img class="comments__picture" src="<?= $user['avatar']; ?>" alt="Аватар пользователя"><?php endif;?>
                             </div>
                             <div class="form__input-section <?= !empty($error)? ' form__input-section--error' : ' ' ?>">
                                 <textarea class="comments__textarea form__textarea " placeholder="Ваш комментарий" name="comment"></textarea>
@@ -60,7 +58,7 @@
                                 <li class="comments__item user">
                                     <div class="comments__avatar">
                                         <a class="user__avatar-link" href="profile.php?id=<?= $comment['user_id'];?>">
-                                            <?php if ($post['avatar']): ?><img class="comments__picture" src="<?= $comment['avatar']; ?>" alt="Аватар пользователя"><?php endif; ?>
+                                            <?php if ($comment['avatar']): ?><img class="comments__picture" src="<?= $comment['avatar']; ?>" alt="Аватар пользователя"><?php endif; ?>
                                         </a>
                                     </div>
                                     <div class="comments__info">
@@ -115,10 +113,18 @@
                             <span class="post-details__rating-text user__rating-text">публикаций</span>
                         </p>
                     </div>
-                    <div class="post-details__user-buttons user__buttons">
-                        <button class="user__button user__button--subscription button button--main" type="button">Подписаться</button>
-                        <a class="user__button user__button--writing button button--green" href="#">Сообщение</a>
-                    </div>
+                    <?php if ($user['id'] !== $post['user']): ?>
+                        <?php if (empty($subscription_check)): ?>
+                            <a href="add_sub.php?id=<?=$post['user'];?>&subscription=true" id="true">
+                                <button class="profile__user-button user__button user__button--subscription button button--main" style="width: 100%; margin-bottom: 10px;" type="button">Подписаться</button>
+                            </a>
+                        <?php else: ?>
+                            <a href="add_sub.php?subscription=false&id=<?=$post['user'];?>" id="false">
+                                <button class="profile__user-button user__button user__button--subscription button button--main" style="width: 100%; margin-bottom: 10px;" type="button">Отписаться</button>
+                            </a>
+                            <a class="user__button user__button--writing button button--green" href="message.php" style="width: 100%; margin-bottom: 10px;">Сообщение</a>
+                        <?php endif; ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </section>

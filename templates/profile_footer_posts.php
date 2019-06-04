@@ -1,17 +1,15 @@
 <footer class="post__footer">
     <div class="post__indicators">
         <div class="post__buttons">
-            <a class="post__indicator post__indicator--likes button" href="profile.php?id=<?=$post['user']?>&likes=ok&post-id=<?=$post['id'];?>" title="Лайк" name="likes">
-                <svg class="post__indicator-icon" width="20" height="17">
-                    <use xlink:href="#icon-heart"></use>
-                </svg>
-                <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
-                    <use xlink:href="#icon-heart-active"></use>
-                </svg>
+            <a class="post__indicator post__indicator--likes button" href="add_like.php?post_id=<?=$post['id'];?>" title="Лайк">
+                <?php $like_check = get_like_by_user($connection, $post['id'], $user['id']); ?>
+                    <svg class="post__indicator-icon" width="20" height="17">
+                        <use xlink:href="#icon-heart<?php if ($like_check): ?>-active<?php endif;?>"></use>
+                    </svg>
                 <span><?= $post['like_post']; ?></span>
                 <span class="visually-hidden">количество лайков</span>
             </a>
-            <a class="post__indicator post__indicator--repost button" href="profile.php" title="Репост" name="repost">
+            <a class="post__indicator post__indicator--repost button" href="add_repost.php?post_id=<?=$post['id'];?>" title="Репост">
                 <svg class="post__indicator-icon" width="19" height="17">
                     <use xlink:href="#icon-repost"></use>
                 </svg>
