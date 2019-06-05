@@ -92,3 +92,23 @@ WHERE user_id = ? AND subscriber_id = ?";
     }
     return $result;
 }
+
+
+function get_all_subscription(mysqli $connection, int $user): ?array
+{
+    $sql = "SELECT u.* FROM subscriptions s 
+RIGHT JOIN users u 
+ON u.id = s.user_id
+WHERE s.subscriber_id = ?";
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$user]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
