@@ -188,24 +188,13 @@
 
                     <section class="profile__likes tabs__content <?php if ($profile_block === 'likes'): ?>tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Лайки</h2>
-                        <?php foreach ($posts as $post): ?>
                         <ul class="profile__likes-list">
+                            <?php foreach ($posts as $post): ?>
+                            <?php if (get_likes($connection, $post['id'])): ?>
+                                <?php if ($post['type']==='post-photo'): ?>
                             <li class="post-mini post-mini--photo post user">
                                 <div class="post-mini__user-info user__info">
-                                    <div class="post-mini__avatar user__avatar">
-                                        <a class="user__avatar-link" href="profile.php&id=<?=$user_profile['id'];?>">
-                                            <img class="post-mini__picture user__picture" src="<?=$post['avatar'];?>" alt="Аватар пользователя">
-                                        </a>
-                                    </div>
-                                    <div class="post-mini__name-wrapper user__name-wrapper">
-                                        <a class="post-mini__name user__name" href="#">
-                                            <span>Петр Демин</span>
-                                        </a>
-                                        <div class="post-mini__action">
-                                            <span class="post-mini__activity user__additional">Лайкнул вашу публикацию</span>
-                                            <time class="post-mini__time user__additional" datetime="2014-03-20T20:20">5 минут назад</time>
-                                        </div>
-                                    </div>
+                                    <?php require "templates/profile_likes_tab_post.php";?>
                                 </div>
                                 <div class="post-mini__preview">
                                     <a class="post-mini__link" href="#" title="Перейти на публикацию">
@@ -216,22 +205,11 @@
                                     </a>
                                 </div>
                             </li>
+
+                            <?php elseif ($post['type']==='post-text'): ?>
                             <li class="post-mini post-mini--text post user">
                                 <div class="post-mini__user-info user__info">
-                                    <div class="post-mini__avatar user__avatar">
-                                        <a class="user__avatar-link" href="#">
-                                            <img class="post-mini__picture user__picture" src="img/userpic-petro.jpg" alt="Аватар пользователя">
-                                        </a>
-                                    </div>
-                                    <div class="post-mini__name-wrapper user__name-wrapper">
-                                        <a class="post-mini__name user__name" href="#">
-                                            <span>Петр Демин</span>
-                                        </a>
-                                        <div class="post-mini__action">
-                                            <span class="post-mini__activity user__additional">Лайкнул вашу публикацию</span>
-                                            <time class="post-mini__time user__additional" datetime="2014-03-20T20:05">15 минут назад</time>
-                                        </div>
-                                    </div>
+                                    <?php require "templates/profile_likes_tab_post.php";?>
                                 </div>
                                 <div class="post-mini__preview">
                                     <a class="post-mini__link" href="#" title="Перейти на публикацию">
@@ -242,22 +220,11 @@
                                     </a>
                                 </div>
                             </li>
+
+                            <?php elseif ($post['type']==='post-video'): ?>
                             <li class="post-mini post-mini--video post user">
                                 <div class="post-mini__user-info user__info">
-                                    <div class="post-mini__avatar user__avatar">
-                                        <a class="user__avatar-link" href="#">
-                                            <img class="post-mini__picture user__picture" src="img/userpic-petro.jpg" alt="Аватар пользователя">
-                                        </a>
-                                    </div>
-                                    <div class="post-mini__name-wrapper user__name-wrapper">
-                                        <a class="post-mini__name user__name" href="#">
-                                            <span>Петр Демин</span>
-                                        </a>
-                                        <div class="post-mini__action">
-                                            <span class="post-mini__activity user__additional">Лайкнул вашу публикацию</span>
-                                            <time class="post-mini__time user__additional" datetime="2014-03-20T18:20">2 часа назад</time>
-                                        </div>
-                                    </div>
+                                    <?php require "templates/profile_likes_tab_post.php";?>
                                 </div>
                                 <div class="post-mini__preview">
                                     <a class="post-mini__link" href="#" title="Перейти на публикацию">
@@ -273,22 +240,11 @@
                                     </a>
                                 </div>
                             </li>
+
+                            <?php elseif ($post['type']==='post-quote'): ?>
                             <li class="post-mini post-mini--quote post user">
                                 <div class="post-mini__user-info user__info">
-                                    <div class="post-mini__avatar user__avatar">
-                                        <a class="user__avatar-link" href="#">
-                                            <img class="post-mini__picture user__picture" src="img/userpic-petro.jpg" alt="Аватар пользователя">
-                                        </a>
-                                    </div>
-                                    <div class="post-mini__name-wrapper user__name-wrapper">
-                                        <a class="post-mini__name user__name" href="#">
-                                            <span>Петр Демин</span>
-                                        </a>
-                                        <div class="post-mini__action">
-                                            <span class="post-mini__activity user__additional">Лайкнул вашу публикацию</span>
-                                            <time class="post-mini__time user__additional" datetime="2014-03-15T20:05">5 дней назад</time>
-                                        </div>
-                                    </div>
+                                    <?php require "templates/profile_likes_tab_post.php";?>
                                 </div>
                                 <div class="post-mini__preview">
                                     <a class="post-mini__link" href="#" title="Перейти на публикацию">
@@ -299,22 +255,11 @@
                                     </a>
                                 </div>
                             </li>
+
+                            <?php elseif ($post['type']==='post-link'): ?>
                             <li class="post-mini post-mini--link post user">
                                 <div class="post-mini__user-info user__info">
-                                    <div class="post-mini__avatar user__avatar">
-                                        <a class="user__avatar-link" href="#">
-                                            <img class="post-mini__picture user__picture" src="img/userpic-petro.jpg" alt="Аватар пользователя">
-                                        </a>
-                                    </div>
-                                    <div class="post-mini__name-wrapper user__name-wrapper">
-                                        <a class="post-mini__name user__name" href="#">
-                                            <span>Петр Демин</span>
-                                        </a>
-                                        <div class="post-mini__action">
-                                            <span class="post-mini__activity user__additional">Лайкнул вашу публикацию</span>
-                                            <time class="post-mini__time user__additional" datetime="2014-03-20T20:05">в далеком 2007-ом</time>
-                                        </div>
-                                    </div>
+                                    <?php require "templates/profile_likes_tab_post.php";?>
                                 </div>
                                 <div class="post-mini__preview">
                                     <a class="post-mini__link" href="#" title="Перейти на публикацию">
@@ -325,8 +270,10 @@
                                     </a>
                                 </div>
                             </li>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            <?php endforeach;?>
                         </ul>
-                        <?php endforeach;?>
                     </section>
 
                     <section class="profile__subscriptions tabs__content <?php if ($profile_block === 'subscription'): ?>tabs__content--active<?php endif; ?>">

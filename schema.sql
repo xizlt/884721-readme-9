@@ -75,6 +75,7 @@ ALTER TABLE comments
 CREATE TABLE likes
 (
     id      INT AUTO_INCREMENT PRIMARY KEY,
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_id INT NULL,
     post_id INT NULL
 );

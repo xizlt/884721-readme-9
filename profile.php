@@ -36,6 +36,8 @@ if ($profile_block === 'likes') {
 }
 
 $posts = get_posts($connection, null, $order_by, $user_id_ind);
+$post_likes = get_posts_for_profile($connection, $user_id_ind);
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $comment = $_POST['comment'];

@@ -66,7 +66,7 @@ function get_posts(
        count(l.user_id) AS like_post
 FROM posts p
          LEFT JOIN likes l ON p.id = l.post_id
-         LEFT JOIN  users u ON u.id = p.user_id
+         LEFT JOIN users u ON u.id = p.user_id
          JOIN content_type c ON c.id = p.content_type_id
 WHERE $where
 GROUP BY p.id
@@ -106,7 +106,7 @@ function get_post_info(mysqli $connection, int $post_id): ?array
        c.name AS type,
        u.avatar,
        p.user_id AS user,
-       u.create_time as user_reg,
+       u.create_time AS user_reg,
        COUNT(l.user_id) AS like_post
 FROM posts p
          left JOIN likes l ON p.id = l.post_id
@@ -276,6 +276,24 @@ function add_view(mysqli $connection, int $id): bool
     mysqli_stmt_close($stmt);
     if (!$result) {
         die('Ошибка при сохранении лота');
+    }
+    return $result;
+}
+
+function get_posts_for_profile(mysqli $connection, int $user_id): ?array
+{
+    $sql = "SELECT user_id
+FROM likes
+WHERE post_id = ?";
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$user_id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_assoc($res);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
     }
     return $result;
 }

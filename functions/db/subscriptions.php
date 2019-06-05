@@ -93,7 +93,12 @@ WHERE user_id = ? AND subscriber_id = ?";
     return $result;
 }
 
-
+/**
+ * Возвращает всех юзеров на которых подписан
+ * @param mysqli $connection
+ * @param int $user
+ * @return array|null
+ */
 function get_all_subscription(mysqli $connection, int $user): ?array
 {
     $sql = "SELECT u.* FROM subscriptions s 
