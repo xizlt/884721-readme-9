@@ -6,6 +6,11 @@ require 'functions/validators/user/login.php';
 $login_data = null;
 $errors = null;
 
+if ($user) {
+    header('Location: feed.php');
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login_data = $_POST ?? null;
     $login_data = clean($login_data);

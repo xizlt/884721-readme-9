@@ -37,6 +37,32 @@ function clips_text(string $text, string $post_id, int $length = 300): string
     return '<p>' . $text . '</p>';
 }
 
+
+
+function clips_text_message(string $text, int $length = 20): string
+{
+    $length_content = mb_strlen($text);
+    $total = 0;
+
+    if ($length_content > $length) {
+        $result_words = [];
+        $words = explode(" ", $text);
+        foreach ($words as $word) {
+            $num = mb_strlen($word);
+            $total += $num;
+            if ($total >= $length) {
+                break;
+            }
+            $result_words[] = $word;
+
+        }
+        return implode(' ',
+                $result_words) . ' ...';
+    }
+    return  $text;
+}
+
+
 /**
  * Подключает шаблон, передает туда данные и возвращает итоговый HTML контент
  * @param string $name Путь к файлу шаблона относительно папки templates
@@ -168,33 +194,6 @@ function get_noun_plural_form(int $number, string $one, string $two, string $man
     }
 }
 
-/**
- * Генератор случайныъ чисел
- * @param int $index
- * @return string
- */
-function generate_random_date(int $index): string
-{
-    $deltas = [['minutes' => 59], ['hours' => 23], ['days' => 6], ['weeks' => 4], ['months' => 11]];
-    $dcnt = count($deltas);
-
-    if ($index < 0) {
-        $index = 0;
-    }
-
-    if ($index >= $dcnt) {
-        $index = $dcnt - 1;
-    }
-
-    $delta = $deltas[$index];
-    $timeval = rand(1, current($delta));
-    $timename = key($delta);
-
-    $ts = strtotime("$timeval $timename ago");
-    $dt = date('Y-m-d H:i:s', $ts);
-
-    return $dt;
-}
 
 /**
  * Возвращает дату в формате дд.мм.гггг чч:мм

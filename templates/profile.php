@@ -30,7 +30,7 @@
                             <a href="add_sub.php?id=<?=$user_profile['id'];?>&subscription=true" id="true"><button class="profile__user-button user__button user__button--subscription button button--main" style="width: 100%; margin-bottom: 10px;" type="button">Подписаться</button></a>
                   <?php else: ?>
                             <a href="add_sub.php?subscription=false&id=<?=$user_profile['id'];?>" id="false"><button class="profile__user-button user__button user__button--subscription button button--main" style="width: 100%; margin-bottom: 10px;" type="button">Отписаться</button></a>
-                            <a class="profile__user-button user__button user__button--writing button button--green" href="message.php">Сообщение</a>
+                            <a class="profile__user-button user__button user__button--writing button button--green" href="message.php?tab=<?=$user_profile['id'];?>">Сообщение</a>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>

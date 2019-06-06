@@ -17,6 +17,7 @@ require_once 'functions/db/tags.php';
 require_once 'functions/db/types.php';
 require_once 'functions/db/users.php';
 require_once 'functions/db/likes.php';
+require_once 'functions/db/message.php';
 
 $config = require 'config.php';
 $connection = connectDb($config['db']);
