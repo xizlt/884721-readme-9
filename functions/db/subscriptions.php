@@ -8,9 +8,9 @@
 function get_count_subscriptions(mysqli $connection, int $user_id) : int
 {
     $sql = "SELECT
-        user_id
+        id
 FROM subscriptions
-WHERE subscriber_id = ?
+WHERE user_id = ?
 ";
     mysqli_prepare($connection, $sql);
     $stmt = db_get_prepare_stmt($connection, $sql, [$user_id]);
