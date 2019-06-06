@@ -73,28 +73,3 @@ WHERE post_id = ? AND user_id = ?
     }
     return $result;
 }
-
-/**
- * Возвращает массив с юзерами которые ставили лайки посту
- * @param mysqli $connection
- * @param int $post_id
- * @return array|null
- */
-function get_likes(mysqli $connection, int $post_id): ?array
-{
-    $sql = "SELECT user_id
-FROM likes
-WHERE post_id = ?";
-    mysqli_prepare($connection, $sql);
-    $stmt = db_get_prepare_stmt($connection, $sql, [$post_id]);
-    mysqli_stmt_execute($stmt);
-    $res = mysqli_stmt_get_result($stmt);
-    if ($res) {
-        $result = mysqli_fetch_assoc($res);
-    } else {
-        $error = mysqli_error($connection);
-        die('Ошибка MySQL ' . $error);
-    }
-    return $result;
-}
-

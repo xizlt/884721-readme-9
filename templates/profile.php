@@ -189,30 +189,31 @@
                     <section class="profile__likes tabs__content <?php if ($profile_block === 'likes'): ?>tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Лайки</h2>
                         <ul class="profile__likes-list">
-                            <?php foreach ($posts as $post): ?>
-                            <?php if (get_likes($connection, $post['id'])): ?>
-                                <?php if ($post['type']==='post-photo'): ?>
+
+                            <?php foreach ($likes as $like): ?>
+
+                                <?php if ($like['type']==='post-photo'): ?>
                             <li class="post-mini post-mini--photo post user">
                                 <div class="post-mini__user-info user__info">
                                     <?php require "templates/profile_likes_tab_post.php";?>
                                 </div>
                                 <div class="post-mini__preview">
-                                    <a class="post-mini__link" href="#" title="Перейти на публикацию">
+                                    <a class="post-mini__link" href="post.php?id=<?= $like['id'];?>" title="Перейти на публикацию">
                                         <div class="post-mini__image-wrapper">
-                                            <img class="post-mini__image" src="img/rock-small.png" width="109" height="109" alt="Превью публикации">
+                                            <img class="post-mini__image" src="<?= $like['image'];?>" width="109" height="109" alt="Превью публикации">
                                         </div>
                                         <span class="visually-hidden">Фото</span>
                                     </a>
                                 </div>
                             </li>
 
-                            <?php elseif ($post['type']==='post-text'): ?>
+                            <?php elseif ($like['type']==='post-text'): ?>
                             <li class="post-mini post-mini--text post user">
                                 <div class="post-mini__user-info user__info">
                                     <?php require "templates/profile_likes_tab_post.php";?>
                                 </div>
                                 <div class="post-mini__preview">
-                                    <a class="post-mini__link" href="#" title="Перейти на публикацию">
+                                    <a class="post-mini__link" href="post.php?id=<?= $like['id'];?>" title="Перейти на публикацию">
                                         <span class="visually-hidden">Текст</span>
                                         <svg class="post-mini__preview-icon" width="20" height="21">
                                             <use xlink:href="#icon-filter-text"></use>
@@ -221,15 +222,15 @@
                                 </div>
                             </li>
 
-                            <?php elseif ($post['type']==='post-video'): ?>
+                            <?php elseif ($like['type']==='post-video'): ?>
                             <li class="post-mini post-mini--video post user">
                                 <div class="post-mini__user-info user__info">
                                     <?php require "templates/profile_likes_tab_post.php";?>
                                 </div>
                                 <div class="post-mini__preview">
-                                    <a class="post-mini__link" href="#" title="Перейти на публикацию">
+                                    <a class="post-mini__link" href="post.php?id=<?= $like['id'];?>" title="Перейти на публикацию">
                                         <div class="post-mini__image-wrapper">
-                                            <img class="post-mini__image" src="img/coast-small.png" width="109" height="109" alt="Превью публикации">
+                                            <img class="post-mini__image" src="//img.youtube.com/vi/<?= extract_youtube_id($like['video']); ?>/0.jpg" width="109" height="109" alt="Превью публикации">
                                             <span class="post-mini__play-big">
                             <svg class="post-mini__play-big-icon" width="12" height="13">
                               <use xlink:href="#icon-video-play-big"></use>
@@ -241,13 +242,13 @@
                                 </div>
                             </li>
 
-                            <?php elseif ($post['type']==='post-quote'): ?>
+                            <?php elseif ($like['type']==='post-quote'): ?>
                             <li class="post-mini post-mini--quote post user">
                                 <div class="post-mini__user-info user__info">
                                     <?php require "templates/profile_likes_tab_post.php";?>
                                 </div>
                                 <div class="post-mini__preview">
-                                    <a class="post-mini__link" href="#" title="Перейти на публикацию">
+                                    <a class="post-mini__link" href="post.php?id=<?= $like['id'];?>" title="Перейти на публикацию">
                                         <span class="visually-hidden">Цитата</span>
                                         <svg class="post-mini__preview-icon" width="21" height="20">
                                             <use xlink:href="#icon-filter-quote"></use>
@@ -256,13 +257,13 @@
                                 </div>
                             </li>
 
-                            <?php elseif ($post['type']==='post-link'): ?>
+                                        <?php elseif ($like['type']==='post-link'): ?>
                             <li class="post-mini post-mini--link post user">
                                 <div class="post-mini__user-info user__info">
                                     <?php require "templates/profile_likes_tab_post.php";?>
                                 </div>
                                 <div class="post-mini__preview">
-                                    <a class="post-mini__link" href="#" title="Перейти на публикацию">
+                                    <a class="post-mini__link" href="post.php?id=<?= $like['id'];?>" title="Перейти на публикацию">
                                         <span class="visually-hidden">Ссылка</span>
                                         <svg class="post-mini__preview-icon" width="21" height="18">
                                             <use xlink:href="#icon-filter-link"></use>
@@ -270,9 +271,8 @@
                                     </a>
                                 </div>
                             </li>
-                                    <?php endif; ?>
-                                <?php endif; ?>
-                            <?php endforeach;?>
+                                        <?php endif; ?>
+                            <?php endforeach; ?>
                         </ul>
                     </section>
 

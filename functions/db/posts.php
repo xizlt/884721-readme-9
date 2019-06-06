@@ -266,7 +266,12 @@ $where
     return $result;
 }
 
-
+/**
+ * Добовляет просмотр посту
+ * @param mysqli $connection
+ * @param int $id
+ * @return bool
+ */
 function add_view(mysqli $connection, int $id): bool
 {
     $sql = "UPDATE posts SET view_count = view_count + 1 WHERE id = ?";
@@ -280,17 +285,37 @@ function add_view(mysqli $connection, int $id): bool
     return $result;
 }
 
-function get_posts_for_profile(mysqli $connection, int $user_id): ?array
+/**
+ * Возвращает массив постов где есть лайки
+ * @param mysqli $connection
+ * @param int $user
+ * @return array|null
+ */
+function get_posts_tab_likes(mysqli $connection, int $user): ?array
 {
-    $sql = "SELECT user_id
-FROM likes
-WHERE post_id = ?";
+    $sql = "SELECT 
+       p.id,
+       p.image,
+       p.video,
+       c.name AS type,
+       l.create_time,
+       l.user_id AS user_like,
+       u.id AS user,
+       u.name,
+       u.avatar
+FROM posts p
+         JOIN content_type c ON c.id = p.content_type_id
+         JOIN likes l ON p.id = l.post_id
+         JOIN users u ON u.id = l.user_id
+WHERE p.user_id = ?
+ORDER BY create_time DESC
+";
     mysqli_prepare($connection, $sql);
-    $stmt = db_get_prepare_stmt($connection, $sql, [$user_id]);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$user]);
     mysqli_stmt_execute($stmt);
     $res = mysqli_stmt_get_result($stmt);
     if ($res) {
-        $result = mysqli_fetch_assoc($res);
+        $result = mysqli_fetch_all($res, MYSQLI_ASSOC);
     } else {
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);

@@ -31,13 +31,8 @@ $user_profile = get_user_by_id($connection, $user_id_ind);
 $subscription_check = get_subscription($connection, $user['id'], $user_id_ind);
 $profiles = get_all_subscription($connection, $user['id']);
 
-if ($profile_block === 'likes') {
-    $order_by = 'create_time';
-}
-
 $posts = get_posts($connection, null, $order_by, $user_id_ind);
-$post_likes = get_posts_for_profile($connection, $user_id_ind);
-
+$likes = get_posts_tab_likes($connection, $user_id_ind);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $comment = $_POST['comment'];
@@ -60,7 +55,8 @@ $page_content = include_template('profile.php', [
     'error' => $error,
     'subscription_check' => $subscription_check,
     'profile_block' => $profile_block,
-    'profiles' => $profiles
+    'profiles' => $profiles,
+    'likes' => $likes
 
 ]);
 $layout_content = include_template('layout.php', [
