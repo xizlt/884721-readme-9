@@ -32,7 +32,7 @@ $subscription_check = get_subscription($connection, $user['id'], $user_id_ind);
 $profiles = get_all_subscription($connection, $user['id']);
 
 $posts = get_posts($connection, null, $order_by, $user_id_ind);
-$likes = get_posts_tab_likes($connection, $user_id_ind);
+$likes = get_posts_tab_likes($connection, $user_id_ind) ?? null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $comment = $_POST['comment'];

@@ -31,6 +31,7 @@ $messages = get_message($connection, $user_id_ind, $user['id']);
 $users_messages = get_users_message($connection, $user['id']);
 
 
+
 $page_content = include_template('message.php', [
     'error' => $error,
     'messages' => $messages,

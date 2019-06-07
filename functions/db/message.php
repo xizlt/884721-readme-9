@@ -67,9 +67,9 @@ function get_users_message(mysqli $connection, int $recipient_id): ?array
 JOIN users u ON u.id = m.sender_id
 WHERE (sender_id, create_date) IN
    (SELECT sender_id, MAX(create_date) FROM messages
-    GROUP BY sender_id) AND recipient_id = ? AND sender_id != ?";
+    GROUP BY sender_id, recipient_id)";
     mysqli_prepare($connection, $sql);
-    $stmt = db_get_prepare_stmt($connection, $sql, [$recipient_id, $recipient_id]);
+    $stmt = db_get_prepare_stmt($connection, $sql, []);
     mysqli_stmt_execute($stmt);
     $res = mysqli_stmt_get_result($stmt);
     if ($res) {

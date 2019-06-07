@@ -27,7 +27,7 @@ $page_content = include_template('feed.php', [
     'connection' => $connection,
     'types_correct' => $types_correct,
     'types' => $types,
-    'type_block'=> $type_block,
+    'type_id'=> $type_block,
     'user' => $user
 ]);
 $layout_content = include_template('layout.php', [

@@ -18,6 +18,11 @@ require_once 'functions/db/types.php';
 require_once 'functions/db/users.php';
 require_once 'functions/db/likes.php';
 require_once 'functions/db/message.php';
+require_once 'functions/request.php';
+
+if (!file_exists('config.php')) {
+    die('На основе файла config.sample.php создайте файл config.php и сконфигурируйте его');
+}
 
 $config = require 'config.php';
 $connection = connectDb($config['db']);

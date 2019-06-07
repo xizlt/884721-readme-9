@@ -9,9 +9,9 @@ $errors = [];
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $user_data = $_POST;
-    $user_data = clean($user_data);
-    $file_data = $_FILES;
+
+    $user_data = load_user_data($_POST);
+    $file_data = $_FILES ?? null;
 
     $errors = validate_user($connection, $user_data, $file_data);
 

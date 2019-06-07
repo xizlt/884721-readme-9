@@ -114,8 +114,6 @@ CREATE TABLE messages
     recipient_id INT           NOT NULL
 );
 
-CREATE UNIQUE INDEX messages_sender_recipient_udx ON messages (sender_id, recipient_id);
-
 ALTER TABLE messages
     ADD FOREIGN KEY (sender_id)
         REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -23,7 +23,7 @@ function get_types(mysqli $connection): array
  * @param integer $type_id
  * @return array|null
  */
-function get_type_by_id(mysqli $connection, int $type_id): ?array
+function get_type_by_id(mysqli $connection, ?int $type_id): ?array
 {
     $sql = "SELECT * FROM content_type
 WHERE id = ?

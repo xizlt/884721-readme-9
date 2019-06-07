@@ -289,22 +289,21 @@ function user_date_registration(string $time): string
 
 /**
  * Условие по сортировки
+ * @param string $tab
  * @return string
  */
-function sort_field(): string
+function sort_field(?string $tab): string
 {
-    $sort_field = 'view_count';
-    if (isset($_GET['tab'])) {
-        switch ($_GET['tab']) {
-            case 'likes':
-                $sort_field = 'like_post';
-                break;
-            case 'date':
-                $sort_field = 'create_time';
-                break;
-        }
+    switch ($tab) {
+        case 'likes':
+            return 'like_post';
+            break;
+        case 'date':
+            return 'create_time';
+            break;
+        default:
+            return 'view_count';
     }
-    return $sort_field;
 }
 
 /**
@@ -383,24 +382,23 @@ function embed_youtube_video($youtube_url)
 }
 
 
-
 /**
  * Возвращает путь на загруженный файл . Перемещает файл
- * @param $file_data
- * @return string
+ * @param array|null $file_data
+ * @return string|null
  */
-function upload_img($file_data)
+function upload_img(?array $file_data): ?string
 {
-    $path = $file_data['name'];
-    if (!$path) {
+    $name = $file_data['name'] ?? null;
+    if (!$name) {
         return null;
     }
     $tmp_name = $file_data['tmp_name'];
-    $result = 'uploads/' . $path;
-    if (!move_uploaded_file($tmp_name, $result)) {
+    $path = 'uploads/' . $name;
+    if (!move_uploaded_file($tmp_name, $path)) {
         die('Не найдена папка uploads или отсутствуют права на запись в неё');
     }
-    return $result;
+    return $path;
 }
 
 /**
