@@ -109,7 +109,7 @@
             </div>
             <ul class="feed__filters filters">
                 <li class="feed__filters-item filters__item">
-                    <a class="filters__button filters__button--ellipse filters__button--all <?php if(empty($type_block)): ?> filters__button--active <?php endif;?>" href="feed.php">
+                    <a class="filters__button filters__button--ellipse filters__button--all <?php if(empty($type_id)): ?> filters__button--active <?php endif;?>" href="feed.php">
                         <span>Все</span>
                     </a>
                 </li>

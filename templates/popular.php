@@ -8,7 +8,7 @@
                 <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
                 <ul class="popular__sorting-list sorting__list">
                     <li class="sorting__item sorting__item--popular">
-                        <a class="sorting__link <?php if(isset($_GET['tab']) && $_GET['tab'] === 'view'):?>sorting__link--active<?php endif; ?>" href="<?php if ($type_block): ?>popular.php?type_id=<?= $type_block; ?>&tab=view<?php else: ?>popular.php?tab=view<?php endif;?>">
+                        <a class="sorting__link <?php if(isset($_GET['tab']) && $_GET['tab'] === 'view'):?>sorting__link--active<?php endif; ?>" href="<?php if ($type_id): ?>popular.php?type_id=<?= $type_id; ?>&tab=view<?php else: ?>popular.php?tab=view<?php endif;?>">
                             <span>Популярность</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -16,7 +16,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link <?php if(isset($_GET['tab']) && $_GET['tab'] === 'likes'):?>sorting__link--active<?php endif; ?>" href="<?php if ($type_block): ?>popular.php?type_id=<?= $type_block; ?>&tab=likes<?php else: ?>popular.php?tab=likes<?php endif; ?>">
+                        <a class="sorting__link <?php if(isset($_GET['tab']) && $_GET['tab'] === 'likes'):?>sorting__link--active<?php endif; ?>" href="<?php if ($type_id): ?>popular.php?type_id=<?= $type_id; ?>&tab=likes<?php else: ?>popular.php?tab=likes<?php endif; ?>">
                             <span>Лайки</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -24,7 +24,7 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link <?php if(isset($_GET['tab']) && $_GET['tab'] === 'date'):?>sorting__link--active<?php endif; ?>" href="<?php if ($type_block): ?>popular.php?type_id=<?= $type_block; ?>&tab=date<?php else: ?>popular.php?tab=date<?php endif; ?>">
+                        <a class="sorting__link <?php if(isset($_GET['tab']) && $_GET['tab'] === 'date'):?>sorting__link--active<?php endif; ?>" href="<?php if ($type_id): ?>popular.php?type_id=<?= $type_id; ?>&tab=date<?php else: ?>popular.php?tab=date<?php endif; ?>">
                             <span>Дата</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -37,15 +37,15 @@
                 <b class="popular__filters-caption filters__caption">Тип контента:</b>
                 <ul class="popular__filters-list filters__list">
                     <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                        <a class="filters__button filters__button--ellipse filters__button--all <?php if(empty($type_block)): ?> filters__button--active <?php endif;?>" href="popular.php">
+                        <a class="filters__button filters__button--ellipse filters__button--all <?php if(empty($type_id)): ?> filters__button--active <?php endif;?>" href="popular.php">
                             <span>Все</span>
                         </a>
                     </li>
 
-                    <?php foreach ($types as $type): ?>
-                    <?php if ($type['name'] === 'post-photo'): ?>
+                    <?php foreach ($types as $type_current): ?>
+                    <?php if ($type_current['name'] === 'post-photo'): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--photo button <?php if($types_correct['id'] === $type['id']):?> filters__button--active <?php endif;?>" href="popular.php?type_id=<?= $type['id']; ?>">
+                        <a class="filters__button filters__button--photo button <?php if($type['id'] === $type_current['id']):?> filters__button--active <?php endif;?>" href="popular.php?type_id=<?= $type_current['id']; ?>">
                             <span class="visually-hidden">Фото</span>
                             <svg class="filters__icon" width="22" height="18">
                                 <use xlink:href="#icon-filter-photo"></use>
@@ -53,9 +53,9 @@
                         </a>
                     </li>
 
-                    <?php elseif ($type['name'] === 'post-video'): ?>
+                    <?php elseif ($type_current['name'] === 'post-video'): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--video button <?php if($types_correct['id'] === $type['id']):?> filters__button--active <?php endif;?>" href="popular.php?type_id=<?= $type['id']; ?>">
+                        <a class="filters__button filters__button--video button <?php if($type['id'] === $type_current['id']):?> filters__button--active <?php endif;?>" href="popular.php?type_id=<?= $type_current['id']; ?>">
                             <span class="visually-hidden">Видео</span>
                             <svg class="filters__icon" width="24" height="16">
                                 <use xlink:href="#icon-filter-video"></use>
@@ -63,9 +63,9 @@
                         </a>
                     </li>
 
-                    <?php elseif ($type['name'] === 'post-text'): ?>
+                    <?php elseif ($type_current['name'] === 'post-text'): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--text button <?php if($types_correct['id'] === $type['id']):?> filters__button--active <?php endif;?>" href="popular.php?type_id=<?= $type['id']; ?>">
+                        <a class="filters__button filters__button--text button <?php if($type['id'] === $type_current['id']):?> filters__button--active <?php endif;?>" href="popular.php?type_id=<?= $type_current['id']; ?>">
                             <span class="visually-hidden">Текст</span>
                             <svg class="filters__icon" width="20" height="21">
                                 <use xlink:href="#icon-filter-text"></use>
@@ -73,9 +73,9 @@
                         </a>
                     </li>
 
-                    <?php elseif ($type['name'] === 'post-quote'): ?>
+                    <?php elseif ($type_current['name'] === 'post-quote'): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--quote button <?php if($types_correct['id'] === $type['id']):?> filters__button--active <?php endif;?>" href="popular.php?type_id=<?= $type['id']; ?>">
+                        <a class="filters__button filters__button--quote button <?php if($type['id'] === $type_current['id']):?> filters__button--active <?php endif;?>" href="popular.php?type_id=<?= $type_current['id']; ?>">
                             <span class="visually-hidden">Цитата</span>
                             <svg class="filters__icon" width="21" height="20">
                                 <use xlink:href="#icon-filter-quote"></use>
@@ -83,9 +83,9 @@
                         </a>
                     </li>
 
-                    <?php elseif ($type['name'] === 'post-link'): ?>
+                    <?php elseif ($type_current['name'] === 'post-link'): ?>
                     <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--link button <?php if($types_correct['id'] === $type['id']):?> filters__button--active <?php endif;?>" href="popular.php?type_id=<?= $type['id']; ?>">
+                        <a class="filters__button filters__button--link button <?php if($type['id'] === $type_current['id']):?> filters__button--active <?php endif;?>" href="popular.php?type_id=<?= $type_current['id']; ?>">
                             <span class="visually-hidden">Ссылка</span>
                             <svg class="filters__icon" width="21" height="18">
                                 <use xlink:href="#icon-filter-link"></use>
@@ -186,17 +186,15 @@
                         </div>
                         <div class="post__indicators">
                             <div class="post__buttons">
-                                <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                                <a class="post__indicator post__indicator--likes button" href="add_like.php?post_id=<?=$post['id'];?>" title="Лайк">
+                                    <?php $like_check = get_like_by_user($connection, $post['id'], $user['id']); ?>
                                     <svg class="post__indicator-icon" width="20" height="17">
-                                        <use xlink:href="#icon-heart"></use>
-                                    </svg>
-                                    <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
-                                        <use xlink:href="#icon-heart-active"></use>
+                                        <use xlink:href="#icon-heart<?php if ($like_check): ?>-active<?php endif;?>"></use>
                                     </svg>
                                     <span><?= $post['like_post']; ?></span>
                                     <span class="visually-hidden">количество лайков</span>
                                 </a>
-                                <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
+                                <a class="post__indicator post__indicator--comments button" href="post.php?id=<?=$post['id']?>" title="Комментарии">
                                     <svg class="post__indicator-icon" width="19" height="17">
                                         <use xlink:href="#icon-comment"></use>
                                     </svg>
@@ -209,5 +207,16 @@
                 </article>
             <?php endforeach; ?>
         </div>
+        <?php if ($pages_count > 1 ): ?>
+        <div class="popular__page-links">
+            <?php if ($cur_page > 1): ?>
+            <a class="popular__page-link popular__page-link--prev button button--gray" href="popular.php?<?php if ($type_id): ?>type_id=<?=$type_id;?><?php endif;?>&page=<?= ($cur_page - 1); ?>">Предыдущая страница</a>
+            <?php endif;?>
+            <?php if ($cur_page < $pages_count): ?>
+            <a class="popular__page-link popular__page-link--next button button--gray" href="popular.php?<?php if ($type_id): ?>type_id=<?=$type_id;?><?php endif;?>&page=<?= ($cur_page + 1); ?>">Следующая страница</a>
+            <?php endif;?>
+        </div>
+        <?php endif; ?>
     </div>
+
 </section>

@@ -2,9 +2,14 @@
 
 require 'bootstrap.php';
 
+if (!$user) {
+    header('Location: /');
+    exit();
+}
+
 $types = get_types($connection);
 $type_block = $_GET['type_id'] ?? '';
-$type_block = clean($type_block);
+$type_block = (int)clean($type_block);
 
 $types_correct = get_type_by_id($connection, $type_block);
 
@@ -22,7 +27,8 @@ $page_content = include_template('feed.php', [
     'connection' => $connection,
     'types_correct' => $types_correct,
     'types' => $types,
-    'type_block'=> $type_block
+    'type_id'=> $type_block,
+    'user' => $user
 ]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,

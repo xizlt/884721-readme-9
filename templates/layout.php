@@ -15,7 +15,7 @@
 <header class="header">
     <div class="header__wrapper container">
         <div class="header__logo-wrapper">
-            <a class="header__logo-link" href="index.php">
+            <a class="header__logo-link" href="/">
                 <img class="header__logo" src="img/logo.svg" alt="Логотип readme" width="128" height="24">
             </a>
             <p class="header__topic">
@@ -48,7 +48,7 @@
                             </a>
                         </li>
                         <li class="header__my-page header__my-page--feed">
-                            <a class="header__page-link" href="feed.php" title="Моя лента">
+                            <a class="header__page-link" href="feed.php?id=<?=$user['id']; ?>" title="Моя лента">
                                 <span class="visually-hidden">Моя лента</span>
                             </a>
                         </li>
@@ -61,7 +61,7 @@
                     <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
                     <ul class="header__user-nav">
                         <li class="header__profile">
-                            <a class="header__profile-link" href="profile.php">
+                            <a class="header__profile-link" href="profile.php?id=<?=$user['id']; ?>">
                                 <div class="header__avatar-wrapper">
                                     <?php if(isset($user['avatar'])): ?><img class="header__profile-avatar" src="<?= $user['avatar']; ?>" alt="Аватар профиля"><?php endif; ?>
                                 </div>
@@ -79,7 +79,7 @@
                                 <div class="header__profile-tooltip">
                                     <ul class="header__profile-nav">
                                         <li class="header__profile-nav-item">
-                                            <a class="header__profile-nav-link" href="#">
+                                            <a class="header__profile-nav-link" href="profile.php?id=<?=$user['id']; ?>">
                           <span class="header__profile-nav-text">
                             Мой профиль
                           </span>

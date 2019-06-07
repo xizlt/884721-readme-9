@@ -75,6 +75,7 @@ ALTER TABLE comments
 CREATE TABLE likes
 (
     id      INT AUTO_INCREMENT PRIMARY KEY,
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_id INT NULL,
     post_id INT NULL
 );
@@ -112,8 +113,6 @@ CREATE TABLE messages
     sender_id    INT           NOT NULL,
     recipient_id INT           NOT NULL
 );
-
-CREATE UNIQUE INDEX messages_sender_recipient_udx ON messages (sender_id, recipient_id);
 
 ALTER TABLE messages
     ADD FOREIGN KEY (sender_id)

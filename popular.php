@@ -1,27 +1,56 @@
 <?php
 
 require 'bootstrap.php';
+if (!$user) {
+    header('Location: /');
+    exit();
+}
 
 $types = get_types($connection);
-$type_block = $_GET['type_id'] ?? '';
-$type_block = clean($type_block);
+$type_id = isset($_GET['type_id']) ? (int)$_GET['type_id'] : null;
 
-$types_correct = get_type_by_id($connection, $type_block);
+$type = get_type_by_id($connection, $type_id);
 
-if ($type_block && !$types_correct) {
+
+if ($type_id && !$type) {
     header("HTTP/1.0 404 Not Found");
     exit();
 }
-$sort = sort_field();
+$tab = isset($_GET['tab']) ? clean($_GET['tab']) : null;
 
-$posts = get_posts($connection, $type_block, $sort);
+    $sort = sort_field($tab);
+
+$cur_page = $_GET['page'] ?? 1;
+if (!$cur_page) {
+    header("HTTP/1.0 404 Not Found");
+    exit();
+}
+
+$page_items = $config['pagination']['posts_per_page'];
+$items_count = get_count_posts($connection, $type_id);
+
+$pages_count = null;
+$offset = null;
+
+if ($items_count !== 0) {
+    $pages_count = ceil($items_count / $page_items);
+    $offset = ($cur_page - 1) * $page_items;
+    if ($cur_page > $pages_count) {
+        header("HTTP/1.0 404 Not Found");
+        exit();
+    }
+}
+$posts = get_posts($connection, $type_id, $sort, null, $page_items, $offset);
 
 $page_content = include_template('popular.php', [
     'types' => $types,
     'posts' => $posts,
-    'types_correct' => $types_correct,
-    'type_block' => $type_block,
-    'connection' => $connection
+    'type' => $type,
+    'type_id' => $type_id,
+    'connection' => $connection,
+    'cur_page' => $cur_page,
+    'user' => $user,
+    'pages_count' => $pages_count
 ]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
