@@ -96,3 +96,4 @@ function get_user_by_email(mysqli $connection, string $email): ?array
     }
     return $result;
 }
+

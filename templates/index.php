@@ -59,7 +59,7 @@
         </section>
         <section class="authorization">
             <h2 class="visually-hidden">Авторизация</h2>
-            <form class="authorization__form form" action="index.php" method="post">
+            <form class="authorization__form form" action="/" method="post">
                 <div class="authorization__input-wrapper form__input-wrapper">
                     <div class="form__input-section <?php if (!empty($errors['email'])): ?> form__input-section--error<?php endif; ?>">
                         <input class="authorization__input authorization__input--login form__input" type="text" name="email" placeholder="Логин" value="<?= $login_data['email']; ?>">

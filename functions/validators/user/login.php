@@ -10,11 +10,13 @@
 function validate_login(mysqli $connection, array $login_data, ?string $user): ?array
 {
     $errors = [];
-    if ($error = validate_login_password($login_data['password'], $user)) {
-        $errors['password'] = $error;
-    }
     if ($error = validate_login_email($connection, $login_data['email'])) {
         $errors['email'] = $error;
+    }
+    if (empty($errors['email'])) {
+        if ($error = validate_login_password($login_data['password'], $user)) {
+            $errors['password'] = $error;
+        }
     }
     return $errors;
 }
@@ -36,7 +38,7 @@ function validate_login_password(string $password, ?string $user): ?string
     }
 
     if (!password_verify($password, $user)) {
-        return 'Пароли не совпадают';
+        return 'Неверный пароль';
     }
     return null;
 }

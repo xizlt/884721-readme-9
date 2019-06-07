@@ -1,30 +1,17 @@
 <?php
-session_start();
-date_default_timezone_set("Europe/Moscow");
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-$is_auth = rand(0, 1);
-
-require_once 'functions/main.php';
-require_once 'functions/db/common.php';
-require_once 'functions/db/users.php';
-require 'functions/validators/user/registration.php';
-require 'functions/photo.php';
-$config = require 'config.php';
-$connection = connectDb($config['db']);
+require_once 'bootstrap.php';
+require_once 'functions/validators/user/registration.php';
+require_once 'functions/photo.php';
 
 $user_data = [];
 $file_data = [];
 $errors = [];
-$user = null;
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $user_data = $_POST;
-    $user_data = clean($user_data);
-    $file_data = $_FILES;
+
+    $user_data = load_user_data($_POST);
+    $file_data = $_FILES ?? null;
 
     $errors = validate_user($connection, $user_data, $file_data);
 

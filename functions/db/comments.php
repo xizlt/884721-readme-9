@@ -41,7 +41,6 @@ FROM comments cm
      JOIN users u
 ON u.id = cm.user_id
 WHERE cm.post_id = ?
-LIMIT 2
 ";
     mysqli_prepare($connection, $sql);
     $stmt = db_get_prepare_stmt($connection, $sql, [$post_id]);
@@ -53,5 +52,26 @@ LIMIT 2
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);
     }
+    return $result;
+}
+
+
+/**
+ * Добовляет комментарий к посту
+ * @param mysqli $connection
+ * @param int $user_id
+ * @param int $post_id
+ * @param string $comment
+ * @return bool
+ */
+function add_comment(mysqli $connection, int $user_id, int $post_id, string $comment): bool
+{
+    $sql = 'INSERT INTO comments (user_id, post_id, message) VALUE (? ,? ,?)';
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'iis', $user_id, $post_id, $comment
+    );
+    $result = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
     return $result;
 }

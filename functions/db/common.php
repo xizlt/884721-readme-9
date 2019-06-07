@@ -17,4 +17,3 @@ function connectDb(array $config): mysqli
 
     return $connection;
 }
-
