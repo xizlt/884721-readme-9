@@ -56,6 +56,6 @@ $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Популярное',
     'user' => $user,
-    'is_auth' => $is_auth
+    'search' => $search
 ]);
 print ($layout_content);

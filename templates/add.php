@@ -74,7 +74,7 @@
                                     </div>
                                     <?= $tags_post; ?>
                                 </div>
-                                <?= $block_errors; ?>
+                                <?= $no_result; ?>
                             </div>
                             <div class="adding-post__input-file-container form__input-container form__input-container--file ">
                                 <div class="adding-post__input-file-wrapper form__input-file-wrapper ">
@@ -118,7 +118,7 @@
                                     </div>
                                     <?= $tags_post; ?>
                                 </div>
-                                <?= $block_errors; ?>
+                                <?= $no_result; ?>
                             </div>
                             <?= $send_form; ?>
                         </form>
@@ -144,7 +144,7 @@
                                     </div>
                                     <?= $tags_post; ?>
                                 </div>
-                                <?= $block_errors; ?>
+                                <?= $no_result; ?>
                             </div>
                             <?= $send_form; ?>
                         </form>
@@ -180,7 +180,7 @@
                                     </div>
                                     <?= $tags_post; ?>
                                 </div>
-                                <?= $block_errors; ?>
+                                <?= $no_result; ?>
                             </div>
                             <?= $send_form; ?>
                         </form>
@@ -216,7 +216,7 @@
                                     </div>
                                     <?= $tags_post;?>
                                 </div>
-                                <?= $block_errors; ?>
+                                <?= $no_result; ?>
                             </div>
                             <?= $send_form; ?>
                         </form>

@@ -62,7 +62,7 @@ $page_content = include_template('profile.php', [
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Популярное',
-    'is_auth' => $is_auth,
+    'search' => $search,
     'user' => $user
 ]);
 print ($layout_content);

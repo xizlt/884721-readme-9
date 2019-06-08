@@ -53,6 +53,9 @@ ALTER TABLE posts
     ADD FOREIGN KEY (repost_doner_id)
         REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
+CREATE FULLTEXT INDEX posts_search ON posts(title, message);
+
+
 CREATE TABLE comments
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,

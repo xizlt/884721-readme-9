@@ -61,7 +61,7 @@ $page_content = include_template('post.php', [
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Публикация',
-    'is_auth' => $is_auth,
+    'search' => $search,
     'user' => $user
 ]);
 print ($layout_content);

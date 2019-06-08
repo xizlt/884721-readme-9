@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 $block_errors = include_template('add_post_errors.php', ['errors' => $errors]);
 $page_content = include_template('registration.php', [
-    'block_errors' => $block_errors,
+    'no_result' => $block_errors,
     'errors' => $errors,
     'user_data' => $user_data,
     'file_data' => $file_data
@@ -35,7 +35,7 @@ $page_content = include_template('registration.php', [
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Популярное',
-    'is_auth' => $is_auth,
+    'search' => $search,
     'user' => $user
 ]);
 print ($layout_content);

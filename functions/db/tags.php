@@ -118,3 +118,24 @@ function get_tags(mysqli $connection, string $tag): ?array
     }
     return $result;
 }
+
+
+function get_post_id_for_search(mysqli $connection, string $tag): ?array
+{
+    $result = null;
+    $sql = "SELECT * FROM posts_tags pt
+    LEFT JOIN posts p ON p.id = pt.post_id
+                WHERE pt.tag_id = ?";
+
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $tag);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}

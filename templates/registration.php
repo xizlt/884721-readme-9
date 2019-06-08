@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <?php if (!empty($errors)): ?>
-                    <?= $block_errors; ?>
+                    <?= $no_result; ?>
                 <?php endif; ?>
             </div>
             <div class="registration__input-file-container form__input-container form__input-container--file">

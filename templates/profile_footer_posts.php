@@ -24,7 +24,7 @@
         <?php if ($tags): ?>
             <?php foreach ($tags as $tag): ?>
                 <?php $tag_word = get_tags($connection, $tag['tag_id']); ?>
-                <li><a href="#">#<?= $tag_word['name']; ?></a></li>
+                <li><a href="search.php?search=<?= urlencode ('#') . $tag_word['name']; ?>"><?= '#' . $tag_word['name']; ?></a></li>
             <?php endforeach; ?>
         <?php endif; ?>
     </ul>

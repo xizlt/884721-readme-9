@@ -100,7 +100,7 @@ $send_form = include_template('add_post_footer.php');
 $page_content = include_template('add.php', [
     'tab' => $tab,
     'types' => $types,
-    'block_errors' => $block_errors,
+    'no_result' => $block_errors,
     'send_form' => $send_form,
     'title_post' => $title_post,
     'tags_post' => $tags_post,
@@ -111,7 +111,7 @@ $page_content = include_template('add.php', [
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Популярное',
-    'is_auth' => $is_auth,
+    'search' => $search,
     'user' => $user
 ]);
 print ($layout_content);

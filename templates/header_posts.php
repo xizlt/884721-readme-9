@@ -6,7 +6,7 @@
         </div>
         <div class="post__info">
             <b class="post__author-name"><?= $post['user_name'];?></b>
-            <span class="post__time"><?= $post['create_time'];?></span>
+            <span class="post__time"><?= publication_date($post['create_time']);?></span>
         </div>
     </a>
 </header>
