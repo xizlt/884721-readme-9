@@ -7,8 +7,9 @@ if (!$user) {
 }
 
 $types = get_types($connection);
-$type_id = $_GET['type_id'] ? (int)$_GET['type_id'] : null;
-
+$type_id = $_GET['type_id'] ??  null;
+$type_id = (int)$type_id
+    
 $type = get_type_by_id($connection, $type_id);
 
 if ($type_id && !$type) {
@@ -41,8 +42,6 @@ if ($items_count !== 0) {
     }
 }
 $posts = get_posts($connection, $type_id, $sort, null, $page_items, $offset);
-
-var_dump($posts);
 
 $page_content = include_template('popular.php', [
     'types' => $types,
