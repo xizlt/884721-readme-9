@@ -41,7 +41,7 @@ function get_posts(
         }
     } else {
         if ($type) {
-            $where = "WHERE $type_ind . $type";
+            $where = "WHERE $type_ind $type";
         }
         if (!$type) {
             $where = "WHERE $type_ind c.id";
@@ -55,10 +55,9 @@ function get_posts(
         $search = "WHERE MATCH(title, message) AGAINST('%$search%')";
     }
     if ($tag_id) {
-        $where = "WHERE pt.tag_id =$tag_id";
+        $where = "WHERE pt.tag_id = $tag_id";
         $search = null;
     }
-
 
     $sql = "SELECT p.id,
        p.create_time,
@@ -83,7 +82,7 @@ FROM posts p
          JOIN content_type c ON c.id = p.content_type_id 
          LEFT JOIN posts_tags pt ON p.id = pt.post_id
      $where 
-     $search
+     $search 
 GROUP BY p.id
 ORDER BY $order_by
 $limit $offsets
@@ -266,7 +265,7 @@ function get_count_posts(mysqli $connection, int $type_id = null): int
 {
     $where = null;
     if ($type_id) {
-        $where = "where content_type_id = $type_id";
+        $where = "WHERE content_type_id = $type_id";
     }
     $sql = "SELECT *
 FROM posts
