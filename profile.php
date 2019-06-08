@@ -8,11 +8,8 @@ if (!$user) {
     exit();
 }
 
-$user_id_ind = $_GET['id'] ?? null;
-$user_id_ind = (int)clean($user_id_ind);
-
-$profile_block = $_GET['tab'] ?? null;
-$profile_block = clean($profile_block);
+$user_id_ind = isset($_GET['id']) ? (int)$_GET['id'] : null;
+$profile_block = isset($_GET['tab']) ? clean($_GET['tab']) : null;
 
 if (!$profile_block) {
     $profile_block = 'posts';

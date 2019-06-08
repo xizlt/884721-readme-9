@@ -48,7 +48,7 @@ function get_posts(
         }
     }
     if (!$order_by) {
-        $order_by = 'view_count';
+        $order_by = 'view_count DESC';
     }
     if ($search) {
         $where = null;
@@ -85,7 +85,7 @@ FROM posts p
      $where 
      $search
 GROUP BY p.id
-ORDER BY $order_by DESC
+ORDER BY $order_by
 $limit $offsets
 ";
     if ($query = mysqli_query($connection, $sql)) {

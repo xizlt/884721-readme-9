@@ -13,11 +13,16 @@ $error = null;
 $user_id_ind = $_GET['tab'] ?? null;
 $user_id_ind = (int)clean($user_id_ind);
 
+if ($user_id_ind === $user['id']) {
+    header("Location: $_SERVER[HTTP_REFERER]");
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message = $_POST['message'];
     $message = clean($message);
 
-    $error = validate_comment($message) ?? null;
+    $error = validate_message($message) ?? null;
 
     if (!$error) {
         add_message($connection, $message, $user['id'], $user_id_ind);
@@ -28,8 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $count_message = get_count_message($connection, 2, 35);
 $messages = get_message($connection, $user_id_ind, $user['id']);
-$users_messages = get_users_message($connection, $user['id']);
+$users_messages = get_users_message($connection, $user['id'], $user_id_ind);
 
+$j = get_message_my($connection, $user['id']);
+$jh = get_message_me($connection,  $user['id']);
 
 
 $page_content = include_template('message.php', [
@@ -38,7 +45,9 @@ $page_content = include_template('message.php', [
     'count_message' => $count_message,
     'user' => $user,
     'users_messages' => $users_messages,
-    'user_id_ind' => $user_id_ind
+    'user_id_ind' => $user_id_ind,
+    'connection' => $connection
+
 
 ]);
 $layout_content = include_template('layout.php', [

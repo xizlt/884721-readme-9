@@ -61,15 +61,56 @@ WHERE (recipient_id = ? and sender_id = ?) or (recipient_id =?  and sender_id =?
     return $result;
 }
 
-function get_users_message(mysqli $connection, int $recipient_id): ?array
+function get_users_message(mysqli $connection, int $recipient_id, $user_id_ind): ?array
 {
     $sql = "SELECT * FROM messages m
 JOIN users u ON u.id = m.sender_id
-WHERE (sender_id, create_date) IN
-   (SELECT sender_id, MAX(create_date) FROM messages
+WHERE (recipient_id, create_date) IN
+   (SELECT recipient_id, MAX(create_date) FROM messages
     GROUP BY sender_id, recipient_id)";
     mysqli_prepare($connection, $sql);
     $stmt = db_get_prepare_stmt($connection, $sql, []);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+
+function get_message_my(mysqli $connection, int $recipient_id): ?array
+{
+    $sql = "SELECT * FROM messages m
+JOIN users u ON u.id = m.recipient_id
+WHERE (create_date) IN
+   (SELECT MAX(create_date) FROM messages
+    GROUP BY recipient_id) and sender_id = ?";
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$recipient_id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+function get_message_me(mysqli $connection, int $recipient_id): ?array
+{
+    $sql = " SELECT * FROM messages m
+JOIN users u ON u.id = m.sender_id
+WHERE (create_date) IN
+   (SELECT MAX(create_date) FROM messages
+    GROUP BY sender_id) and recipient_id =?";
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$recipient_id]);
     mysqli_stmt_execute($stmt);
     $res = mysqli_stmt_get_result($stmt);
     if ($res) {

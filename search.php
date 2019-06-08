@@ -14,9 +14,9 @@ $post_id = null;
 
 if (substr($search, 0, 1) === '#') {
     $search = substr($search, 1);
-
+$order_by = 'create_time DESC';
     $name_tags = get_tag_by_name($connection, $search);
-    $posts = get_posts($connection, null, null, null, null, null,null, $name_tags['id']);
+    $posts = get_posts($connection, null, $order_by, null, null, null,null, $name_tags['id']);
 
 }else{
     $posts = get_posts($connection, null, null, null,null,null, $search);
