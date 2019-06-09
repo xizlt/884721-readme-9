@@ -99,6 +99,15 @@
         </div>
 
         <div class="popular__posts">
+
+            <?php if (!$posts): ?>
+                <div class="feed__main-wrapper">
+                    <div class="feed__wrapper">
+
+                    </div>
+                </div>
+            <?php endif;?>
+
             <?php foreach ($posts as $post): ?>
                 <article class="popular__post post <?= $post['type']; ?>">
                     <header class="post__header">

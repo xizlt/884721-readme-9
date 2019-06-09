@@ -56,6 +56,13 @@
 
                     <section class="profile__posts tabs__content <?php if ($profile_block === 'posts'): ?>tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Публикации</h2>
+                        <?php if (!$posts): ?>
+                            <div class="feed__main-wrapper">
+                                <div class="feed__wrapper">
+
+                                </div>
+                            </div>
+                        <?php endif;?>
                         <?php foreach ($posts as $post): ?>
 
                        <?php if ($post['type'] === 'post-photo'): ?>
@@ -173,7 +180,13 @@
                         <ul class="profile__likes-list">
 
                             <?php foreach ($likes as $like): ?>
+                                <?php if (!$likes): ?>
+                                    <div class="feed__main-wrapper">
+                                        <div class="feed__wrapper">
 
+                                        </div>
+                                    </div>
+                                <?php endif;?>
                                 <?php if ($like['type']==='post-photo'): ?>
                             <li class="post-mini post-mini--photo post user">
                                 <div class="post-mini__user-info user__info">
@@ -260,6 +273,13 @@
 
                     <section class="profile__subscriptions tabs__content <?php if ($profile_block === 'subscription'): ?>tabs__content--active<?php endif; ?>">
                         <h2 class="visually-hidden">Подписки</h2>
+                        <?php if (!$profiles): ?>
+                            <div class="feed__main-wrapper">
+                                <div class="feed__wrapper">
+
+                                </div>
+                            </div>
+                        <?php endif;?>
                             <ul class="profile__subscriptions-list">
                                 <?php foreach ($profiles as $profile): ?>
                                     <li class="post-mini post-mini--photo post user">

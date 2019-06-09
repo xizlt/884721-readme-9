@@ -8,7 +8,7 @@ if (!$user) {
 
 $types = get_types($connection);
 $type_id = $_GET['type_id'] ??  null;
-$type_id = (int)$type_id
+$type_id = (int)$type_id;
     
 $type = get_type_by_id($connection, $type_id);
 
