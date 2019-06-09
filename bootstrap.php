@@ -7,7 +7,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 $search = null;
-
+require 'vendor/autoload.php';
 require_once 'functions/main.php';
 require_once 'functions/db/common.php';
 require_once 'functions/db/comments.php';
@@ -34,4 +34,11 @@ if ($user_id) {
 }
 
 
+$transport = new Swift_SmtpTransport("phpdemo.ru", 25);
+$transport->setUsername("keks@phpdemo.ru");
+$transport->setPassword("htmlacademy");
 
+$mailer = new Swift_Mailer($transport);
+
+$logger = new Swift_Plugins_Loggers_ArrayLogger();
+$mailer->registerPlugin(new Swift_Plugins_LoggerPlugin($logger));

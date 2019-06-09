@@ -117,3 +117,55 @@ WHERE s.subscriber_id = ?";
     }
     return $result;
 }
+
+
+/**
+ * Получаем юзера на которого только что подписались
+ * @param mysqli $connection
+ * @param int $user_id
+ * @return array
+ */
+function user_subscriptions(mysqli $connection, int $user_id): array
+{
+    $sql = "SELECT u.name, u.email FROM subscriptions s 
+RIGHT JOIN users u 
+ON u.id = s.user_id
+WHERE s.user_id = ?";
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$user_id]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_assoc($res);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+
+/**
+ * Получаем всех подписчиков данного пользователя
+ * @param mysqli $connection
+ * @param int $user
+ * @return array|null
+ */
+function get__subscriptions(mysqli $connection, int $user): ?array
+{
+    $sql = "SELECT u.name, u.email FROM subscriptions s 
+RIGHT JOIN users u 
+ON u.id = s.user_id
+WHERE s.subscriber_id = ?";
+    mysqli_prepare($connection, $sql);
+    $stmt = db_get_prepare_stmt($connection, $sql, [$user]);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}

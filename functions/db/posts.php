@@ -49,6 +49,8 @@ function get_posts(
     }
     if (!$order_by) {
         $order_by = 'view_count DESC';
+    }else{
+        $order_by = $order_by . ' DESC';
     }
     if ($search) {
         $where = null;
