@@ -308,16 +308,18 @@
                                     </p>
                                 </div>
                                 <div class="post-mini__user-buttons user__buttons">
-
+                                    <?php if ($user['id'] !== $profile['id']):?>
                                 <?php if (!get_subscription($connection, $user['id'], $profile['id'])): ?>
                                     <a href="add_sub.php?id=<?=$profile['id'];?>&subscription=true" id="true">
                                         <button class="post-mini__user-button user__button user__button--subscription button button--main" style="width: 100%; margin-bottom: 10px;" type="button">Подписаться</button>
                                     </a>
                                 <?php else: ?>
                                     <a href="add_sub.php?id=<?=$profile['id'];?>&subscription=false" id="false">
-                                        <button class="post-mini__user-button user__button user__button--subscription button button--quartz" type="button">Отписаться</button>                                </a>
+                                        <button class="post-mini__user-button user__button user__button--subscription button button--quartz" type="button">Отписаться</button>
+                                    </a>
                                 </a>
                                 <?php endif; ?>
+                                    <?php endif;?>
                                 </div>
                             </li>
                                 <?php endforeach; ?>

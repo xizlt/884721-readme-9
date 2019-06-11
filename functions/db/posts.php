@@ -49,7 +49,7 @@ function get_posts(
     }
     if (!$order_by) {
         $order_by = 'view_count DESC';
-    }else{
+    } else {
         $order_by = $order_by . ' DESC';
     }
     if ($search) {
@@ -87,7 +87,8 @@ FROM posts p
      $search 
 GROUP BY p.id
 ORDER BY $order_by
-$limit $offsets
+$limit 
+         $offsets
 ";
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
@@ -332,6 +333,50 @@ ORDER BY create_time DESC
     $res = mysqli_stmt_get_result($stmt);
     if ($res) {
         $result = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+/**
+ * Возвращает массив с постами для ленты пользователя
+ * @param mysqli $connection
+ * @param int $user
+ * @return array|null
+ */
+function get_post_for_feed(mysqli $connection, int $user) : ?array
+{
+    $sql = "SELECT p.id,
+       p.create_time,
+       p.title,
+       p.message,
+       p.quote_writer,
+       p.image,
+       p.video,
+       p.link,
+       p.view_count,
+       p.content_type_id,
+       u.name AS user_name,
+       u.id AS user,
+       c.name AS type,
+       u.avatar,
+       p.is_repost AS repost,
+       p.repost_doner_id,
+       count(l.user_id) AS like_post,
+       sub.user_id
+FROM posts p
+         LEFT JOIN likes l ON p.id = l.post_id
+         LEFT JOIN users u ON u.id = p.user_id
+         JOIN content_type c ON c.id = p.content_type_id 
+LEFT JOIN subscriptions sub ON sub.user_id = u.id      
+      WHERE sub.subscriber_id = $user
+GROUP BY p.id
+ORDER BY p.create_time DESC
+";
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
     } else {
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);

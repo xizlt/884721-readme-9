@@ -8,6 +8,7 @@
             <div class="feed__main-wrapper">
                 <div class="feed__wrapper">
                     <?php foreach ($posts as $post): ?>
+
                     <?php if ($post['type'] === 'post-photo'): ?>
                     <article class="feed__post post post-photo">
                         <?php require 'header_posts.php'; ?>
@@ -44,7 +45,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <?php require 'footer_posts.php'; ?>
                     </article>
 
