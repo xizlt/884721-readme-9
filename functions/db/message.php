@@ -30,10 +30,11 @@ WHERE sender_id = ? AND recipient_id = ?
  */
 function add_message(mysqli $connection, string $message, int $sender_id, int $recipient_id): bool
 {
-    $sql = 'INSERT INTO messages (message, sender_id, recipient_id) 
-            VALUES (?,?,?)';
+    $dialog = $sender_id . 1 . $recipient_id;
+    $sql = 'INSERT INTO messages (message, sender_id, recipient_id, dialog) 
+            VALUES (?,?,?,?)';
     $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'sii', $message, $sender_id, $recipient_id);
+    mysqli_stmt_bind_param($stmt, 'siis', $message, $sender_id, $recipient_id, $dialog);
     $result = mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     if (!$result) {
@@ -180,10 +181,15 @@ LIMIT 1
 
 function get_mess(mysqli $connection, int $user): ?array
 {
-    $sql = "SELECT id
-FROM messages  
-WHERE recipient_id = ? or sender_id = ?
-GROUP BY id
+    $sql = "SELECT *, u.name as user_name
+FROM messages m
+join users u ON m.sender_id = u.id
+                    WHERE m.id
+                          IN(SELECT MAX(m.id)
+                          FROM messages m
+                          WHERE m.sender_id = ? OR m.recipient_id = ?
+                          GROUP BY m.dialog)
+                    ORDER BY m.create_date DESC
 
 ";
     mysqli_prepare($connection, $sql);

@@ -26,8 +26,7 @@ if (!$cur_page) {
     exit();
 }
 
-$page_items = $config['pagination']['posts_per_page'];
-
+$page_items = 6;
 $items_count = get_count_posts($connection, $type_id);
 
 $pages_count = null;

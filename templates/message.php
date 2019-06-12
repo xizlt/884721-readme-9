@@ -5,8 +5,9 @@
         <div class="messages__contacts">
             <ul class="messages__contacts-list tabs__list">
 
-                <?php $user_messages = get_message_user_id($connection, $user['id'], $users_ids['user_id']); ?>
+                <?php $user_messages = get_mess($connection, $user['id']); ?>
                 <?php foreach ($user_messages as $user_message):?>
+
                 <?php if ($user_message['sender_id'] !== $user['id']): ?>
                         <li class="messages__contacts-item messages__contacts-item--new">
                     <a class="messages__contacts-tab tabs__item" href="message.php?tab=<?= $user_message['sender_id'];?>">

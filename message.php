@@ -37,7 +37,6 @@ $messages = get_message($connection, $user_id_ind, $user['id']);
 
 $users_ids = get_mess($connection, $user['id']);
 
-var_dump($messages);
 
 $page_content = include_template('message.php', [
     'error' => $error,
