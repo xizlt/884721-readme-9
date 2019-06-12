@@ -8,115 +8,101 @@
             <div class="feed__main-wrapper">
                 <div class="feed__wrapper">
                     <?php foreach ($posts as $post): ?>
-                    <?php if ($post['type'] === 'post-photo'): ?>
-                    <article class="feed__post post post-photo">
-                        <?php require 'header_posts.php'; ?>
-                        <div class="post__main">
-                            <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title'];?></a></h2>
-                            <div class="post-photo__image-wrapper">
-                                <img src="<?= $post['image'];?>" alt="Фото от пользователя" width="760" height="396">
-                            </div>
-                        </div>
-                        <?php require 'footer_posts.php'; ?>
-                    </article>
 
-                    <?php elseif($post['type'] === 'post-text'): ?>
-                    <article class="feed__post post post-text">
-                        <?php require 'header_posts.php'; ?>
-                        <div class="post__main">
-                            <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title'];?></a></h2>
-                            <p>
-                                <?= clips_text($post['message'], $post['id']);?>
-                            </p>
-                        </div>
-                        <?php require 'footer_posts.php'; ?>
-                    </article>
-
-                    <?php elseif($post['type'] === 'post-video'): ?>
-                    <article class="feed__post post post-video">
-                        <?php require 'header_posts.php'; ?>
-
-                        <div class="post__main">
-                            <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title'];?></a></h2>
-                            <div class="post-video__block">
-                                <div class="post-video__preview">
-                                    <img src="//img.youtube.com/vi/<?= extract_youtube_id($post['video']); ?>/1.jpg" alt="Превью к видео" width="760" height="396">
+                        <?php if ($post['type'] === 'post-photo'): ?>
+                            <article class="feed__post post post-photo">
+                                <?php require 'header_posts.php'; ?>
+                                <div class="post__main">
+                                    <h2><a href="post.php?id=<?= $post['id']; ?>"><?= $post['title']; ?></a></h2>
+                                    <div class="post-photo__image-wrapper">
+                                        <img src="<?= $post['image']; ?>" alt="Фото от пользователя" width="760"
+                                             height="396">
+                                    </div>
                                 </div>
-                                <div class="post-video__control">
-                                    <button class="post-video__play post-video__play--paused button button--video" type="button"><span class="visually-hidden">Запустить видео</span></button>
-                                        <div class="post-video__scale-wrapper">
-                                        <div class="post-video__scale">
-                                            <div class="post-video__bar">
-                                                <div class="post-video__toggle"></div>
-                                            </div>
+                                <?php require 'footer_posts.php'; ?>
+                            </article>
+
+                        <?php elseif ($post['type'] === 'post-text'): ?>
+                            <article class="feed__post post post-text">
+                                <?php require 'header_posts.php'; ?>
+                                <div class="post__main">
+                                    <h2><a href="post.php?id=<?= $post['id']; ?>"><?= $post['title']; ?></a></h2>
+                                    <p>
+                                        <?= clips_text($post['message'], $post['id']); ?>
+                                    </p>
+                                </div>
+                                <?php require 'footer_posts.php'; ?>
+                            </article>
+
+                        <?php elseif ($post['type'] === 'post-video'): ?>
+                            <article class="feed__post post post-video">
+                                <?php require 'header_posts.php'; ?>
+
+                                <div class="post__main">
+                                    <h2><a href="post.php?id=<?= $post['id']; ?>"><?= $post['title']; ?></a></h2>
+                                    <div class="post-video__block">
+                                        <div class="post-video__preview">
+                                            <?= embed_youtube_video($post['video']); ?>
                                         </div>
                                     </div>
-                                    <button class="post-video__fullscreen post-video__fullscreen--inactive button button--video" type="button"><span class="visually-hidden">Полноэкранный режим</span></button>
                                 </div>
-                                <button class="post-video__play-big button" type="button">
-                                    <svg class="post-video__play-big-icon" width="27" height="28">
-                                        <use xlink:href="#icon-video-play-big"></use>
-                                    </svg>
-                                    <span class="visually-hidden">Запустить проигрыватель</span>
-                                </button>
+                                <?php require 'footer_posts.php'; ?>
+                            </article>
 
-                            </div>
-                        </div>
+                        <?php elseif ($post['type'] === 'post-quote'): ?>
+                            <article class="feed__post post post-quote">
+                                <?php require 'header_posts.php'; ?>
+                                <div class="post__main">
+                                    <h2><a href="post.php?id=<?= $post['id']; ?>"><?= $post['title']; ?></a></h2>
+                                    <blockquote>
+                                        <p>
+                                            <?= $post['message']; ?>
+                                        </p>
+                                        <cite><?= $post['quote_writer']; ?></cite>
+                                    </blockquote>
+                                </div>
+                                <?php require 'footer_posts.php'; ?>
+                            </article>
 
-                        <?php require 'footer_posts.php'; ?>
-                    </article>
-
-                    <?php elseif($post['type'] === 'post-quote'): ?>
-                    <article class="feed__post post post-quote">
-                        <?php require 'header_posts.php'; ?>
-                        <div class="post__main">
-                            <h2><a href="post.php?id=<?= $post['id'];?>"><?= $post['title'];?></a></h2>
-                            <blockquote>
-                                <p>
-                                    <?= $post['message'];?>
-                                </p>
-                                <cite><?= $post['quote_writer'];?></cite>
-                            </blockquote>
-                        </div>
-                        <?php require 'footer_posts.php'; ?>
-                    </article>
-
-                    <?php elseif($post['type'] === 'post-link'): ?>
-                    <article class="feed__post post post-link">
-                        <?php require 'header_posts.php'; ?>
-                        <div class="post__main">
-                            <div class="post-link__wrapper">
-                                <a class="post-link__external" href="<?= $post['link'];?>" title="Перейти по ссылке">
-                                    <div class="post-link__icon-wrapper">
-                                        <img src="img/logo-vita.jpg" alt="Иконка">
+                        <?php elseif ($post['type'] === 'post-link'): ?>
+                            <article class="feed__post post post-link">
+                                <?php require 'header_posts.php'; ?>
+                                <div class="post__main">
+                                    <div class="post-link__wrapper">
+                                        <a class="post-link__external" href="<?= $post['link']; ?>"
+                                           title="Перейти по ссылке">
+                                            <div class="post-link__icon-wrapper">
+                                                <img src="img/logo-vita.jpg" alt="Иконка">
+                                            </div>
+                                            <div class="post-link__info">
+                                                <h3><?= $post['title']; ?></h3>
+                                                <p><?= $post['message']; ?></p>
+                                                <span><?= $post['link']; ?></span>
+                                            </div>
+                                            <svg class="post-link__arrow" width="11" height="16">
+                                                <use xlink:href="#icon-arrow-right-ad"></use>
+                                            </svg>
+                                        </a>
                                     </div>
-                                    <div class="post-link__info">
-                                        <h3><?= $post['title'];?></h3>
-                                        <p><?= $post['message'];?></p>
-                                        <span><?= $post['link'];?></span>
-                                    </div>
-                                    <svg class="post-link__arrow" width="11" height="16">
-                                        <use xlink:href="#icon-arrow-right-ad"></use>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                        <?php require 'footer_posts.php'; ?>
-                    </article>
-                    <?php endif; ?>
-                    <?php endforeach;?>
+                                </div>
+                                <?php require 'footer_posts.php'; ?>
+                            </article>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                 </div>
             </div>
             <ul class="feed__filters filters">
                 <li class="feed__filters-item filters__item">
-                    <a class="filters__button filters__button--ellipse filters__button--all <?php if(empty($type_id)): ?> filters__button--active <?php endif;?>" href="feed.php">
+                    <a class="filters__button filters__button--ellipse filters__button--all <?php if (empty($type_id)): ?> filters__button--active <?php endif; ?>"
+                       href="feed.php">
                         <span>Все</span>
                     </a>
                 </li>
                 <?php foreach ($types as $type): ?>
                     <?php if ($type['name'] === 'post-photo'): ?>
                         <li class="feed__filters-item filters__item">
-                            <a class="filters__button filters__button--photo button <?php if($types_correct['id'] === $type['id']):?> filters__button--active <?php endif;?>" href="feed.php?type_id=<?= $type['id']; ?>">
+                            <a class="filters__button filters__button--photo button <?php if ($types_correct['id'] === $type['id']): ?> filters__button--active <?php endif; ?>"
+                               href="feed.php?type_id=<?= $type['id']; ?>">
                                 <span class="visually-hidden">Фото</span>
                                 <svg class="filters__icon" width="22" height="18">
                                     <use xlink:href="#icon-filter-photo"></use>
@@ -126,7 +112,8 @@
 
                     <?php elseif ($type['name'] === 'post-video'): ?>
                         <li class="feed__filters-item filters__item">
-                            <a class="filters__button filters__button--video button <?php if($types_correct['id'] === $type['id']):?> filters__button--active <?php endif;?>" href="feed.php?type_id=<?= $type['id']; ?>">
+                            <a class="filters__button filters__button--video button <?php if ($types_correct['id'] === $type['id']): ?> filters__button--active <?php endif; ?>"
+                               href="feed.php?type_id=<?= $type['id']; ?>">
                                 <span class="visually-hidden">Видео</span>
                                 <svg class="filters__icon" width="24" height="16">
                                     <use xlink:href="#icon-filter-video"></use>
@@ -136,7 +123,8 @@
 
                     <?php elseif ($type['name'] === 'post-text'): ?>
                         <li class="feed__filters-item filters__item">
-                            <a class="filters__button filters__button--text button <?php if($types_correct['id'] === $type['id']):?> filters__button--active <?php endif;?>" href="feed.php?type_id=<?= $type['id']; ?>">
+                            <a class="filters__button filters__button--text button <?php if ($types_correct['id'] === $type['id']): ?> filters__button--active <?php endif; ?>"
+                               href="feed.php?type_id=<?= $type['id']; ?>">
                                 <span class="visually-hidden">Текст</span>
                                 <svg class="filters__icon" width="20" height="21">
                                     <use xlink:href="#icon-filter-text"></use>
@@ -146,7 +134,8 @@
 
                     <?php elseif ($type['name'] === 'post-quote'): ?>
                         <li class="feed__filters-item filters__item">
-                            <a class="filters__button filters__button--quote button <?php if($types_correct['id'] === $type['id']):?> filters__button--active <?php endif;?>" href="feed.php?type_id=<?= $type['id']; ?>">
+                            <a class="filters__button filters__button--quote button <?php if ($types_correct['id'] === $type['id']): ?> filters__button--active <?php endif; ?>"
+                               href="feed.php?type_id=<?= $type['id']; ?>">
                                 <span class="visually-hidden">Цитата</span>
                                 <svg class="filters__icon" width="21" height="20">
                                     <use xlink:href="#icon-filter-quote"></use>
@@ -156,7 +145,8 @@
 
                     <?php elseif ($type['name'] === 'post-link'): ?>
                         <li class="feed__filters-item filters__item">
-                            <a class="filters__button filters__button--link button <?php if($types_correct['id'] === $type['id']):?> filters__button--active <?php endif;?>" href="feed.php?type_id=<?= $type['id']; ?>">
+                            <a class="filters__button filters__button--link button <?php if ($types_correct['id'] === $type['id']): ?> filters__button--active <?php endif; ?>"
+                               href="feed.php?type_id=<?= $type['id']; ?>">
                                 <span class="visually-hidden">Ссылка</span>
                                 <svg class="filters__icon" width="21" height="18">
                                     <use xlink:href="#icon-filter-link"></use>

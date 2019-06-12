@@ -7,10 +7,10 @@ if (!$user) {
 }
 
 $types = get_types($connection);
-$type_id = isset($_GET['type_id']) ? (int)$_GET['type_id'] : null;
+$type_id = $_GET['type_id'] ?? null;
+$type_id = (int)$type_id;
 
 $type = get_type_by_id($connection, $type_id);
-
 
 if ($type_id && !$type) {
     header("HTTP/1.0 404 Not Found");
@@ -18,7 +18,7 @@ if ($type_id && !$type) {
 }
 $tab = isset($_GET['tab']) ? clean($_GET['tab']) : null;
 
-    $sort = sort_field($tab);
+$sort = sort_field($tab);
 
 $cur_page = $_GET['page'] ?? 1;
 if (!$cur_page) {
@@ -26,7 +26,7 @@ if (!$cur_page) {
     exit();
 }
 
-$page_items = $config['pagination']['posts_per_page'];
+$page_items = 6;
 $items_count = get_count_posts($connection, $type_id);
 
 $pages_count = null;
@@ -56,6 +56,6 @@ $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Популярное',
     'user' => $user,
-    'is_auth' => $is_auth
+    'search' => $search
 ]);
 print ($layout_content);

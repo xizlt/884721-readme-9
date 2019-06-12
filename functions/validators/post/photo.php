@@ -69,22 +69,22 @@ function validate_link_upload(string $link): ?array
                 'for_text' => 'Необходимо заполнить поле в полном формате ссылки. Например: https://www.google.com/'
             ];
         }
-            $urlHeaders = get_headers($link, 1);
-            if (!strpos($urlHeaders[0], '200')) {
-                return $arr = [
-                    'for_block' => 'Ссылка. Неверно указан путь',
-                    'for_title' => 'Ошибка в загрузке',
-                    'for_text' => 'Проверьте правильность пути к файлу'
-                ];
-            }
-            if (!is_image($urlHeaders['Content-Type'])) {
-                return $arr = [
-                    'for_block' => 'Ссылка. Неподдерживаемый формат',
-                    'for_title' => 'Неподдерживаемый формат',
-                    'for_text' => 'Необходимо загрузить файл в следующих форматах: .gif .jpeg .png'
-                ];
-            }
+        $urlHeaders = get_headers($link, 1);
+        if (!strpos($urlHeaders[0], '200')) {
+            return $arr = [
+                'for_block' => 'Ссылка. Неверно указан путь',
+                'for_title' => 'Ошибка в загрузке',
+                'for_text' => 'Проверьте правильность пути к файлу'
+            ];
         }
+        if (!is_image($urlHeaders['Content-Type'])) {
+            return $arr = [
+                'for_block' => 'Ссылка. Неподдерживаемый формат',
+                'for_title' => 'Неподдерживаемый формат',
+                'for_text' => 'Необходимо загрузить файл в следующих форматах: .gif .jpeg .png'
+            ];
+        }
+    }
 
     return null;
 }

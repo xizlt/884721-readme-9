@@ -8,11 +8,8 @@ if (!$user) {
     exit();
 }
 
-$user_id_ind = $_GET['id'] ?? null;
-$user_id_ind = (int)clean($user_id_ind);
-
-$profile_block = $_GET['tab'] ?? null;
-$profile_block = clean($profile_block);
+$user_id_ind = isset($_GET['id']) ? (int)$_GET['id'] : null;
+$profile_block = isset($_GET['tab']) ? clean($_GET['tab']) : null;
 
 if (!$profile_block) {
     $profile_block = 'posts';
@@ -28,8 +25,15 @@ $error = null;
 $order_by = 'create_time';
 
 $user_profile = get_user_by_id($connection, $user_id_ind);
-$subscription_check = get_subscription($connection, $user['id'], $user_id_ind);
-$profiles = get_all_subscription($connection, $user['id']);
+
+    if($user['id'] === $user_id_ind) {
+        $subscription_check = get_subscription($connection, $user['id'], $user_id_ind);
+        $profiles = get_all_subscription($connection, $user['id']);
+    }else{
+        $subscription_check = get_subscription($connection, $user_id_ind, $user_id_ind);
+        $profiles = get_all_subscription($connection, $user_id_ind);
+    }
+
 
 $posts = get_posts($connection, null, $order_by, $user_id_ind);
 $likes = get_posts_tab_likes($connection, $user_id_ind) ?? null;
@@ -62,7 +66,7 @@ $page_content = include_template('profile.php', [
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Популярное',
-    'is_auth' => $is_auth,
+    'search' => $search,
     'user' => $user
 ]);
 print ($layout_content);

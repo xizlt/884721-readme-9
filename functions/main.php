@@ -32,11 +32,10 @@ function clips_text(string $text, string $post_id, int $length = 300): string
 
         }
         return '<p>' . implode(' ',
-                $result_words) . ' ...' . '</p>' . '<a class="post-text__more-link" href="post.php?id='.$post_id.'">Читать далее</a>';
+                $result_words) . ' ...' . '</p>' . '<a class="post-text__more-link" href="post.php?id=' . $post_id . '">Читать далее</a>';
     }
     return '<p>' . $text . '</p>';
 }
-
 
 
 function clips_text_message(string $text, int $length = 20): string
@@ -59,7 +58,7 @@ function clips_text_message(string $text, int $length = 20): string
         return implode(' ',
                 $result_words) . ' ...';
     }
-    return  $text;
+    return $text;
 }
 
 
@@ -445,7 +444,6 @@ function get_type_id(string $name_type, array $types): int
 }
 
 
-
 /**
  * Создает подготовленное выражение на основе готового SQL запроса и переданных данных
  *
@@ -455,7 +453,8 @@ function get_type_id(string $name_type, array $types): int
  *
  * @return mysqli_stmt Подготовленное выражение
  */
-function db_get_prepare_stmt($link, $sql, $data = []) {
+function db_get_prepare_stmt($link, $sql, $data = [])
+{
     $stmt = mysqli_prepare($link, $sql);
 
     if ($stmt === false) {
@@ -472,12 +471,14 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
 
             if (is_int($value)) {
                 $type = 'i';
-            }
-            else if (is_string($value)) {
-                $type = 's';
-            }
-            else if (is_double($value)) {
-                $type = 'd';
+            } else {
+                if (is_string($value)) {
+                    $type = 's';
+                } else {
+                    if (is_double($value)) {
+                        $type = 'd';
+                    }
+                }
             }
 
             if ($type) {

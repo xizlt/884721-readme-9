@@ -83,6 +83,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             add_tags($connection, $string_tags, $post_id);
         }
         if ($post_id) {
+
+            $users_subs = get__subscriptions($connection, $user['id']);
+
+            if ($users_subs){
+
+                $post = get_post_info($connection, $post_id);
+
+                $message = new Swift_Message();
+                $message->setSubject("Опубликован новый пост");
+                $message->setFrom(['keks@phpdemo.ru' => 'README']);
+                $recipients = [];
+
+                foreach ($users_subs as $users_sub) {
+                    $recipients[$users_sub['email']] = $users_sub['name'];
+
+                    $msg_content = include_template('email/new_post.php', ['user' => $user, 'users_sub' => $users_sub, 'post' => $post]);
+                    $message->setBody($msg_content, 'text/html');
+                }
+
+                $message->setBcc($recipients);
+                $result = $mailer->send($message);
+
+                if (!$result) {
+                    print("Не удалось отправить рассылку: " . $logger->dump());
+                }
+
+            }
+
             header("Location: post.php?id=" . $post_id);
             exit();
         }
@@ -100,7 +128,7 @@ $send_form = include_template('add_post_footer.php');
 $page_content = include_template('add.php', [
     'tab' => $tab,
     'types' => $types,
-    'block_errors' => $block_errors,
+    'no_result' => $block_errors,
     'send_form' => $send_form,
     'title_post' => $title_post,
     'tags_post' => $tags_post,
@@ -111,7 +139,7 @@ $page_content = include_template('add.php', [
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Популярное',
-    'is_auth' => $is_auth,
+    'search' => $search,
     'user' => $user
 ]);
 print ($layout_content);

@@ -26,21 +26,26 @@ WHERE post_id = ?
 }
 
 
-
 /**
  * Возвращает комментарии по id поста
  * @param mysqli $connection
  * @param int $post_id
+ * @param int|null $limit
  * @return array
  */
-function get_comments(mysqli $connection, int $post_id): array
+function get_comments(mysqli $connection, int $post_id, int $limit = null): array
 {
+    if ($limit) {
+        $limit = "LIMIT $limit";
+    }
     $sql = "SELECT *,
        cm.create_time AS time_comment
 FROM comments cm
      JOIN users u
 ON u.id = cm.user_id
-WHERE cm.post_id = ?
+WHERE cm.post_id = ? 
+ORDER BY cm.create_time DESC 
+$limit
 ";
     mysqli_prepare($connection, $sql);
     $stmt = db_get_prepare_stmt($connection, $sql, [$post_id]);

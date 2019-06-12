@@ -6,8 +6,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$is_auth = rand(0, 1);
-
+$search = null;
+require 'vendor/autoload.php';
 require_once 'functions/main.php';
 require_once 'functions/db/common.php';
 require_once 'functions/db/comments.php';
@@ -17,7 +17,6 @@ require_once 'functions/db/tags.php';
 require_once 'functions/db/types.php';
 require_once 'functions/db/users.php';
 require_once 'functions/db/likes.php';
-require_once 'functions/db/message.php';
 require_once 'functions/request.php';
 
 if (!file_exists('config.php')) {
@@ -34,4 +33,11 @@ if ($user_id) {
 }
 
 
+$transport = new Swift_SmtpTransport("phpdemo.ru", 25);
+$transport->setUsername("keks@phpdemo.ru");
+$transport->setPassword("htmlacademy");
 
+$mailer = new Swift_Mailer($transport);
+
+$logger = new Swift_Plugins_Loggers_ArrayLogger();
+$mailer->registerPlugin(new Swift_Plugins_LoggerPlugin($logger));

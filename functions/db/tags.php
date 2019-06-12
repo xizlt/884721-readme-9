@@ -7,10 +7,11 @@
  * @return array|null
  */
 function get_tag_by_name(mysqli $connection, string $name): ?array
-{ $result = null;
-        $sql = "SELECT * FROM tags
+{
+    $result = null;
+    $sql = "SELECT * FROM tags
                 WHERE name = ?";
- 
+
     mysqli_prepare($connection, $sql);
     $stmt = db_get_prepare_stmt($connection, $sql, [$name]);
     mysqli_stmt_execute($stmt);
@@ -30,7 +31,7 @@ function get_tag_by_name(mysqli $connection, string $name): ?array
  * @param string $name
  * @return int id сохраненного тега
  */
-function add_tag(mysqli $connection, string $name):int
+function add_tag(mysqli $connection, string $name): int
 {
     $sql = 'INSERT INTO tags (name)
             VALUES (?)';
@@ -52,7 +53,7 @@ function add_tag(mysqli $connection, string $name):int
  * @param int $post_id
  * @return int
  */
-function add_posts_tags(mysqli $connection, int $tag_id, int $post_id):int
+function add_posts_tags(mysqli $connection, int $tag_id, int $post_id): int
 {
     $sql = 'INSERT INTO posts_tags (tag_id, post_id) 
             VALUES (?,?)';
@@ -112,6 +113,27 @@ function get_tags(mysqli $connection, string $tag): ?array
     $res = mysqli_stmt_get_result($stmt);
     if ($res) {
         $result = mysqli_fetch_array($res, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+
+function get_post_id_for_search(mysqli $connection, string $tag): ?array
+{
+    $result = null;
+    $sql = "SELECT * FROM posts_tags pt
+    LEFT JOIN posts p ON p.id = pt.post_id
+                WHERE pt.tag_id = ?";
+
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'i', $tag);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_all($res, MYSQLI_ASSOC);
     } else {
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);

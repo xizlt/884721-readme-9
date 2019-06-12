@@ -8,6 +8,8 @@
  * @param int|null $user_id
  * @param int|null $page_items
  * @param int|null $offset
+ * @param string|null $search
+ * @param int|null $tag_id
  * @return array
  */
 function get_posts(
@@ -16,7 +18,9 @@ function get_posts(
     string $order_by = null,
     int $user_id = null,
     int $page_items = null,
-    int $offset = null
+    int $offset = null,
+    string $search = null,
+    int $tag_id = null
 ): array {
     $type_ind = 'p.content_type_id = ';
     $limit = null;
@@ -30,21 +34,31 @@ function get_posts(
     }
     if ($user_id) {
         if ($type) {
-            $where = "u.id = $user_id AND $type_ind $type";
+            $where = "WHERE u.id = $user_id AND $type_ind $type";
         }
         if (!$type) {
-            $where = "u.id = $user_id AND $type_ind  c.id";
+            $where = "WHERE u.id = $user_id AND $type_ind  c.id";
         }
     } else {
         if ($type) {
-            $where = $type_ind . $type;
+            $where = "WHERE $type_ind $type";
         }
         if (!$type) {
-            $where = "$type_ind c.id";
+            $where = "WHERE $type_ind c.id";
         }
     }
     if (!$order_by) {
-        $order_by = 'view_count';
+        $order_by = 'view_count DESC';
+    } else {
+        $order_by = $order_by . ' DESC';
+    }
+    if ($search) {
+        $where = null;
+        $search = "WHERE MATCH(title, message) AGAINST('%$search%')";
+    }
+    if ($tag_id) {
+        $where = "WHERE pt.tag_id = $tag_id";
+        $search = null;
     }
 
     $sql = "SELECT p.id,
@@ -67,11 +81,14 @@ function get_posts(
 FROM posts p
          LEFT JOIN likes l ON p.id = l.post_id
          LEFT JOIN users u ON u.id = p.user_id
-         JOIN content_type c ON c.id = p.content_type_id
-WHERE $where
+         JOIN content_type c ON c.id = p.content_type_id 
+         LEFT JOIN posts_tags pt ON p.id = pt.post_id
+     $where 
+     $search 
 GROUP BY p.id
-ORDER BY $order_by DESC
-$limit $offsets
+ORDER BY $order_by
+$limit 
+         $offsets
 ";
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
@@ -251,7 +268,7 @@ function get_count_posts(mysqli $connection, int $type_id = null): int
 {
     $where = null;
     if ($type_id) {
-        $where = "where content_type_id = $type_id";
+        $where = "WHERE content_type_id = $type_id";
     }
     $sql = "SELECT *
 FROM posts
@@ -316,6 +333,54 @@ ORDER BY create_time DESC
     $res = mysqli_stmt_get_result($stmt);
     if ($res) {
         $result = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    } else {
+        $error = mysqli_error($connection);
+        die('Ошибка MySQL ' . $error);
+    }
+    return $result;
+}
+
+/**
+ * Возвращает массив с постами для ленты пользователя
+ * @param mysqli $connection
+ * @param int $user
+ * @return array|null
+ */
+function get_post_for_feed(mysqli $connection, int $user, int $type): ?array
+{
+    $where = null;
+    if ($type) {
+        $where = "and p.content_type_id = $type";
+    }
+    $sql = "SELECT p.id,
+       p.create_time,
+       p.title,
+       p.message,
+       p.quote_writer,
+       p.image,
+       p.video,
+       p.link,
+       p.view_count,
+       p.content_type_id,
+       u.name AS user_name,
+       u.id AS user,
+       c.name AS type,
+       u.avatar,
+       p.is_repost AS repost,
+       p.repost_doner_id,
+       count(l.user_id) AS like_post,
+       sub.user_id
+FROM posts p
+         LEFT JOIN likes l ON p.id = l.post_id
+         LEFT JOIN users u ON u.id = p.user_id
+         JOIN content_type c ON c.id = p.content_type_id 
+LEFT JOIN subscriptions sub ON sub.user_id = u.id      
+      WHERE sub.subscriber_id = $user $where 
+GROUP BY p.id
+ORDER BY p.create_time DESC
+";
+    if ($query = mysqli_query($connection, $sql)) {
+        $result = mysqli_fetch_all($query, MYSQLI_ASSOC);
     } else {
         $error = mysqli_error($connection);
         die('Ошибка MySQL ' . $error);
