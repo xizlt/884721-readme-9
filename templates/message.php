@@ -5,8 +5,9 @@
         <div class="messages__contacts">
             <ul class="messages__contacts-list tabs__list">
 
-                <?php foreach ($users_messages as $user_message): ?>
-                    <?php  if ($user_message['sender_id'] !== $user['id']): ?>
+                <?php $user_messages = get_message_user_id($connection, $user['id'], $users_ids['user_id']); ?>
+                <?php foreach ($user_messages as $user_message):?>
+                <?php if ($user_message['sender_id'] !== $user['id']): ?>
                         <li class="messages__contacts-item messages__contacts-item--new">
                     <a class="messages__contacts-tab tabs__item" href="message.php?tab=<?= $user_message['sender_id'];?>">
                         <div class="messages__avatar-wrapper">
@@ -15,7 +16,7 @@
                         </div>
                         <div class="messages__info">
                               <span class="messages__contact-name">
-                                <?=$user_message['name'];?>
+                                <?=$user_message['user_name'];?>
                               </span>
                             <div class="messages__preview">
                                 <p class="messages__preview-text">
@@ -28,17 +29,19 @@
                         </div>
                     </a>
                 </li>
+
                 <?php elseif($user_message['sender_id'] === $user['id']): ?>
-                        <?php $user_ids = get_user_by_id($connection, $user_message['recipient_id']);?>
                         <li class="messages__contacts-item messages__contacts-item--new">
                             <a class="messages__contacts-tab tabs__item" href="message.php?tab=<?= $user_message['recipient_id'];?>">
                                 <div class="messages__avatar-wrapper">
-                                    <?php if ($user_ids['avatar']): ?> <img class="messages__avatar" src="<?= $user_ids['avatar'];?>" alt="Аватар пользователя"><?php endif;?>
+                                    <?php if ($user_message['avatar']): ?>
+                                        <img class="messages__avatar" src="<?= $user_message['avatar'];?>" alt="Аватар пользователя">
+                                    <?php endif;?>
                                     <i class="messages__indicator"><?=$count_message; ?></i>
                                 </div>
                                 <div class="messages__info">
                               <span class="messages__contact-name">
-                                <?=$user_ids['name'];?>
+                                <?=$user_message['user_name'];?>
                               </span>
                                     <div class="messages__preview">
                                         <p class="messages__preview-text">
@@ -52,14 +55,13 @@
                             </a>
                         </li>
                     <?php endif;?>
-                <?php endforeach; ?>
+<?php endforeach;?>
+
             </ul>
         </div>
 
         <div class="messages__chat">
             <div class="messages__chat-wrapper">
-
-
                 <ul class="messages__list tabs__content tabs__content--active">
 
                     <?php foreach ($messages as $message): ?>

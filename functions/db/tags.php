@@ -7,10 +7,11 @@
  * @return array|null
  */
 function get_tag_by_name(mysqli $connection, string $name): ?array
-{ $result = null;
-        $sql = "SELECT * FROM tags
+{
+    $result = null;
+    $sql = "SELECT * FROM tags
                 WHERE name = ?";
- 
+
     mysqli_prepare($connection, $sql);
     $stmt = db_get_prepare_stmt($connection, $sql, [$name]);
     mysqli_stmt_execute($stmt);
@@ -30,7 +31,7 @@ function get_tag_by_name(mysqli $connection, string $name): ?array
  * @param string $name
  * @return int id сохраненного тега
  */
-function add_tag(mysqli $connection, string $name):int
+function add_tag(mysqli $connection, string $name): int
 {
     $sql = 'INSERT INTO tags (name)
             VALUES (?)';
@@ -52,7 +53,7 @@ function add_tag(mysqli $connection, string $name):int
  * @param int $post_id
  * @return int
  */
-function add_posts_tags(mysqli $connection, int $tag_id, int $post_id):int
+function add_posts_tags(mysqli $connection, int $tag_id, int $post_id): int
 {
     $sql = 'INSERT INTO posts_tags (tag_id, post_id) 
             VALUES (?,?)';

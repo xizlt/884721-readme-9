@@ -33,22 +33,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $count_message = get_count_message($connection, 2, 35);
 $messages = get_message($connection, $user_id_ind, $user['id']);
-$users_messages = get_users_message($connection, $user['id'], $user_id_ind);
+//$users_messages = get_users_message($connection, $user['id'], $user_id_ind);
 
-$j = get_message_my($connection, $user['id']);
-$jh = get_message_me($connection,  $user['id']);
+$users_ids = get_mess($connection, $user['id']);
 
+var_dump($messages);
 
 $page_content = include_template('message.php', [
     'error' => $error,
     'messages' => $messages,
     'count_message' => $count_message,
     'user' => $user,
-    'users_messages' => $users_messages,
+    'users_ids' => $users_ids,
     'user_id_ind' => $user_id_ind,
     'connection' => $connection
-
-
+    //'subs' => $subs
 ]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,

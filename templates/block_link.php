@@ -1,4 +1,3 @@
-
 <div class="post__main">
     <div class="post-link__wrapper">
         <a class="post-link__external" href="<?= $post['link']; ?>" title="Перейти по ссылке">

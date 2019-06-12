@@ -5,7 +5,7 @@
  * @param int $user_id
  * @return int
  */
-function get_count_subscriptions(mysqli $connection, int $user_id) : int
+function get_count_subscriptions(mysqli $connection, int $user_id): int
 {
     $sql = "SELECT
         id
@@ -75,7 +75,7 @@ WHERE subscriber_id = ? AND user_id = ?";
  * @param int $user
  * @param int $subscriber
  * @return int
-*/
+ */
 function get_subscription(mysqli $connection, int $user, int $subscriber): int
 {
     $sql = "SELECT * FROM subscriptions 

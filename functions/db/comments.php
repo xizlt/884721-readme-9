@@ -26,7 +26,6 @@ WHERE post_id = ?
 }
 
 
-
 /**
  * Возвращает комментарии по id поста
  * @param mysqli $connection

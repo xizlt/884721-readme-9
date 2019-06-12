@@ -346,7 +346,7 @@ ORDER BY create_time DESC
  * @param int $user
  * @return array|null
  */
-function get_post_for_feed(mysqli $connection, int $user) : ?array
+function get_post_for_feed(mysqli $connection, int $user): ?array
 {
     $sql = "SELECT p.id,
        p.create_time,
