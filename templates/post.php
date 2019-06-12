@@ -87,10 +87,10 @@
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
-                            <?php if ($comments_count > 2): ?>
+                            <?php if (!$no_limit): ?>
                                 <?php $count_comments = get_count_comments($connection, $post['id']); ?>
                                 <?php if ($count_comments > 2): ?>
-                                    <a class="comments__more-link" href="post.php">
+                                    <a class="comments__more-link" href="post.php?id=<?= $post['id'];?>&com=all">
                                         <span>Показать все комментарии</span>
                                         <sup class="comments__amount"><?= $count_comments ?></sup>
                                     </a>

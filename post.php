@@ -42,8 +42,18 @@ $subscription_check = get_subscription($connection, $user['id'], $post['user']);
 $block_post = include_template(template_by_type($post['type']), ['post' => $post]);
 $comments_count = get_count_comments($connection, $post_id);
 $subscriptions = get_count_subscriptions($connection, $post['user']);
-$comments = get_comments($connection, $post_id);
+$comments = get_comments($connection, $post_id, 2);
 $public_count = get_count_public($connection, $post['user']);
+
+$all_comments = $_GET['com'] ?? null;
+$all_comments = clean($all_comments);
+
+$no_limit = null;
+
+if ($all_comments === 'all') {
+    $comments = get_comments($connection, $post_id);
+    $no_limit = true;
+}
 
 $page_content = include_template('post.php', [
     'post' => $post,
@@ -55,7 +65,8 @@ $page_content = include_template('post.php', [
     'error' => $error,
     'connection' => $connection,
     'public_count' => $public_count,
-    'subscription_check' => $subscription_check
+    'subscription_check' => $subscription_check,
+    'no_limit' => $no_limit
 ]);
 
 $layout_content = include_template('layout.php', [

@@ -18,7 +18,7 @@ if ($type_block && !$types_correct) {
     exit();
 }
 
-$posts = get_post_for_feed($connection, $user['id']);
+$posts = get_post_for_feed($connection, $user['id'], $type_block);
 
 $page_content = include_template('feed.php', [
     'posts' => $posts,

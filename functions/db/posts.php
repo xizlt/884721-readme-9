@@ -346,8 +346,12 @@ ORDER BY create_time DESC
  * @param int $user
  * @return array|null
  */
-function get_post_for_feed(mysqli $connection, int $user): ?array
+function get_post_for_feed(mysqli $connection, int $user, int $type): ?array
 {
+    $where = null;
+    if ($type) {
+        $where = "and p.content_type_id = $type";
+    }
     $sql = "SELECT p.id,
        p.create_time,
        p.title,
@@ -371,7 +375,7 @@ FROM posts p
          LEFT JOIN users u ON u.id = p.user_id
          JOIN content_type c ON c.id = p.content_type_id 
 LEFT JOIN subscriptions sub ON sub.user_id = u.id      
-      WHERE sub.subscriber_id = $user
+      WHERE sub.subscriber_id = $user $where 
 GROUP BY p.id
 ORDER BY p.create_time DESC
 ";

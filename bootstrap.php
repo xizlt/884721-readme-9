@@ -17,7 +17,6 @@ require_once 'functions/db/tags.php';
 require_once 'functions/db/types.php';
 require_once 'functions/db/users.php';
 require_once 'functions/db/likes.php';
-require_once 'functions/db/message.php';
 require_once 'functions/request.php';
 
 if (!file_exists('config.php')) {
