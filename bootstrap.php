@@ -24,6 +24,7 @@ if (!file_exists('config.php')) {
 }
 
 $config = require 'config.php';
+$email = $config ['email'];
 $connection = connectDb($config['db']);
 
 $user = null;
@@ -32,12 +33,3 @@ if ($user_id) {
     $user = get_user_by_id($connection, $user_id) ?? null;
 }
 
-
-$transport = new Swift_SmtpTransport("phpdemo.ru", 25);
-$transport->setUsername("keks@phpdemo.ru");
-$transport->setPassword("htmlacademy");
-
-$mailer = new Swift_Mailer($transport);
-
-$logger = new Swift_Plugins_Loggers_ArrayLogger();
-$mailer->registerPlugin(new Swift_Plugins_LoggerPlugin($logger));

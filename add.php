@@ -82,40 +82,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($string_tags) {
             add_tags($connection, $string_tags, $post_id);
         }
-        if ($post_id) {
 
-            $users_subs = get__subscriptions($connection, $user['id']);
+        $users_subs = get_subscriptions($connection, $user['id']);
 
-            if ($users_subs){
+        if ($users_subs) {
 
-                $post = get_post_info($connection, $post_id);
+            $post = get_post_info($connection, $post_id);
 
-                $message = new Swift_Message();
-                $message->setSubject("Опубликован новый пост");
-                $message->setFrom(['keks@phpdemo.ru' => 'README']);
-                $recipients = [];
+            $transport = new Swift_SmtpTransport($email ['host'], $email ['port']);
+            $transport->setUsername($email ['user']);
+            $transport->setPassword($email ['password']);
 
-                foreach ($users_subs as $users_sub) {
-                    $recipients[$users_sub['email']] = $users_sub['name'];
+            $mailer = new Swift_Mailer($transport);
 
-                    $msg_content = include_template('email/new_post.php', ['user' => $user, 'users_sub' => $users_sub, 'post' => $post]);
-                    $message->setBody($msg_content, 'text/html');
-                }
+            $logger = new Swift_Plugins_Loggers_ArrayLogger();
+            $mailer->registerPlugin(new Swift_Plugins_LoggerPlugin($logger));
 
-                $message->setBcc($recipients);
-                $result = $mailer->send($message);
+            $message = new Swift_Message();
+            $message->setSubject("Опубликован новый пост");
+            $message->setFrom(['keks@phpdemo.ru' => 'README']);
+            $recipients = [];
 
-                if (!$result) {
-                    print("Не удалось отправить рассылку: " . $logger->dump());
-                }
+            foreach ($users_subs as $users_sub) {
+                $recipients[$users_sub['email']] = $users_sub['name'];
 
+                $msg_content = include_template('email/new_post.php',
+                        ['user' => $user,
+                        'users_sub' => $users_sub,
+                        'post' => $post]);
+                $message->setBody($msg_content, 'text/html');
             }
 
-            header("Location: post.php?id=" . $post_id);
-            exit();
-        }
-    }
+            $message->setBcc($recipients);
+            $result = $mailer->send($message);
 
+            if (!$result) {
+                print("Не удалось отправить рассылку: " . $logger->dump());
+            }
+        }
+
+        header("Location: post.php?id=" . $post_id);
+        exit();
+
+    }
 
     $block_errors = include_template('add_post_errors.php', ['errors' => $errors]);
 

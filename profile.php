@@ -26,14 +26,13 @@ $order_by = 'create_time';
 
 $user_profile = get_user_by_id($connection, $user_id_ind);
 
-    if($user['id'] === $user_id_ind) {
-        $subscription_check = get_subscription($connection, $user['id'], $user_id_ind);
-        $profiles = get_all_subscription($connection, $user['id']);
-    }else{
-        $subscription_check = get_subscription($connection, $user_id_ind, $user_id_ind);
-        $profiles = get_all_subscription($connection, $user_id_ind);
-    }
+$subscription_check = get_subscription($connection, $user['id'], $user_id_ind);
 
+if ($user['id'] === $user_id_ind) {
+    $profiles = get_all_subscription($connection, $user['id']);
+} else {
+    $profiles = get_all_subscription($connection, $user_id_ind);
+}
 
 $posts = get_posts($connection, null, $order_by, $user_id_ind);
 $likes = get_posts_tab_likes($connection, $user_id_ind) ?? null;

@@ -38,7 +38,7 @@ function add_subscription(mysqli $connection, int $user, int $subscriber): int
     $sql = "INSERT INTO subscriptions (subscriber_id, user_id) 
             VALUES (?, ?)";
     $stmt = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($stmt, 'ii', $user, $subscriber);
+    mysqli_stmt_bind_param($stmt, 'ii', $user,$subscriber);
     $result = mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
     if (!$result) {
@@ -101,7 +101,7 @@ WHERE user_id = ? AND subscriber_id = ?";
  */
 function get_all_subscription(mysqli $connection, int $user): ?array
 {
-    $sql = "SELECT u.* FROM subscriptions s 
+    $sql = "SELECT u.id, u.name, u.avatar, u.create_time FROM subscriptions s 
 RIGHT JOIN users u 
 ON u.id = s.user_id
 WHERE s.subscriber_id = ?";
@@ -151,7 +151,7 @@ WHERE s.user_id = ?";
  * @param int $user
  * @return array|null
  */
-function get__subscriptions(mysqli $connection, int $user): ?array
+function get_subscriptions(mysqli $connection, int $user): ?array
 {
     $sql = "SELECT u.name, u.email FROM subscriptions s 
 RIGHT JOIN users u 

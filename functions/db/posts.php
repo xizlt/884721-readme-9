@@ -86,9 +86,9 @@ FROM posts p
      $where 
      $search 
 GROUP BY p.id
-ORDER BY $order_by
-$limit 
-         $offsets
+ORDER BY $order_by 
+    $limit 
+    $offsets
 ";
     if ($query = mysqli_query($connection, $sql)) {
         $result = mysqli_fetch_all($query, MYSQLI_ASSOC);

@@ -27,10 +27,9 @@
                         <span class="profile__rating-text user__rating-text">подписчиков</span>
                     </p>
                 </div>
-
                 <div class="profile__user-buttons user__buttons">
                     <?php if ($user['id'] !== $user_profile['id']): ?>
-                        <?php if (empty($subscription_check)): ?>
+                        <?php if ($subscription_check === 0): ?>
                             <a href="add_sub.php?id=<?= $user_profile['id']; ?>&subscription=true" id="true">
                                 <button class="profile__user-button user__button user__button--subscription button button--main"
                                         style="width: 100%; margin-bottom: 10px;" type="button">Подписаться
