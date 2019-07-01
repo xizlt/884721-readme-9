@@ -1,7 +1,6 @@
 <div class="post-mini__avatar user__avatar">
     <a class="user__avatar-link" href="profile.php?id=<?= $like['user']; ?>">
-        <?php if ($like['avatar']): ?><img class="post-mini__picture user__picture" src="<?= $like['avatar']; ?>"
-                                           alt="Аватар пользователя"><?php endif; ?>
+        <?php if ($like['avatar']): ?><img class="post-mini__picture user__picture" src="<?= $like['avatar']; ?>" alt="Аватар пользователя"><?php endif; ?>
     </a>
 </div>
 <div class="post-mini__name-wrapper user__name-wrapper">

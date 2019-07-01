@@ -202,14 +202,14 @@
                         <h2 class="visually-hidden">Лайки</h2>
                         <ul class="profile__likes-list">
 
-                            <?php foreach ($likes as $like): ?>
-                                <?php if (!$likes): ?>
-                                    <div class="feed__main-wrapper">
-                                        <div class="feed__wrapper">
+                            <?php if (!$likes): ?>
+                                <div class="feed__main-wrapper">
+                                    <div class="feed__wrapper">
 
-                                        </div>
                                     </div>
-                                <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php foreach ($likes as $like): ?>
                                 <?php if ($like['type'] === 'post-photo'): ?>
                                     <li class="post-mini post-mini--photo post user">
                                         <div class="post-mini__user-info user__info">

@@ -7,7 +7,7 @@
                 <svg class="post__indicator-icon" width="20" height="17">
                     <use xlink:href="#icon-heart<?php if ($like_check): ?>-active<?php endif; ?>"></use>
                 </svg>
-                <span><?= $post['like_post']; ?></span>
+                <span><?= get_count_likes($connection, $post['id']); ?></span>
                 <span class="visually-hidden">количество лайков</span>
             </a>
             <a class="post__indicator post__indicator--repost button" href="add_repost.php?post_id=<?= $post['id']; ?>"

@@ -76,8 +76,7 @@ function get_posts(
        c.name AS type,
        u.avatar,
        p.is_repost AS repost,
-       p.repost_doner_id,
-       count(l.user_id) AS like_post
+       p.repost_doner_id
 FROM posts p
          LEFT JOIN likes l ON p.id = l.post_id
          LEFT JOIN users u ON u.id = p.user_id
