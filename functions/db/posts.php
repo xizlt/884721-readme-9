@@ -10,6 +10,7 @@
  * @param int|null $offset
  * @param string|null $search
  * @param int|null $tag_id
+ * @param string|null $desc
  * @return array
  */
 function get_posts(
@@ -20,7 +21,8 @@ function get_posts(
     int $page_items = null,
     int $offset = null,
     string $search = null,
-    int $tag_id = null
+    int $tag_id = null,
+    string $desc = null
 ): array {
     $type_ind = 'p.content_type_id = ';
     $limit = null;
@@ -50,7 +52,7 @@ function get_posts(
     if (!$order_by) {
         $order_by = 'view_count DESC';
     } else {
-        $order_by = $order_by . ' DESC';
+        $order_by = $order_by . ' ' .$desc;
     }
     if ($search) {
         $where = null;
@@ -77,7 +79,7 @@ function get_posts(
        u.avatar,
        p.is_repost AS repost,
        p.repost_doner_id,
-        COUNT(l.post_id) AS like_post
+        COUNT(l.user_id) AS like_post
 FROM posts p
          LEFT JOIN likes l ON p.id = l.post_id
          LEFT JOIN users u ON u.id = p.user_id
