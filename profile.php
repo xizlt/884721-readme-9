@@ -18,11 +18,18 @@ if (!$profile_block) {
 $show_comments_block = $_GET['show'] ?? null;
 $show_comments_block = clean($show_comments_block);
 
-$post_id = $_GET['post_id'] ?? null;;
-$post_id = (int)clean($post_id);
+$post_id = $_GET['post-id'] ?? null;;
+$post_id = (int)$post_id;
 
 $error = null;
 $order_by = 'create_time';
+
+$limit = $_GET['limit'] ?? 2;
+$limit = clean($limit);
+
+if ($limit === 'no') {
+    $limit = null;
+}
 
 $user_profile = get_user_by_id($connection, $user_id_ind);
 
@@ -41,9 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $comment = $_POST['comment'];
     $comment = clean($comment);
 
-    $error = validate_comment($comment) ?? null;
+$error = validate_comment($comment) ?? null;
     if (!$error) {
         add_comment($connection, $user['id'], $post_id, $comment);
+
         header("Location: $_SERVER[HTTP_REFERER]");
         exit();
     }
@@ -59,7 +67,8 @@ $page_content = include_template('profile.php', [
     'subscription_check' => $subscription_check,
     'profile_block' => $profile_block,
     'profiles' => $profiles,
-    'likes' => $likes
+    'likes' => $likes,
+    'limit' => $limit
 
 ]);
 $layout_content = include_template('layout.php', [
