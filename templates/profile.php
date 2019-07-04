@@ -5,9 +5,9 @@
             <div class="profile__user user container">
                 <div class="profile__user-info user__info">
                     <div class="profile__avatar user__avatar">
-                        <?php if ($user_profile['avatar']): ?><img class="profile__picture user__picture"
-                                                                   src="<?= $user_profile['avatar']; ?>"
-                                                                   alt="Аватар пользователя"><?php endif; ?>
+                        <?php if ($user_profile['avatar']): ?>
+                            <img class="profile__picture user__picture" src="<?= $user_profile['avatar']; ?>" alt="Аватар пользователя">
+                        <?php endif; ?>
                     </div>
                     <div class="profile__name-wrapper user__name-wrapper">
                         <span class="profile__name user__name"><?= name_profile($user_profile['name']); ?></span>

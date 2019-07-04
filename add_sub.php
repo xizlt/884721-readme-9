@@ -14,7 +14,7 @@ if ($subscription === 'true') {
 
     if ($res) {
 
-        $transport = new Swift_SmtpTransport($email ['host'], $email ['port']);
+        $transport = new Swift_SmtpTransport($email ['host'], $email ['port'], 'ssl');
         $transport->setUsername($email ['user']);
         $transport->setPassword($email ['password']);
 
@@ -27,7 +27,7 @@ if ($subscription === 'true') {
 
         $message = new Swift_Message();
         $message->setSubject("Новый подписчик");
-        $message->setFrom(['keks@phpdemo.ru' => 'README']);
+        $message->setFrom(["$email ['user']" => 'README']);
 
         $recipients[$user_for_email['email']] = $user_for_email['name'];
 

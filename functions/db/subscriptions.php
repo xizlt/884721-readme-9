@@ -155,8 +155,8 @@ function get_subscriptions(mysqli $connection, int $user): ?array
 {
     $sql = "SELECT u.name, u.email FROM subscriptions s 
 RIGHT JOIN users u 
-ON u.id = s.user_id
-WHERE s.subscriber_id = ?";
+ON u.id = s.subscriber_id
+WHERE s.user_id = ?";
     mysqli_prepare($connection, $sql);
     $stmt = db_get_prepare_stmt($connection, $sql, [$user]);
     mysqli_stmt_execute($stmt);

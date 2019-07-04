@@ -1453,7 +1453,7 @@ img {
 
 .header__profile-avatar {
     display: block;
-    border-radius: 50%
+    border-radius: 50%;
 }
 
 .header__user-button {

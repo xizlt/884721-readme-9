@@ -22,6 +22,27 @@ function add_like(mysqli $connection, int $post_id, int $user): ?int
     return $id;
 }
 
+/**
+ * Удаляет лайк у поста
+ * @param mysqli $connection
+ * @param int $post_id
+ * @param int $user
+ * @return int|null
+ */
+function dell_like(mysqli $connection, int $post_id, int $user): ?int
+{
+    $sql = 'DELETE FROM likes WHERE user_id = ? AND post_id = ?';
+    $stmt = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($stmt, 'ii', $user, $post_id);
+    $result = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+    if (!$result) {
+        die('Ошибка при сохранении');
+    }
+    $id = mysqli_insert_id($connection);
+    return $id;
+}
+
 
 /**
  * Возвращает кол-во лайков для поста
@@ -31,7 +52,7 @@ function add_like(mysqli $connection, int $post_id, int $user): ?int
  */
 function get_count_likes(mysqli $connection, int $post_id): ?int
 {
-    $sql = "SELECT count(user_id) AS likes
+    $sql = "SELECT *
 FROM likes
 WHERE post_id = ?
 ";

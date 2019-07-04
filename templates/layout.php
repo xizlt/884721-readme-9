@@ -131,9 +131,9 @@
                         <li class="header__profile">
                             <a class="header__profile-link" href="profile.php?id=<?= $user['id']; ?>">
                                 <div class="header__avatar-wrapper">
-                                    <?php if (isset($user['avatar'])): ?><img class="header__profile-avatar"
-                                                                              src="<?= $user['avatar']; ?>"
-                                                                              alt="Аватар профиля"><?php endif; ?>
+                                    <?php if (isset($user['avatar'])): ?>
+                                        <img class="header__profile-avatar" src="<?= $user['avatar']; ?>" alt="Аватар профиля">
+                                    <?php endif; ?>
                                 </div>
                                 <div class="header__profile-name">
                                 <span>

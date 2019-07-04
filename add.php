@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $message = new Swift_Message();
             $message->setSubject("Опубликован новый пост");
-            $message->setFrom(['keks@phpdemo.ru' => 'README']);
+            $message->setFrom([$email ['user'] => 'README']);
             $recipients = [];
 
             foreach ($users_subs as $users_sub) {
