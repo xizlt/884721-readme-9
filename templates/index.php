@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>readme: блог, каким он должен быть</title>
     <link rel="stylesheet" href="css/main.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "ca-pub-7432308678815979",
+            enable_page_level_ads: true
+        });
+    </script>
 </head>
 
 <body class="page page--main">
