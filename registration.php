@@ -8,6 +8,9 @@ $file_data = [];
 $errors = [];
 
 
+
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $user_data = load_user_data($_POST);

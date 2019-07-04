@@ -8,6 +8,8 @@
     ],
     "require": {
         "swiftmailer/swiftmailer": "^6.2",
-      "ext-gd": "*"
+      "ext-gd": "*",
+        "imagine/imagine": "^1.2",
+        "intervention/image": "^2.5"
     }
 }

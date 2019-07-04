@@ -392,8 +392,10 @@ function upload_img(?array $file_data): ?string
     if (!$name) {
         return null;
     }
+    $temp = explode(".", $name);
+    $newfilename = round(microtime(true)) . '.' . end($temp);
+    $path = 'uploads/' . $newfilename;
     $tmp_name = $file_data['tmp_name'];
-    $path = 'uploads/' . $name;
     if (!move_uploaded_file($tmp_name, $path)) {
         die('Не найдена папка uploads или отсутствуют права на запись в неё');
     }

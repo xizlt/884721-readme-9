@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post_data = clean($post_data);
     $file_data = $_FILES;
 
+
     switch ($tab) {
         case TAB_TEXT:
             $errors = validate_post_text($post_data);
