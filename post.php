@@ -71,8 +71,9 @@ $page_content = include_template('post.php', [
 
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
-    'title' => 'Публикация',
+    'title' => 'Просмотр поста',
     'search' => $search,
-    'user' => $user
+    'user' => $user,
+    'new_messages' => $new_messages
 ]);
 print ($layout_content);

@@ -6,13 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title; ?></title>
     <link rel="stylesheet" href="css/main.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({
-            google_ad_client: "ca-pub-7432308678815979",
-            enable_page_level_ads: true
-        });
-    </script>
 </head>
 <body class="page">
 <div style="display: none">
@@ -167,7 +160,9 @@
                                             <a class="header__profile-nav-link" href="message.php">
                           <span class="header__profile-nav-text">
                             Сообщения
-                            <i class="header__profile-indicator">2</i>
+                              <?php if ($new_messages !== 0): ?>
+                            <i class="header__profile-indicator"><?= $new_messages; ?></i>
+                              <?php endif; ?>
                           </span>
                                             </a>
                                         </li>

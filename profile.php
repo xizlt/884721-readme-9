@@ -73,8 +73,9 @@ $page_content = include_template('profile.php', [
 ]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
-    'title' => 'Популярное',
+    'title' => 'профиль пользователя',
     'search' => $search,
-    'user' => $user
+    'user' => $user,
+    'new_messages' => $new_messages
 ]);
 print ($layout_content);

@@ -62,6 +62,7 @@ $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Популярное',
     'user' => $user,
-    'search' => $search
+    'search' => $search,
+    'new_messages' => $new_messages
 ]);
 print ($layout_content);

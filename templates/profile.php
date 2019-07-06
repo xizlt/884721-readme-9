@@ -42,7 +42,7 @@
                                 </button>
                             </a>
                             <a class="profile__user-button user__button user__button--writing button button--green"
-                               href="message.php?tab=<?= $user_profile['id']; ?>">Сообщение</a>
+                               href="message.php?u=<?= $user_profile['id']; ?>">Сообщение</a>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>

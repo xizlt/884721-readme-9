@@ -27,7 +27,7 @@ if ($subscription === 'true') {
 
         $message = new Swift_Message();
         $message->setSubject("Новый подписчик");
-        $message->setFrom(["$email ['user']" => 'README']);
+        $message->setFrom([$email['user'] => 'README']);
 
         $recipients[$user_for_email['email']] = $user_for_email['name'];
 

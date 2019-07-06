@@ -17,6 +17,7 @@ require_once 'functions/db/tags.php';
 require_once 'functions/db/types.php';
 require_once 'functions/db/users.php';
 require_once 'functions/db/likes.php';
+require_once 'functions/db/message.php';
 require_once 'functions/request.php';
 
 if (!file_exists('config.php')) {
@@ -32,4 +33,4 @@ $user_id = $_SESSION['user_id'] ?? null;
 if ($user_id) {
     $user = get_user_by_id($connection, $user_id) ?? null;
 }
-
+$new_messages = get_new_messages($connection, $user['id']);

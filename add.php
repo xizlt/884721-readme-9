@@ -148,8 +148,9 @@ $page_content = include_template('add.php', [
 ]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
-    'title' => 'Популярное',
+    'title' => 'Добавление нового поста',
     'search' => $search,
-    'user' => $user
+    'user' => $user,
+    'new_messages' => $new_messages
 ]);
 print ($layout_content);
