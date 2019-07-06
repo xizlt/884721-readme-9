@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$errors) {
         $user_data['avatar'] = upload_img($file_data['avatar']);
-
         add_user($connection, $user_data);
+        resize_avatar($user_data['avatar']);
 
          header("Location: /");
          exit();

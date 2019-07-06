@@ -1,8 +1,7 @@
 <?php
 
+require 'vendor/autoload.php';
 
-use Imagine\Image\Box;
-use Imagine\Imagick\Image;
 const MINUTE = 60;
 const HOUR = 3600;
 const DAY = 86400;
@@ -408,18 +407,18 @@ function rename_file(string $file) : string
     return $newfilename;
 }
 
-
 /**
+ * Изменяет размер загруженного файла для аватарки
  * @param string $file
  * @return string
  */
-function resize_avatar(string $file) : string
+function resize_avatar($file)
 {
-    $imagine = new Image();
-    $img = $imagine->open("$file");
-    $box = new Box(100, 100);
+    $imagine = new Imagine\Gd\Imagine();
+    $img = $imagine->open($file);
+    $box = new Imagine\Image\Box(100, 100);
     $img->resize($box);
-    $img->save("$file");
+    $img->save($file);
 }
 
 /**
@@ -436,7 +435,6 @@ function upload_img(?array $file_data): ?string
     $new_file_name = rename_file($name);
     $path = 'uploads/' . $new_file_name;
     $tmp_name = $file_data['tmp_name'];
-    resize_avatar($path);
     if (!move_uploaded_file($tmp_name, $path)) {
         die('Не найдена папка uploads или отсутствуют права на запись в неё');
     }
