@@ -1,4 +1,8 @@
 <?php
+
+
+use Imagine\Image\Box;
+use Imagine\Imagick\Image;
 const MINUTE = 60;
 const HOUR = 3600;
 const DAY = 86400;
@@ -392,9 +396,34 @@ function embed_youtube_video($youtube_url)
     return $res;
 }
 
+/**
+ * Переименовывает загружаемый файл
+ * @param array $file
+ * @return string
+ */
+function rename_file(string $file) : string
+{
+    $temp = explode(".", $file);
+    $newfilename = round(microtime(true)) . '.' . end($temp);
+    return $newfilename;
+}
+
 
 /**
- * Возвращает путь на загруженный файл . Перемещает файл
+ * @param string $file
+ * @return string
+ */
+function resize_avatar(string $file) : string
+{
+    $imagine = new Image();
+    $img = $imagine->open("$file");
+    $box = new Box(100, 100);
+    $img->resize($box);
+    $img->save("$file");
+}
+
+/**
+ * Перемещает файл и возвращает путь к нему
  * @param array|null $file_data
  * @return string|null
  */
@@ -404,15 +433,16 @@ function upload_img(?array $file_data): ?string
     if (!$name) {
         return null;
     }
-    $temp = explode(".", $name);
-    $newfilename = round(microtime(true)) . '.' . end($temp);
-    $path = 'uploads/' . $newfilename;
+    $new_file_name = rename_file($name);
+    $path = 'uploads/' . $new_file_name;
     $tmp_name = $file_data['tmp_name'];
+    resize_avatar($path);
     if (!move_uploaded_file($tmp_name, $path)) {
         die('Не найдена папка uploads или отсутствуют права на запись в неё');
     }
     return $path;
 }
+
 
 /**
  * Возвращает название типа поста по условию $_GET

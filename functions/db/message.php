@@ -115,7 +115,7 @@ WHERE recipient_id = ? and sender_id = ? AND is_read = 'no'
  * @param int $user
  * @return int
  */
-function get_new_messages(mysqli $connection, int $user): int
+function get_new_messages(mysqli $connection, ?int $user): ?int
 {
     $sql = "SELECT *
 FROM messages
