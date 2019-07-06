@@ -7,10 +7,6 @@ $user_data = [];
 $file_data = [];
 $errors = [];
 
-
-
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $user_data = load_user_data($_POST);
@@ -19,8 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = validate_user($connection, $user_data, $file_data);
 
     if (!$errors) {
-
         $user_data['avatar'] = upload_img($file_data['avatar']);
+
         add_user($connection, $user_data);
 
          header("Location: /");

@@ -124,13 +124,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         header("Location: post.php?id=" . $post_id);
         exit();
-
     }
-
     $block_errors = include_template('add_post_errors.php', ['errors' => $errors]);
-
 }
-
 
 $title_post = include_template('add_post_title.php', ['errors' => $errors, 'post_data' => $post_data]);
 $tags_post = include_template('add_post_tag.php', ['errors' => $errors, 'post_data' => $post_data]);
