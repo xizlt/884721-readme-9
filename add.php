@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post_data = clean($post_data);
     $file_data = $_FILES;
 
+
     switch ($tab) {
         case TAB_TEXT:
             $errors = validate_post_text($post_data);
@@ -100,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $message = new Swift_Message();
             $message->setSubject("Опубликован новый пост");
-            $message->setFrom(['keks@phpdemo.ru' => 'README']);
+            $message->setFrom([$email ['user'] => 'README']);
             $recipients = [];
 
             foreach ($users_subs as $users_sub) {
@@ -123,13 +124,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         header("Location: post.php?id=" . $post_id);
         exit();
-
     }
-
     $block_errors = include_template('add_post_errors.php', ['errors' => $errors]);
-
 }
-
 
 $title_post = include_template('add_post_title.php', ['errors' => $errors, 'post_data' => $post_data]);
 $tags_post = include_template('add_post_tag.php', ['errors' => $errors, 'post_data' => $post_data]);
@@ -147,8 +144,9 @@ $page_content = include_template('add.php', [
 ]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
-    'title' => 'Популярное',
+    'title' => 'Добавление нового поста',
     'search' => $search,
-    'user' => $user
+    'user' => $user,
+    'new_messages' => $new_messages
 ]);
 print ($layout_content);

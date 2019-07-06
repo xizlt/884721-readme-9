@@ -1,3 +1,5 @@
+<script src="/js/dropzone-settings.js"></script>
+
 <main class="page__main page__main--adding-post">
     <div class="page__main-section">
         <div class="container">
@@ -86,27 +88,42 @@
                                 </div>
                                 <?= $no_result; ?>
                             </div>
+
                             <div class="adding-post__input-file-container form__input-container form__input-container--file ">
                                 <div class="adding-post__input-file-wrapper form__input-file-wrapper ">
                                     <div class="adding-post__file-zone adding-post__file-zone--photo form__file-zone dropzone ">
-                                        <input class="adding-post__input-file form__input-file" id="userpic-file-photo"
-                                               type="file" name="img" title=" "
-                                               value="<?= isset($file_data['img']) ? $file_data['img']['tmp_name'] : '' ?>">
+                                    <label class="adding-post__file-zone form__file-zone form__file-zone dropzone" for="userpic-file-photo">
                                         <div class="form__file-zone-text ">
                                             <span>Перетащите фото сюда</span>
                                         </div>
-                                    </div>
-                                    <button class="adding-post__input-file-button form__input-file-button form__input-file-button--photo button"
-                                            type="button">
-                                        <span>Выбрать фото</span>
-                                        <svg class="adding-post__attach-icon form__attach-icon " width="10" height="20">
+                                    </label>
+                                        </div>
+                                    <div class="adding-post__input-file-button form__input-file-button">
+                                        <input class="adding-post__input-file form__input-file" id="userpic-file-photo" type="file" name="img" value="<?= isset($file_data['img']) ? $file_data['img']['tmp_name'] : '' ?>">
+                                        <span class="adding-post__input-file-text form__input-file-text">Выбрать фото</span>
+                                        <svg class="adding-post__attach-icon form__attach-icon" width="10" height="20">
                                             <use xlink:href="#icon-attach"></use>
                                         </svg>
-                                    </button>
+                                    </div>
                                 </div>
-                                <div class="adding-post__file adding-post__file--photo form__file dropzone-previews">
 
+                                <?php if ($file_data): ?>
+                                <div class="adding-post__file form__file">
+                                    <div class="adding-post__image-wrapper form__image-wrapper">
+                                        <img class="adding-post__image form__image" src="img/rock-adding.png" alt="Загруженное фото" width="360" height="250">
+                                    </div>
+                                    <div class="adding-post__file-data form__file-data">
+                                        <span class="adding-post__file-name form__file-name">ewrqwer</span>
+                                        <button class="adding-post__delete-button form__delete-button button" type="button">
+                                            <span>Удалить</span>
+                                            <svg class="adding-post__delete-icon form__delete-icon" width="12" height="12">
+                                                <use xlink:href="#icon-close"></use>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
+                                <?php endif;?>
+
                             </div>
                             <?= $send_form; ?>
                         </form>

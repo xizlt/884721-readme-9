@@ -5,9 +5,9 @@
             <div class="profile__user user container">
                 <div class="profile__user-info user__info">
                     <div class="profile__avatar user__avatar">
-                        <?php if ($user_profile['avatar']): ?><img class="profile__picture user__picture"
-                                                                   src="<?= $user_profile['avatar']; ?>"
-                                                                   alt="Аватар пользователя"><?php endif; ?>
+                        <?php if ($user_profile['avatar']): ?>
+                            <img class="profile__picture user__picture" src="<?= $user_profile['avatar']; ?>" alt="Аватар пользователя">
+                        <?php endif; ?>
                     </div>
                     <div class="profile__name-wrapper user__name-wrapper">
                         <span class="profile__name user__name"><?= name_profile($user_profile['name']); ?></span>
@@ -42,7 +42,7 @@
                                 </button>
                             </a>
                             <a class="profile__user-button user__button user__button--writing button button--green"
-                               href="message.php?tab=<?= $user_profile['id']; ?>">Сообщение</a>
+                               href="message.php?u=<?= $user_profile['id']; ?>">Сообщение</a>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>
@@ -202,14 +202,14 @@
                         <h2 class="visually-hidden">Лайки</h2>
                         <ul class="profile__likes-list">
 
-                            <?php foreach ($likes as $like): ?>
-                                <?php if (!$likes): ?>
-                                    <div class="feed__main-wrapper">
-                                        <div class="feed__wrapper">
+                            <?php if (!$likes): ?>
+                                <div class="feed__main-wrapper">
+                                    <div class="feed__wrapper">
 
-                                        </div>
                                     </div>
-                                <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php foreach ($likes as $like): ?>
                                 <?php if ($like['type'] === 'post-photo'): ?>
                                     <li class="post-mini post-mini--photo post user">
                                         <div class="post-mini__user-info user__info">

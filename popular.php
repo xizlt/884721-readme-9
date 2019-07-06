@@ -20,6 +20,10 @@ $tab = isset($_GET['tab']) ? clean($_GET['tab']) : null;
 
 $sort = sort_field($tab);
 
+$sor = $_GET['sor'] ?? 'desc';
+$sor = clean($sor);
+
+
 $cur_page = $_GET['page'] ?? 1;
 if (!$cur_page) {
     header("HTTP/1.0 404 Not Found");
@@ -40,7 +44,7 @@ if ($items_count !== 0) {
         exit();
     }
 }
-$posts = get_posts($connection, $type_id, $sort, null, $page_items, $offset);
+$posts = get_posts($connection, $type_id, $sort, null, $page_items, $offset, null, null, $sor);
 
 $page_content = include_template('popular.php', [
     'types' => $types,
@@ -50,12 +54,15 @@ $page_content = include_template('popular.php', [
     'connection' => $connection,
     'cur_page' => $cur_page,
     'user' => $user,
-    'pages_count' => $pages_count
+    'pages_count' => $pages_count,
+    'tab' => $tab,
+    'sor' => $sor
 ]);
 $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Популярное',
     'user' => $user,
-    'search' => $search
+    'search' => $search,
+    'new_messages' => $new_messages
 ]);
 print ($layout_content);

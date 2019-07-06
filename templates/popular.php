@@ -8,8 +8,8 @@
                 <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
                 <ul class="popular__sorting-list sorting__list">
                     <li class="sorting__item sorting__item--popular">
-                        <a class="sorting__link <?php if (isset($_GET['tab']) && $_GET['tab'] === 'view'): ?>sorting__link--active<?php endif; ?>"
-                           href="<?php if ($type_id): ?>popular.php?type_id=<?= $type_id; ?>&tab=view<?php else: ?>popular.php?tab=view<?php endif; ?>">
+                        <a class="sorting__link <?php if ($tab === 'view'): ?>sorting__link--active <?php if ($sor === 'asc'): ?>sorting__link--reverse<?php endif; ?><?php endif; ?>"
+                           href="<?php if ($type_id): ?>popular.php?type_id=<?= $type_id; ?>&tab=view&sor=<?php if($sor === 'desc' and $tab === 'view'): ?>asc<?php else: ?>desc<?php endif; ?><?php else: ?>popular.php?tab=view&sor=<?php if($sor === 'desc'  and $tab === 'view'): ?>asc<?php else: ?>desc<?php endif; ?><?php endif; ?>">
                             <span>Популярность</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -17,8 +17,8 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link <?php if (isset($_GET['tab']) && $_GET['tab'] === 'likes'): ?>sorting__link--active<?php endif; ?>"
-                           href="<?php if ($type_id): ?>popular.php?type_id=<?= $type_id; ?>&tab=likes<?php else: ?>popular.php?tab=likes<?php endif; ?>">
+                        <a class="sorting__link <?php if ($tab === 'likes'): ?>sorting__link--active <?php if ($sor === 'asc'): ?>sorting__link--reverse<?php endif; ?><?php endif; ?>"
+                           href="<?php if ($type_id): ?>popular.php?type_id=<?= $type_id; ?>&tab=likes&sor=<?php if($sor === 'desc' and $tab === 'likes'): ?>asc<?php else: ?>desc<?php endif; ?><?php else: ?>popular.php?tab=likes&sor=<?php if($sor === 'desc' and $tab === 'likes'): ?>asc<?php else: ?>desc<?php endif; ?><?php endif; ?>">
                             <span>Лайки</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -26,8 +26,8 @@
                         </a>
                     </li>
                     <li class="sorting__item">
-                        <a class="sorting__link <?php if (isset($_GET['tab']) && $_GET['tab'] === 'date'): ?>sorting__link--active<?php endif; ?>"
-                           href="<?php if ($type_id): ?>popular.php?type_id=<?= $type_id; ?>&tab=date<?php else: ?>popular.php?tab=date<?php endif; ?>">
+                        <a class="sorting__link <?php if ($tab === 'date'): ?>sorting__link--active <?php if ($sor === 'asc'): ?>sorting__link--reverse<?php endif; ?><?php endif; ?>"
+                           href="<?php if ($type_id): ?>popular.php?type_id=<?= $type_id; ?>&tab=date&sor=<?php if($sor === 'desc' and $tab === 'date'): ?>asc<?php else: ?>desc<?php endif; ?><?php else: ?>popular.php?tab=date&sor=<?php if($sor === 'desc' and $tab === 'date'): ?>asc<?php else: ?>desc<?php endif; ?><?php endif; ?>">
                             <span>Дата</span>
                             <svg class="sorting__icon" width="10" height="12">
                                 <use xlink:href="#icon-sort"></use>
@@ -190,15 +190,21 @@
                         </div>
                         <div class="post__indicators">
                             <div class="post__buttons">
-                                <a class="post__indicator post__indicator--likes button"
-                                   href="add_like.php?post_id=<?= $post['id']; ?>" title="Лайк">
-                                    <?php $like_check = get_like_by_user($connection, $post['id'], $user['id']); ?>
-                                    <svg class="post__indicator-icon" width="20" height="17">
-                                        <use xlink:href="#icon-heart<?php if ($like_check): ?>-active<?php endif; ?>"></use>
+                                <?php $like_check = get_like_by_user($connection, $post['id'], $user['id']); ?>
+
+                                <a class="post__indicator post__indicator--likes button" href="add_like.php?post_id=<?= $post['id']; ?>" title="Лайк">
+                                    <svg class="post__indicator-icon <?php if($like_check === 0):?>post__indicator-icon--like-active<?php endif;?>" width="20" height="17">
+                                        <use xlink:href="#icon-heart-active"></use>
                                     </svg>
-                                    <span><?= $post['like_post']; ?></span>
+                                    <?php if($like_check === 0):?>
+                                    <svg class="post__indicator-icon" width="20" height="17">
+                                        <use xlink:href="#icon-heart"></use>
+                                    </svg>
+                                    <?php endif;?>
+                                    <span><?= get_count_likes($connection, $post['id']); ?></span>
                                     <span class="visually-hidden">количество лайков</span>
                                 </a>
+
                                 <a class="post__indicator post__indicator--comments button"
                                    href="post.php?id=<?= $post['id'] ?>" title="Комментарии">
                                     <svg class="post__indicator-icon" width="19" height="17">

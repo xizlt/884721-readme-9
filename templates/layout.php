@@ -131,9 +131,9 @@
                         <li class="header__profile">
                             <a class="header__profile-link" href="profile.php?id=<?= $user['id']; ?>">
                                 <div class="header__avatar-wrapper">
-                                    <?php if (isset($user['avatar'])): ?><img class="header__profile-avatar"
-                                                                              src="<?= $user['avatar']; ?>"
-                                                                              alt="Аватар профиля"><?php endif; ?>
+                                    <?php if (isset($user['avatar'])): ?>
+                                        <img class="header__profile-avatar" src="<?= $user['avatar']; ?>" alt="Аватар профиля">
+                                    <?php endif; ?>
                                 </div>
                                 <div class="header__profile-name">
                                 <span>
@@ -160,14 +160,9 @@
                                             <a class="header__profile-nav-link" href="message.php">
                           <span class="header__profile-nav-text">
                             Сообщения
-                            <i class="header__profile-indicator">2</i>
-                          </span>
-                                            </a>
-                                        </li>
-                                        <li class="header__profile-nav-item">
-                                            <a class="header__profile-nav-link" href="#">
-                          <span class="header__profile-nav-text">
-                            Настройки
+                              <?php if ($new_messages !== 0): ?>
+                            <i class="header__profile-indicator"><?= $new_messages; ?></i>
+                              <?php endif; ?>
                           </span>
                                             </a>
                                         </li>
@@ -240,13 +235,13 @@
             <div class="footer__my-info">
                 <ul class="footer__my-pages">
                     <li class="footer__my-page footer__my-page--feed">
-                        <a class="footer__page-link" href="feed.html">Моя лента</a>
+                        <a class="footer__page-link" href="feed.php?id=<?= $user['id'];?>">Моя лента</a>
                     </li>
                     <li class="footer__my-page footer__my-page--popular">
-                        <a class="footer__page-link" href="popular.html">Популярный контент</a>
+                        <a class="footer__page-link" href="popular.php">Популярный контент</a>
                     </li>
                     <li class="footer__my-page footer__my-page--messages">
-                        <a class="footer__page-link" href="messages.html">Личные сообщения</a>
+                        <a class="footer__page-link" href="message.php">Личные сообщения</a>
                     </li>
                 </ul>
                 <div class="footer__copyright">
@@ -261,6 +256,7 @@
         </div>
     </div>
 </footer>
+
 </body>
 </html>
 

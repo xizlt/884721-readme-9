@@ -13,8 +13,5 @@ function validate_comment(string $comment): ?string
     if (mb_strlen($comment) > 1000) {
         return 'Максимальная длина 1 000 символов';
     }
-    if (mb_strlen($comment) < 4) {
-        return 'Введите более 4 символов';
-    }
     return null;
 }

@@ -1,13 +1,17 @@
 <?php
 
 /**
+ * Загружает файл с интернета
  * @param array $data
  * @return string
  */
 function upload_img_by_url(string $data): string
 {
     if ($data) {
-        $path = 'uploads/' . basename($data);
+        $temp = explode(".", $data);
+        $newfilename = round(microtime(true)) . '.' . end($temp);
+
+        $path = 'uploads/' . $newfilename;
         $file = file_get_contents($data);
         file_put_contents($path, $file);
         return $path;

@@ -75,7 +75,7 @@ function get_user_by_id(mysqli $connection, int $id): ?array
 }
 
 /**
- * Получение данных юзера
+ * Получение данных юзера по параметру email
  * @param mysqli $connection
  * @param string $email
  * @return array|null

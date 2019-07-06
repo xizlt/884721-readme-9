@@ -6,7 +6,6 @@ $posts = [];
 $search = isset($_GET['search']) ? trim(preg_replace("/[^а-яёa-z,#,0-9]/iu", ' ', $_GET['search'])) : null;
 $url = $_SERVER['HTTP_REFERER'] ?? null;
 
-
 if (empty($search)) {
     header("Location: $url");
     exit();
@@ -43,6 +42,7 @@ $layout_content = include_template('layout.php', [
     'page_content' => $page_content,
     'title' => 'Страница поиска',
     'search' => $search,
-    'user' => $user
+    'user' => $user,
+    'new_messages' => $new_messages
 ]);
 print ($layout_content);

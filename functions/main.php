@@ -1,4 +1,7 @@
 <?php
+
+require 'vendor/autoload.php';
+
 const MINUTE = 60;
 const HOUR = 3600;
 const DAY = 86400;
@@ -36,31 +39,6 @@ function clips_text(string $text, string $post_id, int $length = 300): string
     }
     return '<p>' . $text . '</p>';
 }
-
-
-function clips_text_message(string $text, int $length = 20): string
-{
-    $length_content = mb_strlen($text);
-    $total = 0;
-
-    if ($length_content > $length) {
-        $result_words = [];
-        $words = explode(" ", $text);
-        foreach ($words as $word) {
-            $num = mb_strlen($word);
-            $total += $num;
-            if ($total >= $length) {
-                break;
-            }
-            $result_words[] = $word;
-
-        }
-        return implode(' ',
-                $result_words) . ' ...';
-    }
-    return $text;
-}
-
 
 /**
  * Подключает шаблон, передает туда данные и возвращает итоговый HTML контент
@@ -287,6 +265,43 @@ function user_date_registration(string $time): string
 }
 
 /**
+ * возвращает время в формате "Х дней"
+ * @param string $time
+ * @return string
+ */
+function message_date(string $time): string
+{
+    $dt_pub = strtotime($time);
+    $dt_now = time();
+    $dt_diff = $dt_now - $dt_pub;
+    $result = null;
+
+    if ($dt_diff < HOUR) {
+        $dt_create = floor($dt_diff / MINUTE);
+        $result = $dt_create . get_noun_plural_form($dt_create, ' минута', ' минуты', ' минут');
+
+    } elseif ($dt_diff >= HOUR and $dt_diff < DAY) {
+        $dt_create = floor($dt_diff / HOUR);
+        $result = $dt_create . get_noun_plural_form($dt_create, ' час', ' часа', ' часов');
+
+    } elseif ($dt_diff >= DAY and $dt_diff < WEEK) {
+        $dt_create = floor($dt_diff / DAY);
+        $result = $dt_create . get_noun_plural_form($dt_create, ' день', ' дня', ' дней');
+
+    } elseif ($dt_diff >= WEEK and $dt_diff < FIVE_WEEKS) {
+        $dt_create = floor($dt_diff / WEEK);
+        $result = $dt_create . get_noun_plural_form($dt_create, ' неделя', ' недели', ' недель');
+
+    } elseif ($dt_diff >= FIVE_WEEKS) {
+        $dt_create = floor($dt_diff / MONTH);
+        $result = $dt_create . get_noun_plural_form($dt_create, ' месяц', ' месяца', ' месяцев');
+    }
+    return $result;
+}
+
+
+
+/**
  * Условие по сортировки
  * @param string $tab
  * @return string
@@ -380,9 +395,34 @@ function embed_youtube_video($youtube_url)
     return $res;
 }
 
+/**
+ * Переименовывает загружаемый файл
+ * @param array $file
+ * @return string
+ */
+function rename_file(string $file) : string
+{
+    $temp = explode(".", $file);
+    $newfilename = round(microtime(true)) . '.' . end($temp);
+    return $newfilename;
+}
 
 /**
- * Возвращает путь на загруженный файл . Перемещает файл
+ * Изменяет размер загруженного файла для аватарки
+ * @param string $file
+ * @return string
+ */
+function resize_avatar($file)
+{
+    $imagine = new Imagine\Gd\Imagine();
+    $img = $imagine->open($file);
+    $box = new Imagine\Image\Box(100, 100);
+    $img->resize($box);
+    $img->save($file);
+}
+
+/**
+ * Перемещает файл и возвращает путь к нему
  * @param array|null $file_data
  * @return string|null
  */
@@ -392,13 +432,15 @@ function upload_img(?array $file_data): ?string
     if (!$name) {
         return null;
     }
+    $new_file_name = rename_file($name);
+    $path = 'uploads/' . $new_file_name;
     $tmp_name = $file_data['tmp_name'];
-    $path = 'uploads/' . $name;
     if (!move_uploaded_file($tmp_name, $path)) {
         die('Не найдена папка uploads или отсутствуют права на запись в неё');
     }
     return $path;
 }
+
 
 /**
  * Возвращает название типа поста по условию $_GET
